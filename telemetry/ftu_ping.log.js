@@ -1,3 +1,5 @@
+0. 
+  const variable in ftu_ping.js
   const FTU_PING_ACTIVATION = 'ftu.pingActivation';
   const FTU_PING_ENABLED = 'ftu.pingEnabled';
   const FTU_PING_ID = 'ftu.pingID';
@@ -29,17 +31,69 @@
   const URL_SETTINGS = ['deviceinfo.platform_build_id',
                         'deviceinfo.platform_version',
                         'app.update.channel'];
+
 1.Abstract
 Where are related files?
 Related parameters is accquired in the file apps/system/js/ftu_ping.js, the start point function is ensurePing().
-window.TelemetryRequest is exported in file shared/telemetry/telemetry.js, function TelemetryRequest.getDeviceID() is used in ftu_ping.
+window.TelemetryRequest is exported in file apps/system/shared/telemetry/telemetry.js, function TelemetryRequest.getDeviceID() is used in ftu_ping.
+window.FtuPing is only called in system/js/ftu_launcher.js
 
-How to get parameters in WebIDL?
+1.1 About ftu_launcher.js
+//Only a object FtuLauncher is created, and then FtuLauncher.init() is called.
+system/js/base_module.js
+system/js/ftu_launcher.js
+
+1.2 How get data send by ftu_ping.js
+1.2.1 How to get parameters in WebIDL?
 var ftuping = new FtuPing();
 ftuping.ensurePing();
 some parameters is get through function tryPing()
 ftuping.tryPing();
 ftuping.assemblePingData();
+1.2.2 show the data send to server
+ftuping._pingData
+
+1.3 Some information about ftu_ping
+The actual data sent to server is _pingData, which is sent by global object TelemetryRequest.
+work flow of ftu_ping:
+ensurePing->initSettings->initPreinstalledApps->startPing->tryPing->checkMobileNetwork->ping
+
+1.4 Where the data is get(set)?
+initSettings:
+    self._pingData.screenHeight = window.screen.height;
+    self._pingData.screenWidth = window.screen.width;
+    self._pingData.devicePixelRatio = window.devicePixelRatio;
+    self._pingData.locale = window.navigator.language;
+    self._pingData.pingID
+    self._pingData.activationTime
+    self._pingData.deviceinfo.os
+    self._pingData.deviceinfo.software
+    self._pingData.deviceinfo.product_model
+    self._pingData.deviceinfo.firmware_revision
+    self._pingData.deviceinfo.hardware
+    self._pingData.deviceinfo.last_updated
+    self._pingData.deviceinfo.platform_version
+    self._pingData.deviceinfo.platform_build_id
+    self._pingData.findmydevice.enabled
+initPreinstalledApps:
+    self._pingData.preinstalled = {};
+checkMobileNetwork
+    self._pingData.network
+    self._pingData.icc
+    /* type of network and icc
+    "network": {
+      "mcc": "216",
+      "mnc": "70",
+      "operator": "vodafone HU vodafone"
+    },
+    "icc": {
+      "spn": "vodafone",
+      "mcc": "216",
+      "mnc": "70"
+    },
+    */
+ping:
+    self._pingData.pingTime = Date.now();
 
 2.Related Code
 var _pingData = {}
@@ -47,7 +101,6 @@ var _pingData = {}
 const FTU_PING_ID = 'ftu.pingID';
   var promise = TelemetryRequest.getDeviceID(FTU_PING_ID);
   promise.then(function(deviceID) {
-    //self.debug('Found deviceID: ' + deviceID);
     console.log('Found deviceID: ' + deviceID);
     _pingData.pingID = deviceID;
     // resolve();
