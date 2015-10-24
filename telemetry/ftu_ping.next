@@ -3,3 +3,195 @@
 JSON整个的格式？确认url参数。
 如果settings获得失败如何处理?
 改anti-theft
+
+
+1. The database structure of Dual SIM Card
+2. The rule of sending message: 1) Retry 2) Monthly
+3. Which service enable Telemetry
+4. what is the process when the data can not be gotten
+5. Change FMD and Kill-Switch to Anti-Theft
+6. Confirm the content of URL and json
+
+3. Which service enable Telemetry?
+FTU is known as First Time Usage, a part of System Application.System is the base Application for all the Gaia App, all the related files are located in gaia/apps/system/. Some startup js files are launched by index.html, including js/applications.js, shared/lazy_loader/lazy_loader.js, js/service.js, js/base_module.js, js/app.js, js/bootstrap.js, and they are very important for System App startup. Other js files used are loaded via lazy_loader.js if needed.
+
+js/bootstrap.js:
+It is the start point of System APP, its responsibility is only start the app instance and catch the error from the start function.
+js/app.js
+   * The entry point of the whole system app.
+   * It's duty is to prepare everything ready to launch
+   * the application core (core.js).
+js/launcher.js
+  /**
+   * This module is responsible to read all boot up related
+   * configurations and asks other launcher to launch
+   * at the correct timing by the configurations.
+   */
+js/base_module.js
+In this Immediately Invoked Function Expression, A global object BaseModule is exported to window, and some useful variable is encapsulated, such as AVAILABLE_MODULES, which is used to store constructors.
+BaseModule is a class skeleton which helps you to build a module with
+* Centralized event handler
+* Centralized settings observation
+* Sub modules management including loading and starting
+* Import preload files
+* DOM rendering
+* Consistent logging function with System boot time and module name
+* Common publishing interface
+BaseModule is a very important concept used to warp all services and modules used in System Application, Launcher, FtuLauncher, and Core are all managed in the schdule of BaseModule. 
+
+BaseModule.create is used to create a module based on base module and give properties. A constructor will be returned and placed in AVAILABLE_MODULES if you specify an unique name in the prototype.
+   * @example
+   * var MyModule = function() {};
+   * BaseModule.create(MyModule, {
+   *   name: 'MyModule'
+   * });
+   * var myModule = BaseModule.instantiate('MyModule');
+   *
+
+   * @param  {Function} constructor The constructor function.
+   * @param  {Object} prototype
+   *                  The prototype which will be injected into the class.
+   * @param  {Object} properties
+   *                  The property object which includes getter/setter.
+   */
+  BaseModule.create = function(constructor, prototype, properties) {
+
+   * This is used to store the constructors which are created
+   * via BaseModule.create().
+   * constructor.name => constructor
+   * @type {Object}
+   */
+  var AVAILABLE_MODULES = {};
+BaseModule.instantiate is used to instantiate an object by name through the constructor stored in AVAILABLE_MODULES.
+
+
+
+  /**
+   * The sub modules belong to this module.
+   * BaseModule will load and then start these sub modules automatically.
+   * The expressions can include path (e.g. 'path/to/ModuleName'). BaseModule
+   * will load them from specified subdirectory. However, the module names
+   * (without path) should be unique even they're under different folders.
+   * @type {Array}
+   */
+  BaseModule.SUB_MODULES = [];
+
+  /**
+   * All events of need to be listened.
+   * BaseModule will add/remove the event listener in start/stop functions.
+   * The function of '_handle_' form in this module will be invoked
+   * when the event is caught.
+   * @type {Array}
+   */
+  BaseModule.EVENTS = [];
+
+  /**
+   * All mozSettings need to be observed.
+   * BaseModule will observe and invoke the responsive
+   * this['_observe_' + key] function.
+   * @type {Array}
+   */
+  BaseModule.SETTINGS = [];
+
+  /**
+   * This defines a list of file path needs to be imported
+   * before the real start of this module.
+   */
+  BaseModule.IMPORTS = [];
+
+  /**
+   * This tells System the sandbox what methods you are going to
+   * register and let the other to request.
+   *
+   * @example
+   * var MyModule = function() {};
+   * MyModule.SERVICES = ['unlock'];
+   * MyModule.prototype = Object.create(BaseModule.prototype);
+   * MyModule.prototype.constructor = MyModule;
+   * MyModule.prototype.name = 'MyModule';
+   * var m = new MyModule();
+   * m.start();
+   * // other module
+   * Service.request('MyModule:unlock').then(function(result) {
+   * });
+   * Service.request('unlock').then(function(result) {
+   *   // if the request is registered by only one module.
+   * });
+   */
+  BaseModule.SERVICES = [];
+
+  /**
+   * The function or property exported here will be
+   * synchronously queried by other module in system app.
+   * If we are not started yet, they will get undefined.
+   *
+   * @example
+   * var MyModule = function() {};
+   * MyModule.STATES = ['isActive'];
+   * MyModule.prototype = Object.create(BaseModule.prototype);
+   * MyModule.prototype.constructor = MyModule;
+   * MyModule.prototype.name = 'MyModule';
+   * var m = new MyModule();
+   * m.start();
+   * // other module
+   * console.log(Service.query('MyModule.isActive'));
+   * // if the method name is unique.
+   * console.log(Service.query('isActive'));
+   * @type {Array}
+   */
+  BaseModule.STATES = [];
+BaseModule.start
+    /**
+     * The starting progress of a module has these steps:
+     * * import javascript files
+     * * lazy load submodules and instantiate once loaded.
+     * * custom start function
+     * * attach event listeners
+     * * observe settings
+     * * register services to System
+     * * DOM elements rendering (not implemented)
+     * The import is guranteed to happen before anything else.
+     * The service registration is expected to happen after everything is done.
+     * The ordering of the remaining parts should not depends each other.
+     *
+     * The start function will return a promise to let you know
+     * when the module is started.
+     * @example
+     * var a = BaseModule.instantiate('A');
+     * a.start().then(() => {
+     *   console.log('started');
+     * });
+     *
+     * Note: a module start promise will only be resolved
+     * after all the steps are resolved, including
+     * the custom start promise and the promises from all the submodules.
+     * So when you see a module is started, that means all of its
+     * submodules are started as well.
+     *
+     * @memberOf BaseModule.prototype
+     */
+    start: function() {
+
+
+
+js/bootstrap.js
+window.app = new App();
+app.start();
+js/app.js(window.app is exported)
+start()->
+bootstrap(){
+	window.launcher = BaseModule.instantiate('Launcher');
+	launcher.start();
+}
+js/launcher.js(extends and wrapped by BaseModule, service Launcher is registed to BaseModule.AVALIABLE_MODULES)
+start()->
+_start()->
+launchFtuThenHomescreen()->
+call FtuLauncher[launcher] via service.request('FtuLauncher:launch',ftuManifestURL). 
+js/ftu_launcher.js(extends and wrapped by BaseModule,service FtuLauncher is registed to BaseModule.AVALIABLE_MODULES)
+
+js/app.js
+Core(js/core.js)
+AppCore(js/app_core.js)
+AppWindowManager(js/app_window_manager.js)
+FtuLauncher(js/ftu_launcher.js)

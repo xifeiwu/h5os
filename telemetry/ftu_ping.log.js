@@ -40,6 +40,11 @@ window.FtuPing is only called in system/js/ftu_launcher.js
 
 1.1 About ftu_launcher.js
 //Only a object FtuLauncher is created, and then FtuLauncher.init() is called.
+ftu_ping.js(FtuPing) is only called in ftu_launcher.js(FtuLauncher)
+ftu_launcher.js is only call in launcher.js
+BaseModule is used in ftu_launcher.js
+window.Service is only call in js/base_module.js
+baseModule.instantiate is called in js/app.js
 system/js/base_module.js
 system/js/ftu_launcher.js
 
