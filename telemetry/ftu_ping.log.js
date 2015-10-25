@@ -80,6 +80,11 @@ initSettings:
     self._pingData.deviceinfo.platform_version
     self._pingData.deviceinfo.platform_build_id
     self._pingData.findmydevice.enabled
+//initIMID
+    self._pingData.deviceinfo.MEID
+// assemblePingData
+    self._pingData.deviceinfo.update_channel
+
 initPreinstalledApps:
     self._pingData.preinstalled = {};
 checkMobileNetwork
@@ -99,6 +104,65 @@ checkMobileNetwork
     */
 ping:
     self._pingData.pingTime = Date.now();
+    self._pingData.local = window.navigator.language
+
+{
+  "activationTime": 1398300000000,
+  "devicePixelRatio": 1,
+  "deviceinfo.MEID": [123456789012345, 123456789012345],
+  "deviceinfo.firmware_revision": "",
+  "deviceinfo.hardware": "qcom",
+  "deviceinfo.last_updated": "",
+  "deviceinfo.os": "2.0.0.0-prerelease",
+  "deviceinfo.platform_build_id": "20150817143800",
+  "deviceinfo.platform_version": "37.0",
+  "deviceinfo.product_model": "go_flip",
+  "deviceinfo.software": "Boot2Gecko 2.2.0.0-prerelease",
+  "deviceinfo.update_channel": "default",
+  "findmydevice.enabled": "",
+  "icc": [
+{
+      "spn": "vodafone",
+      "mcc": "216",
+      "mnc": "70"
+   },
+{
+      "spn": "vodafone",
+      "mcc": "216",
+      "mnc": "70"
+     }
+  ],
+  "network": [
+{
+    "mcc": "216",
+    "mnc": "70",
+    "operator": "vodafone HU vodafone"
+},
+{
+      "mcc": "216",
+      "mnc": "70",
+      "operator": "vodafone HU vodafone"
+        }
+     ],
+  "locale": "hu",
+  "pingID": "8f1bbb30-a1f0-4403-938f-88acf19df5ad",
+  "preinstalled": {
+     app://deviceinfo.h5os/manifest.webapp:"DeviceInfo",
+     http://mochi.test:8888/manifest.webapp:"Mochitest"
+   }
+  "info": {
+    "appUpdateChannel": "default",
+    "reason": "ftu",
+    "appVersion": "31.0a1",
+    "geoCountry": "HU",
+    "appName": "FirefoxOS",
+    "appBuildID": "20140423185429"
+  },
+  "pingTime": 1398300000000,
+  "screenWidth": 320,
+  "screenHeight": 480,
+  "ver": 2
+}
 
 2.Related Code
 var _pingData = {}

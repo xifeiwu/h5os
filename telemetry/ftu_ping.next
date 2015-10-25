@@ -1,7 +1,4 @@
-双卡的数据结构在什么地方。
-发送逻辑，谁调用的？Monthly call？
-JSON整个的格式？确认url参数。
-如果settings获得失败如何处理?
+双卡的数据结构在什么地方�?发送逻辑，谁调用的？Monthly call�?JSON整个的格式？确认url参数�?如果settings获得失败如何处理?
 改anti-theft
 
 
@@ -13,7 +10,7 @@ JSON整个的格式？确认url参数。
 6. Confirm the content of URL and json
 
 3. Which service enable Telemetry?
-FTU is known as First Time Usage, a part of System Application.System is the base Application for all the Gaia App, all the related files are located in gaia/apps/system/. Some startup js files are launched by index.html, including js/applications.js, shared/lazy_loader/lazy_loader.js, js/service.js, js/base_module.js, js/app.js, js/bootstrap.js, and they are very important for System App startup. Other js files used are loaded via lazy_loader.js if needed.
+FTU is known as First Time Usage, a part of System Application.System is a base Application, and all the related files are located in gaia/apps/system/. Some startup js files are launched by index.html, including js/applications.js, shared/lazy_loader/lazy_loader.js, js/service.js, js/base_module.js, js/app.js, js/bootstrap.js, and they are very important for System App startup. Other js files used are loaded via lazy_loader.js if needed.
 
 js/bootstrap.js:
 It is the start point of System APP, its responsibility is only start the app instance and catch the error from the start function.
@@ -190,6 +187,7 @@ launchFtuThenHomescreen()->
 call FtuLauncher[launcher] via service.request('FtuLauncher:launch',ftuManifestURL). 
 js/ftu_launcher.js(extends and wrapped by BaseModule,service FtuLauncher is registed to BaseModule.AVALIABLE_MODULES)
 
+js/bootstrap.js
 js/app.js
 Core(js/core.js)
 AppCore(js/app_core.js)
