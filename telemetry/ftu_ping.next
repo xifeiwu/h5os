@@ -1,6 +1,5 @@
-双卡的数据结构在什么地方�?发送逻辑，谁调用的？Monthly call�?JSON整个的格式？确认url参数�?如果settings获得失败如何处理?
-改anti-theft
-
+https://fxos.telemetry.mozilla.org/submit/telemetry
+FTU_PING_URL?=https://fxos.telemetry.mozilla.org/submit/telemetry
 
 1. The database structure of Dual SIM Card
 2. The rule of sending message: 1) Retry 2) Monthly
