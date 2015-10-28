@@ -1,4 +1,0 @@
-$. On page 6, some new function in v1.5 was not fount in Information Architecture.
-$. On page 19, where is entry point for view Repeating Event in the view of Edit Event?
-$. On page 39, what is the difference between All-day Events Alert and Events Alert?
-$. On page 41, what is the difinition of Event Invitation, it means, I was invited by somebody?
