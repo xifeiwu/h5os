@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="soft-keys" content="lsk=Label, dpe=Label, rsk=Label">
+		<title>soft_keys_helper</title>
+		<script src="shared/evt/index.js"></script>
+		<script src="soft_keys_helper.js"></script>
+		<script type="text/javascript" src="test_soft_keys.js"></script>
+		<link rel="stylesheet" type="text/css" href="test_soft_keys.css">
+		<style>
+		ul {
+			font-size: 2em
+		}
+		*:focus {
+			background-color: blue;
+		}
+		</style>
+	</head>
+	<body>
+	<ul id="root">
+		<li id="a" tabindex=0>Item1</li>
+		<li id="b" tabindex=0>Item2</li>
+		<li id="c" tabindex=0>Item3</li>
+	</ul>
+  <nav id="system-soft-keys" data-z-index-level="system-soft-keys" class="soft-keys active">
+    <span class="left-soft-key"></span>
+    <span class="center-soft-key"></span>
+    <span class="right-soft-key"></span>
+  </nav>
+	</body>
+</html>

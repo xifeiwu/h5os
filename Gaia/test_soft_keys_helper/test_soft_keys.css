@@ -1,0 +1,40 @@
+ .appWindow .soft-keys > span,
+ #system-soft-keys > span {
+   display: table-cell;
+   vertical-align: middle;
+   font-size: 1.8rem;
+   text-align: center;
+   width: 32%;
+   height: 100%;
+   /* We should also use the theme color on soft-keys */
+   color: white;
+   background-color: black;
+}
+
+.appWindow .soft-keys .left-soft-key,
+.appWindow .soft-keys .right-soft-key,
+#system-soft-keys .left-soft-key,
+#system-soft-keys .right-soft-key, {
+  margin: 0 0.5% 0 1%;
+}
+
+.appWindow .soft-keys .center-soft-key,
+#system-soft-keys .center-soft-key {
+  margin: 0 0.5%;
+}
+
+#system-soft-keys {
+  position: absolute;
+  display: table;
+  top: calc(100% - var(--soft-keys-height));
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--soft-keys-height);
+  visibility: hidden;
+  background: black;
+}
+
+#system-soft-keys.active {
+  visibility: visible;
+}

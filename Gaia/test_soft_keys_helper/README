@@ -1,0 +1,5 @@
+git clone git@git.acadine.com:shared/soft_keys_helper.git
+mv test_soft_keys.* soft_keys_helper
+cd soft_keys_helper/
+bower update
+firefox test_soft_keys.html
