@@ -1,0 +1,2 @@
+soft_keys_helper
+simple_key_navigator
