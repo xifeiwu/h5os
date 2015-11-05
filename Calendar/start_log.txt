@@ -1,0 +1,60 @@
+app [calendar]  "Will initialize calendar app..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Configure calendar with db." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+message_handler [calendar]  "Will listen for alarm messages..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+message_handler [calendar]  "Will listen for notification messages..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+db [calendar]  "Will load b2g-calendar db." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+controllers/service [calendar]  "Will load and initialize worker..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+worker/manager [calendar]  "Will add" "caldav" "worker at" "/js/caldav_worker.js" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+controllers/notifications [calendar]  "Will start notifications controller..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+controllers/periodic_sync [calendar]  "Will start periodic sync controller..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Will try to load view" "TimeHeader" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Will try to load view" "Month" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Will try to load view" "MonthDayAgenda" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Will try to load view" "Errors" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+controllers/periodic_sync [calendar]  "Will listen for syncFrequencyChange..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+store/account [calendar]  "Will find syncable accounts..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Loaded view" "TimeHeader" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Must initialize view" "TimeHeader" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Found view named " "TimeHeader" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Loaded view" "Month" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Must initialize view" "Month" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Found view named " "Month" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Loaded view" "MonthDayAgenda" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Must initialize view" "MonthDayAgenda" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Found view named " "MonthDayAgenda" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Loaded view" "Errors" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Must initialize view" "Errors" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+app [calendar]  "Found view named " "Errors" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+"L10nError: "present-description" not found in en-US in app://calendar.gaiamobile.org/index.html" 
+    at reportMissingEntity (app://calendar.gaiamobile.org/shared/l10n/l10n.js:2489:8) l10n.js:2489:8
+controllers/periodic_sync [calendar]  "There seem to be no syncable accounts, will defer scheduling..." 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4) bundle.js:3767:4
+controllers/recurring_events [calendar]  "expand" "1970-01-01T00:00:00.000Z" 
+    at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3767:4)

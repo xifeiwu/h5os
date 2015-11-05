@@ -1,0 +1,15 @@
+// MonthDay represents a single day inside the Month view grid.
+The start point of js logic is js/main.js, which is a IIFE(Immediately-Invoked Function Expression).
+The start point is not obvious, as main.js is compacted to bundle.js accordig to config file calendar.build.js.
+The most important action in main.js is require(['app'], app => app.init());
+
+
+js/view.js is base prototype for month.js, single_month.js.
+month->single_month->month_day->day_observer
+
+In month.js, GestureDetector is a very important variable for gesture detecte.
+var GestureDetector = require('shared/gesture_detector/gesture_detector')
+
+js/router.js is used for page route, some work is done by ext/page.js.
+
+LazyLoader is defined in bundle.js?

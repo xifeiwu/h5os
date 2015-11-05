@@ -1,0 +1,27 @@
+1.
+some modifications in month.js
+Import debug for output of debug information:
+  var debug = require('debug')('month');
+Add keydown event listener in Month.prototype.onactive:
+  self = this;
+  window.addEventListener('keydown', self._keyDownEvent, false);
+Add functions
+_postMonthChanged
+_get_day
+_keyDownEvent
+
+2.
+Add file navigation_handler.js and navigation_map.js to js directory.
+Replace tcl with h5os in these files.
+Add file style/navigation.css
+
+3.
+load js/navigation_handler.js in index.html(navigation_map.js will be loaded by LazyLoader in navigation_handler.js)
+
+4.
+add CustomEvent h5os-page-changed in function handleViews of router.js
+add CustomEvent h5os-page-changed in function _updateBaseDateAfterScroll of multi_day.js
+
+5.
+add code line  el.classList.add('focusable'); in function create of month_day.js
+
