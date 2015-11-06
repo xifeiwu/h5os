@@ -1,13 +1,17 @@
 * ''<u>Status</u>''
-** Status1
-*** More.[https://jira.acadine.com/browse/CORE-1155 CORE-1155]
+** CORE-1355 In process.
+*** More.[https://jira.acadine.com/browse/CORE-1355 CORE-1355]
 
 * '''''<u>Progress of this week</u>'''''
-** Process1
-*** More
-** Process2
-*** [[https://jira.acadine.com/browse/CORE-1307 CORE-1307]]
+** Survey on iCalendar for the function of Online account 
+*** Fininsh. More... [https://jira.acadine.com/browse/CORE-1612 CORE-1612]
+** Learn the arrangement of Monthly View of TCL Calendar UI
+*** Fininsh. More... [https://jira.acadine.com/browse/CORE-1493 CORE-1493]
+** Learn the arrangement of Monthly View of TCL Calendar UI
+*** Fininsh. More... [https://jira.acadine.com/browse/CORE-1493 CORE-1493]
+** Add Key Navigation on Monthly View
+*** Finish Coding, ready for review. More... [https://jira.acadine.com/browse/CORE-1685 CORE-1685]
 
 * '''''<u>Plan for next week</u>'''''
-** Plan1
-** Plan2
+** Review Code for [https://jira.acadine.com/browse/CORE-1685 CORE-1685]
+** Finish [https://jira.acadine.com/browse/CORE-1494 CORE-1494]
