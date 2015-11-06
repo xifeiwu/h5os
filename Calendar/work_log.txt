@@ -16,7 +16,8 @@ Replace tcl with h5os in these files.
 Add file style/navigation.css
 
 3.
-load js/navigation_handler.js in index.html(navigation_map.js will be loaded by LazyLoader in navigation_handler.js)
+load js/navigation_handler.js and style/navigation.css in index.html
+(navigation_map.js will be loaded by LazyLoader in navigation_handler.js)
 
 4.
 add CustomEvent h5os-page-changed in function handleViews of router.js
@@ -24,4 +25,11 @@ add CustomEvent h5os-page-changed in function _updateBaseDateAfterScroll of mult
 
 5.
 add code line  el.classList.add('focusable'); in function create of month_day.js
+
+6.fix format of navigation_map.js
+format indentation to 2 space
+add 'use strict'
+replace " with '
+Add /*global LazyLoader, NavigationMap*/ to indicate that LazyLoader and NavigationMap is global variable.
+Use !== to compare with undefined
 
