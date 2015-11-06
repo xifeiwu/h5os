@@ -26,10 +26,18 @@ add CustomEvent h5os-page-changed in function _updateBaseDateAfterScroll of mult
 5.
 add code line  el.classList.add('focusable'); in function create of month_day.js
 
-6.fix format of navigation_map.js
-format indentation to 2 space
-add 'use strict'
-replace " with '
+6.fix format of navigation_handler.js
+Format indentation to 2 space
+Add 'use strict'
+Replace " with '
 Add /*global LazyLoader, NavigationMap*/ to indicate that LazyLoader and NavigationMap is global variable.
 Use !== to compare with undefined
 
+7. fix format of navigation_map.js
+Add 'use strict'
+Replace " with '
+Remove unnecessary slmicolon
+Add var before hour on function setFocusDayView on line 560
+Use !== or === to compare with undefined
+Wrap return wit {} in function scrollToElement on line 497
+Remove unused line var curControl = getCurControl(); in function getDayViewIndexByDate on line 546
