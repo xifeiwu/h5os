@@ -1,0 +1,5 @@
+This demo need a http server, Your can start a server using:
+python -m SimpleHTTPServer
+
+js file loaded by browser may unchange even the file in server changed. why?
+One method is comment the code loading html_imports.js, refresh browser, and uncomment again, refresh.

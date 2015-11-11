@@ -4,17 +4,28 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
+    <link rel="import" href="/elements/model.html">
     <script src="lazy_loader/lazy_loader.js"></script>
     <script>
       window.onload = function() {
-        LazyLoader.load(["lazy_loader/test.js"], function(){
-          var testObj = new TestObj("test");
+        LazyLoader.load(['elements/test.js'], function(){
+          var testObj = new TestObj('test');
           testObj.showName();
         });
-        LazyLoader.load([initialPanel], function(){
-          console.log("load html success.");
+
+        function htmlImportsCB(eles) {
+          console.log('load html success.:');
+          for (var key in eles) {
+            console.log(key + ": " + eles[key]);
+          }
+        };
+
+        LazyLoader.load(['lazy_loader/html_imports.js'], function() {
+          console.log('HtmlImports.populate before');
+          HtmlImports.populate(htmlImportsCB);
+          console.log('HtmlImports.populate after');
         });
-      }
+      };
     </script>
   </head>
   <body>

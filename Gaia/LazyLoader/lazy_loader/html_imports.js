@@ -13,16 +13,18 @@ var HtmlImports = {
    */
   populate: function(callback) {
     var imports = document.querySelectorAll('link[rel="import"]');
+    console.log('pending:' + imports.length);
+    console.log('ddddddddddddddddddddddddddddddddddddddddd');
     if (!imports.length) {
       return;
     }
 
     var pending = imports.length;
+    // Mapping of all custom element templates
+    var elementTemplates = {};
 
     Array.prototype.forEach.call(imports, function perImport(eachImport) {
       this.getImportContent(eachImport.href, function gotContent(content) {
-        // Mapping of all custom element templates
-        var elementTemplates = {};
         var elementRoot = document.createElement('div');
         elementRoot.innerHTML = content;
         var elements = elementRoot.querySelectorAll('element');
@@ -41,7 +43,8 @@ var HtmlImports = {
           }
         });
         if (!(--pending)) {
-          callback();
+          console.log('elementTemplates: ' + elementTemplates);
+          callback(elementTemplates);
         }
       });
     }, this);
