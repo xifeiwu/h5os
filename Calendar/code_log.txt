@@ -1,0 +1,3 @@
+week.setAttribute('aria-selected', 'true');
+
+

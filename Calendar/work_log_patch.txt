@@ -1,1 +1,0 @@
-Style sheet could not be loaded. app://theme.gaiamobile.org/shared/gaia-theme/style.css
