@@ -11,8 +11,6 @@
           var testObj = new TestObj("test");
           testObj.showName();
         });
-        initialPanelId = "about";
-        var initialPanel = document.getElementById(initialPanelId);
         LazyLoader.load([initialPanel], function(){
           console.log("load html success.");
         });
