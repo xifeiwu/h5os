@@ -1,0 +1,5 @@
+if (curControl.index >= 0 &&
+  curControl.index < curControl.elements.length) {
+    return curControl.index;
+  }
+}
