@@ -1,0 +1,27 @@
+other config in require.config:
+
+    {
+      name: 'gaia-header',
+      location: '../shared/gaia-header',
+      main: 'gaia-header'
+    },
+    {
+      name: 'gaia-icons',
+      location: '../shared/gaia-icons',
+      main: 'gaia-icons'
+    },
+    {
+      name: 'gaia-component',
+      location: '../shared/gaia-component',
+      main: 'gaia-component'
+    },
+    {
+      name: 'font-fit',
+      location: '../shared/font-fit',
+      main: 'font-fit'
+    },
+    {
+      name: 'evt',
+      location: '../shared/evt',
+      main: 'index'
+    },
