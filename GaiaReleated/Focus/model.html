@@ -5,13 +5,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
     <script>
-    window.addEventListener('focus', function(e) {
-      console.log("window listener focus: " + e.target +
-        ' -> ' + e.target.innerHTML);
-      // console.log(e);
-    }, true);
     window.onload = function() {
-      var menu = document.querySelector('#menu');
+      window.addEventListener('focus', function(e) {
+        console.log("window listener focus: " + e.target +
+          ' -> ' + e.target.innerHTML);
+        switch(e.target) {
+          case window:
+            console.log('switch to window');
+            menu.focus();
+            break;
+          case menu:
+            console.log('switch to menu');
+            itema.focus();
+            break;
+        }
+      }, true);
+      // var menu = document.querySelector('#menu');
       menu.addEventListener('focus', function(e) {
         console.log("ol listener focus: " + e.target +
           ' -> ' + e.target.innerHTML);
@@ -27,10 +36,10 @@
   <body>
     <br>
     <br>
-    <ol id="menu">
+    <ol id="menu" tabIndex=-1>
       <li tabIndex=-1 id="itema">ItemA</li>
-      <li tabIndex=-1>ItemB</li>
-      <li tabIndex=-1>ItemC</li>
+      <li tabIndex=-1 id="itemb">ItemB</li>
+      <li tabIndex=-1 id="itemc">ItemC</li>
     </ol>
     <br>
   </body>
