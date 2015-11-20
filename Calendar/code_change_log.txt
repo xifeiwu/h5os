@@ -41,3 +41,12 @@ Add var before hour on function setFocusDayView on line 560
 Use !== or === to compare with undefined
 Wrap return wit {} in function scrollToElement on line 497
 Remove unused line var curControl = getCurControl(); in function getDayViewIndexByDate on line 546
+
+
+
+app.js -> createSks 408
+    // need comment later
+    window.softkeyPanel = softkeyPanel;
+    window.router = router;
+
+evt.key === 'AcaSoftLeft' || evt.key === 'AcaSoftRight' in navigation_handler.js will delete.

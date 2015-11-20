@@ -1,5 +1,6 @@
-week.setAttribute('aria-selected', 'true');
+NO_NETWORK=1 make install-gaia APP=calendar
 
+week.setAttribute('aria-selected', 'true');
 
 navigation_map, navSetup
 var containerId = 'month-view';
