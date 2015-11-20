@@ -10,16 +10,26 @@
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           console.log('mutation.type = ' + mutation.type);
-          for (var i = 0; i < mutation.addedNodes.length; i++) {
-            console.log('  "' + mutation.addedNodes[i].textContent + '" added');
-          }          
-          for (var i = 0; i < mutation.removedNodes.length; i++) {
-            console.log('  "' +mutation.removedNodes[i].textContent + '" removed');
+          switch(mutation.type) {
+            case 'childList':
+              for (var i = 0; i < mutation.addedNodes.length; i++) {
+                console.log('content: added, ' + mutation.addedNodes);
+              }          
+              for (var i = 0; i < mutation.removedNodes.length; i++) {
+                console.log('content: remove, ' +mutation.removedNodes);
+              }
+              break;
+            case 'attributes':
+              console.log('content: ' + mutation.attributeName);
+              break;
           }
+
         });
       });
       observer.observe(foo, {
-        childList: true
+        childList: true,
+        attributes: true,
+        subtree: true,
       });
       var bar = document.createElement('div');
       bar.textContent = 'bar';
