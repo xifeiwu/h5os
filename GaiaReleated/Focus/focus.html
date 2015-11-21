@@ -20,16 +20,24 @@
             break;
         }
       }, true);
-      // var menu = document.querySelector('#menu');
-      menu.addEventListener('focus', function(e) {
-        console.log("ol listener focus: " + e.target +
+      window.addEventListener('blur', function(e) {
+        console.log("window listener blur: " + e.target +
           ' -> ' + e.target.innerHTML);
       }, true);
-      // var itema = document.querySelector('#itema');
-      itema.addEventListener('focus', function(e) {
-        console.log("itema listener focus: " + e.target +
-          ' -> ' + e.target.innerHTML);
-      }, true);
+
+      var windowOnly = true;
+      if (!windowOnly) {
+        // var menu = document.querySelector('#menu');
+        menu.addEventListener('focus', function(e) {
+          console.log("ol listener focus: " + e.target +
+            ' -> ' + e.target.innerHTML);
+        }, true);
+        // var itema = document.querySelector('#itema');
+        itema.addEventListener('focus', function(e) {
+          console.log("itema listener focus: " + e.target +
+            ' -> ' + e.target.innerHTML);
+        }, true);
+      }
     }
     </script>
   </head>
