@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <script>
+    window.onload = function() {
+      var all = document.querySelectorAll('*[tabindex]');
+      var count = 0;
+      var itervalId = setInterval(function() {
+        console.log(all[count]);
+        all[count].focus();
+        count++;
+        if (count >= all.length) {
+          clearInterval(itervalId);
+        }
+      }, 1000);
+    }
+    </script>
+  </head>
+  <body>
+    <br>
+    <ol>
+      <li id="itema" tabindex="1">ItemA</li>
+      <li id="itemd" tabindex="4">ItemD</li>
+      <li id="itemb" tabindex="2">ItemB</li>
+      <li id="iteme" tabindex="0">ItemE</li>
+      <li id="itemc" tabindex="3">ItemC</li>
+      <li id="itemf" tabindex="-1">ItemF</li>
+    </ol>
+    <br>
+    <br>
+  </body>
+</html>
