@@ -6,6 +6,24 @@
     <title>HTML Model</title>
     <script>
     window.onload = function() {
+      function listAllValue() {
+        var all = document.querySelectorAll('*[value]');
+        for (var i = 0; i < all.length; i++) {
+          console.log(all[i].id + ' -> ' + all[i].tabIndex);
+        }
+      }
+      // listAllValue();
+      function listAllTabIndex() {
+        var all = document.querySelectorAll('*[tabindex]');
+        for (var i = 0; i < all.length; i++) {
+          console.log(all[i].id + ' -> ' + all[i].tabIndex);
+        }
+      }
+      // listAllTabIndex();
+      function focusOnNode() {
+        province.focus();
+      }
+      // focusOnNode();
       window.addEventListener('focus', function(e) {
         console.log('focus on: ' + e.target);
         console.log('value: ' + e.target.value);
@@ -20,104 +38,103 @@
   </head>
   <body>
     <br>
-
-  <form class="registerform" action="">
-    <table width="100%" style="table-layout:fixed;">
-      <tbody>
-        <tr>
-          <td style="width:120px;">
-            用户名：
-          </td>
-          <td style="width:240px;">
-            <input type="text" id="username" value="username" name="username">
-          </td>
-        </tr>
-        <tr>
-          <td>
-              密码：
-          </td>
-          <td>
-              <input type="password" id="password" value="password">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Email：
-          </td>
-          <td>
-            <input type="text" value="email" name="email">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            年龄：
-          </td>
-          <td>
-            <input type="radio" value="age-young" name="age" id="young">
-            <label for="young">
-                10~20
-            </label>
-            <input type="radio" value="age-middle" name="age" id="middle" class="pr1">
-            <label for="middle">
-                20~30
-            </label>
-            <input type="radio" value="age-old" name="age" id="old" class="pr1">
-            <label for="old">
-                30~40
-            </label>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            省份：
-          </td>
-          <td>
-            <select name="province" id="province" value="province">
-              <option id="choose" tabindex="1" value="choose province">
-                --请选择省份--
-              </option>
-              <option id="shandong" tabindex="1" value="shandong province">
-                山东省
-              </option>
-              <option id="beijing" tabindex="1" value="beijing province">
-                北京市
-              </option>
-              <option id="jiangxi" tabindex="1" value="jiangxi province">
-                江西省
-              </option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            购物网：
-          </td>
-          <td>
-            <input type="checkbox" name="taobao" id="taobao" value="taobao">
-            <label for="taobao">
-              淘宝网
-            </label>
-            <input type="checkbox" name="dangdang" id="dangdang" value="dangdang">
-            <label for="dangdang">
-              当当网
-            </label>
-            <input type="checkbox" name="jingdong" id="jingdong" value="jingdong">
-            <label for="jingdong">
-              京东网
-            </label>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          </td>
-          <td colspan="2" style="padding:10px 0 18px 0;">
-            <input id="submit" type="submit" value="提 交">
-            <input id="reset" type="reset" value="重 置">
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
-  <div id="div" value="div">This is a normal div.</div>
+    <form class="registerform" action="">
+      <table width="100%" style="table-layout:fixed;">
+        <tbody>
+          <tr>
+            <td style="width:120px;">
+              用户名：
+            </td>
+            <td style="width:240px;">
+              <input type="text" id="username" value="username" name="username">
+            </td>
+          </tr>
+          <tr>
+            <td>
+                密码：
+            </td>
+            <td>
+                <input type="password" id="password" value="password">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Email：
+            </td>
+            <td>
+              <input type="text" value="email" name="email">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              年龄：
+            </td>
+            <td>
+              <input type="radio" value="age-young" name="age" id="young">
+              <label for="young">
+                  10~20
+              </label>
+              <input type="radio" value="age-middle" name="age" id="middle" class="pr1">
+              <label for="middle">
+                  20~30
+              </label>
+              <input type="radio" value="age-old" name="age" id="old" class="pr1">
+              <label for="old">
+                  30~40
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              省份：
+            </td>
+            <td>
+              <select name="province" id="province" value="province">
+                <option id="choose" tabindex="1" value="choose province">
+                  --请选择省份--
+                </option>
+                <option id="shandong" tabindex="1" value="shandong province">
+                  山东省
+                </option>
+                <option id="beijing" tabindex="1" value="beijing province">
+                  北京市
+                </option>
+                <option id="jiangxi" tabindex="1" value="jiangxi province">
+                  江西省
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              购物网：
+            </td>
+            <td>
+              <input type="checkbox" name="taobao" id="taobao" value="taobao">
+              <label for="taobao">
+                淘宝网
+              </label>
+              <input type="checkbox" name="dangdang" id="dangdang" value="dangdang">
+              <label for="dangdang">
+                当当网
+              </label>
+              <input type="checkbox" name="jingdong" id="jingdong" value="jingdong">
+              <label for="jingdong">
+                京东网
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td>
+            <td colspan="2" style="padding:10px 0 18px 0;">
+              <input id="submit" type="submit" value="提 交">
+              <input id="reset" type="reset" value="重 置">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <div id="mydiv" value="mydiv">This is a normal div.</div>
   </body>
 </html>
