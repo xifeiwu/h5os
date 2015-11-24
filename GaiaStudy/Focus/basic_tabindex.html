@@ -1,0 +1,27 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test simple key navigator</title>
+  <script type="text/javascript" src="dist/umd/simple_key_navigator.js"></script>
+  <script type="text/javascript" src="test_simple_key_navigator.js"></script>
+  <style type="text/css">
+  *:focus {
+    background-color: red;
+    border: none;
+    outline: 0;
+  }
+
+  *.focus {
+    background-color: blue;
+  }
+  </style>
+</head>
+<body>
+  <ul id="root">
+    <li id="element1" tabindex="0">element1</li>
+    <li id="element2" tabindex="0">element2</li>
+    <li id="element3" tabindex="0">element3</li>
+    <li id="element4" tabindex="0">element4</li>
+  </ul>
+</body>
+</html>

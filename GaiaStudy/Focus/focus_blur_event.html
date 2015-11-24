@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <script>
+    window.onload = function() {
+      window.addEventListener('focus', function(e) {
+        console.log("window listener focus: " + e.target +
+          ' -> ' + e.target.innerHTML);
+        switch(e.target) {
+          case window:
+            console.log('switch to window');
+            menu.focus();
+            break;
+          case menu:
+            console.log('switch to menu');
+            itema.focus();
+            break;
+        }
+      }, true);
+      window.addEventListener('blur', function(e) {
+        console.log("window listener blur: " + e.target +
+          ' -> ' + e.target.innerHTML);
+      }, true);
+
+      var windowOnly = true;
+      if (!windowOnly) {
+        // var menu = document.querySelector('#menu');
+        menu.addEventListener('focus', function(e) {
+          console.log("ol listener focus: " + e.target +
+            ' -> ' + e.target.innerHTML);
+        }, true);
+        // var itema = document.querySelector('#itema');
+        itema.addEventListener('focus', function(e) {
+          console.log("itema listener focus: " + e.target +
+            ' -> ' + e.target.innerHTML);
+        }, true);
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <ol id="menu" tabIndex=-1>
+      <li tabIndex=-1 id="itema">ItemA</li>
+      <li tabIndex=-1 id="itemb">ItemB</li>
+      <li tabIndex=-1 id="itemc">ItemC</li>
+    </ol>
+    <br>
+  </body>
+</html>
