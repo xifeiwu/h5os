@@ -13,13 +13,16 @@
         }
       }
       // listAllValue();
+
       function listAllTabIndex() {
         var all = document.querySelectorAll('*[tabindex]');
         for (var i = 0; i < all.length; i++) {
           console.log(all[i].id + ' -> ' + all[i].tabIndex);
         }
       }
+      // the result is none
       // listAllTabIndex();
+
       function focusOnNode() {
         province.focus();
       }
@@ -69,7 +72,7 @@
             <td>
               年龄：
             </td>
-            <td>
+            <td nav-scope>
               <input type="radio" value="age-young" name="age" id="young">
               <label for="young">
                   10~20
@@ -90,16 +93,16 @@
             </td>
             <td>
               <select name="province" id="province" value="province">
-                <option id="choose" tabindex="1" value="choose province">
+                <option id="choose" value="choose province">
                   --请选择省份--
                 </option>
-                <option id="shandong" tabindex="1" value="shandong province">
+                <option id="shandong" value="shandong province">
                   山东省
                 </option>
-                <option id="beijing" tabindex="1" value="beijing province">
+                <option id="beijing" value="beijing province">
                   北京市
                 </option>
-                <option id="jiangxi" tabindex="1" value="jiangxi province">
+                <option id="jiangxi" value="jiangxi province">
                   江西省
                 </option>
               </select>
