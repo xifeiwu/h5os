@@ -24,9 +24,15 @@
 function load() {
   tr_one = document.getElementById("tr_one");
   tr_one.addEventListener("keydown", function(evt) {
-    console.log('In callback of tr_one.');
+    console.log('In first callback of tr_one.');
     evt.stopPropagation();
+    // evt.stopImmediatePropagation();
   }, false);
+
+  tr_one.addEventListener("keydown", function(evt) {
+    console.log('In second callback of tr_one.');
+  }, false);
+
 
   tr_two = document.getElementById("tr_two");
   tr_two.addEventListener("keydown", function(evt) {
