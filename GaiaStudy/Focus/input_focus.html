@@ -32,6 +32,10 @@
         console.log('value: ' + e.target.value);
       }, true);
     }
+
+    function resetForm() {
+      document.getElementById('registerform').reset();
+    };
     </script>
     <style>
     *:focus {
@@ -41,7 +45,7 @@
   </head>
   <body>
     <br>
-    <form class="registerform" action="">
+    <form class="registerform" id="registerform" action="">
       <table width="100%" style="table-layout:fixed;">
         <tbody>
           <tr>
@@ -132,7 +136,8 @@
             </td>
             <td colspan="2" style="padding:10px 0 18px 0;">
               <input id="submit" type="submit" value="提 交">
-              <input id="reset" type="reset" value="重 置">
+              <!-- form.reset will occur error, in set id=reset in this button -->
+              <input type="reset" value="重 置" onclick="resetForm()">
             </td>
           </tr>
         </tbody>
