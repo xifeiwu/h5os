@@ -177,3 +177,10 @@ showDataBase(STORE.calendars);
 
 
 var date = new Date(evt.target.value + 'T08:00:00');
+    // var selectedDate = new Date(evt.target.value);
+    // console.log('selectedDate: ' + selectedDate);
+    // console.log('selectedDate.getTime(): ' + selectedDate.getTime());
+    // var newDate = new Date(selectedDate.getTime() + 1000);
+    // console.log('newDate: ' + newDate);
+    // console.log('newDate: ' + newDate.getTime());
+    // var date = new Date(new Date(evt.target.value).getTime() + 1);
