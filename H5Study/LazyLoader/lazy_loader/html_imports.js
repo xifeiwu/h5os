@@ -13,8 +13,6 @@ var HtmlImports = {
    */
   populate: function(callback) {
     var imports = document.querySelectorAll('link[rel="import"]');
-    console.log('pending:' + imports.length);
-    console.log('ddddddddddddddddddddddddddddddddddddddddd');
     if (!imports.length) {
       return;
     }

@@ -1,4 +1,4 @@
-This demo need a http server, Your can start a server using:
+This demo need a http server, else an error will occur, as lazy_loader need, . Your can start a server using:
 python -m SimpleHTTPServer
 
 js file loaded by browser may unchange even the file in server changed. why?

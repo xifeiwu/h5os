@@ -4,7 +4,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
-    <link rel="import" href="/elements/model.html">
     <script src="lazy_loader/lazy_loader.js"></script>
     <script>
       window.onload = function() {
@@ -27,10 +26,11 @@
         });
       };
     </script>
+    <link rel="import" href="/elements/model.html">
   </head>
   <body>
-
-    <section nav-scope="" nav-loop="" nav-ignore="" tabindex="0" role="region" id="about"><!--
+    <section id="html_model_section" is="oauth"></section>
+    <section tabindex="0" role="region" id="about"><!--
       <gaia-header data-href="#root">
         <h1 data-l10n-id="deviceInfo-header"></h1>
       </gaia-header>
@@ -133,9 +133,7 @@
           <gaia-button data-l10n-id="reset" class="confirm-reset-phone danger"></gaia-button>
         </menu>
       </form>
-
       <panel data-path="panels/about/panel"></panel>
-
     -->
   </section>
     <br>
