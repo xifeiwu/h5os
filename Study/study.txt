@@ -70,6 +70,23 @@ operator of ``: the content between ` is is not need to escape.
   `;
   document.body.appendChild(test_dom);
 
+item = function() {
+  var id = '5';
+  var color = 'red';
+  var name = 'me';
+
+  var checked = 'true';
+  var ariaSelected = 'localDisplayed';
+
+  return `<li id="calendar-${id}" role="presentation">
+      <div class="gaia-icon icon-calendar-dot" style="color:${color}"
+           aria-hidden="true"></div>
+      <label class="pack-checkbox" role="option" ${ariaSelected}>
+        <input value="${id}" type="checkbox" ${checked}/>
+        <span class="name" dir="auto">${name}</span>
+      </label>
+    </li>`;
+}
 4.
 use of => (arrow function)
 http://es6.ruanyifeng.com/#docs/function
@@ -162,10 +179,20 @@ if element already is its childNode, appendChild will do nothing.
 Array and Object-lick Array
 Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组
 
-
+21.
 keycode and keyValue in Professional JavaScript
 
-16.Mutation Observer 
+
+22. Mutation Observer 
+
+23. Object.keys
+var obj = {
+  name: 'hello',
+  print: function() {
+    console.log(this.name);
+  }
+}
+console.log(Object.keys(obj));
 
 16. history.pushState and window.onpopstate
 window.onpopstate = function(event) {
