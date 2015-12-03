@@ -143,19 +143,25 @@ alameda.js
 
 15.gaia's requirejs
 dynamic load of js and css.
+Import HTML: through property of is and element.html`s name.
 
+16.
 CustomEvent
 
+17.
 addEventListener and handleEvent
 
+18.
 indexDB
 
-import html
-
+19.
 appendChild and cloneNode
+if element already is its childNode, appendChild will do nothing.
 
+20.
 Array and Object-lick Array
-Array.prototype.call(args, 0);
+Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组
+
 
 keycode and keyValue in Professional JavaScript
 
