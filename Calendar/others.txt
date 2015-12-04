@@ -25,3 +25,10 @@ other config in require.config:
       location: '../shared/evt',
       main: 'index'
     },
+
+"calendar-chooser-view onactive" bundle.js:3767:4
+"Settings view found calendars:" {"local-first":{"remote":{"name":"Offline calendar","id":"local-first","color":"#f97c17"},"accountId":"61dfc11d-0bd1-4562-b835-ac5e06b52046","localDisplayed":true,"lastEventSyncDate":"","lastEventSyncToken":"","firstEventSyncDate":null,"_id":"local-first"}} bundle.js:3767:4
+"onfirstseen" bundle.js:3767:4
+"Will render settings view." bundle.js:3767:4
+"Will add object to settings view" "local-first" {"remote":{"name":"Offline calendar","id":"local-first","color":"#f97c17"},"accountId":"61dfc11d-0bd1-4562-b835-ac5e06b52046","localDisplayed":true,"lastEventSyncDate":"","lastEventSyncToken":"","firstEventSyncDate":null,"_id":"local-first"} bundle.js:3767:4
+

@@ -184,3 +184,17 @@ var date = new Date(evt.target.value + 'T08:00:00');
     // console.log('newDate: ' + newDate);
     // console.log('newDate: ' + newDate.getTime());
     // var date = new Date(new Date(evt.target.value).getTime() + 1);
+
+# add new section
+var section = document.createElement('section');
+section.id = 'test-section';
+section.classList.add('fullscreen-view');
+section.classList.add('theme-calendar');
+document.body.appendChild(section);
+section.innerHTML = `
+<div>
+<p tabindex="0">ItemA</p>
+<p tabindex="0">ItemB</p>
+<p tabindex="0">ItemC</p>
+</div>
+`
