@@ -1,0 +1,1 @@
+1. the load sequence of section in index.html may affect the performance of app.
