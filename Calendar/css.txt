@@ -1,0 +1,10 @@
+
+.p-sec {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.p-pri {
+  font-size: 2.1rem;
+  font-weight: 400;
+}

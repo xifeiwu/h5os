@@ -1,0 +1,143 @@
+commit 1292634ea7a667d5b4c3db4ade2b0e10bc39cd6b
+Author: xifei.wu <xifei.wu@acadine.com>
+Date:   Thu Dec 3 14:22:12 2015 +0800
+
+    add basic element for new page calendar_chooser.
+
+diff --git a/build/calendar.build.js b/build/calendar.build.js
+index af8fe59..b1b885c 100644
+--- a/build/calendar.build.js
++++ b/build/calendar.build.js
+@@ -43,6 +43,7 @@
+         'views/events_list',
+         'views/event_detail',
+         'views/settings',
++        'views/calendar_chooser',
+         'views/view_event',
+         'views/setup_calendar'
+       ],
+diff --git a/elements/calendar_chooser.html b/elements/calendar_chooser.html
+new file mode 100644
+index 0000000..88ad6f3
+--- /dev/null
++++ b/elements/calendar_chooser.html
+@@ -0,0 +1,14 @@
++<element name="calendar-chooser" extends="section">
++  <template>
++    <h5-header id="calendar-chooser-header">
++      <h1 data-l10n-id="calendar-chooser-header">Select</h1>
++    </h5-header>
++
++    <section class="content" id="calendar-chooser-content">
++      <div>
++        <p>ItemA</p>
++      </div>
++    </section>
++
++  </template>
++</element>
+\ No newline at end of file
+diff --git a/index.html b/index.html
+index 68e1676..e31234e 100644
+--- a/index.html
++++ b/index.html
+@@ -76,6 +76,7 @@
+ <link rel="import" href="/elements/modify_event.html">
+ <link rel="import" href="/elements/oauth.html">
+ <link rel="import" href="/elements/settings.html">
++<link rel="import" href="/elements/calendar_chooser.html">
+ <link rel="import" href="/elements/show_event.html">
+ <link rel="import" href="/elements/multi_day.html">
+ <link rel="import" href="/elements/events_list.html">
+@@ -88,6 +89,7 @@
+ 
+ <section is="errors" id="errors" role="status" aria-live="assertive" aria-atomic="true"></section>
+ <section is="settings" id="settings" role="region"></section>
++<section is="calendar-chooser" id="calendar-chooser-view" class="fullscreen-view theme-calendar" nav-scope nav-loop nav-ignore tabIndex="0"></section>
+ 
+ <section id="time-views" role="region">
+   <h5-header id="time-header">
+diff --git a/js/app.js b/js/app.js
+index 9892dd0..785f1b6 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -175,6 +175,7 @@ module.exports = {
+     router.state('/day/', 'Day');
+     router.state('/month/', ['Month', 'MonthDayAgenda']);
+     router.modifier('/settings/', 'Settings', { clear: false });
++    router.modifier('/calendar-chooser/', 'CalendarChooser');
+     router.modifier('/advanced-settings/', 'AdvancedSettings');
+     router.modifier('/setup-calendar/', 'SetupCalendar');
+ 
+diff --git a/js/main.js b/js/main.js
+index b8a092c..305d404 100644
+--- a/js/main.js
++++ b/js/main.js
+@@ -47,6 +47,7 @@ require.config({
+     'views/modify_event': 'lazy_loaded',
+     'views/events_list': 'lazy_loaded',
+     'views/settings': 'lazy_loaded',
++    'views/calendar_chooser': 'lazy_loaded',
+     'views/view_event': 'lazy_loaded',
+     'views/event_detail': 'lazy_loaded',
+     'views/setup_calendar': 'lazy_loaded'
+diff --git a/js/views/calendar_chooser.js b/js/views/calendar_chooser.js
+new file mode 100644
+index 0000000..bfe52cd
+--- /dev/null
++++ b/js/views/calendar_chooser.js
+@@ -0,0 +1,21 @@
++define(function(require, exports, module) {
++'use strict';
++
++var View = require('view');
++require('dom!calendar-chooser-view');
++
++function CalendarChooser(options) {
++  View.apply(this, arguments);
++}
++module.exports = CalendarChooser;
++
++CalendarChooser.prototype = {
++  __proto__: View.prototype,
++
++  selectors: {
++    element: '#calendar-chooser-view',
++    header: '#calendar-chooser-header'
++  },
++};
++
++});
+\ No newline at end of file
+diff --git a/js/views/month.js b/js/views/month.js
+index 5e98303..89f24c6 100644
+--- a/js/views/month.js
++++ b/js/views/month.js
+@@ -71,7 +71,8 @@ function Month() {
+         this.datePicker.focus();
+         break;
+       case 'month-view-calendars-to-display':
+-        this._popUpDialog();
++        //this._popUpDialog();
++        router.go('/calendar-chooser/');
+         break;
+       case 'month-view-settings':
+         router.go('/advanced-settings/');
+diff --git a/style/calendar_chooser.css b/style/calendar_chooser.css
+new file mode 100644
+index 0000000..770974a
+--- /dev/null
++++ b/style/calendar_chooser.css
+@@ -0,0 +1,3 @@
++#calendar-chooser-view {
++  background-color: orange
++}
+diff --git a/style/lazy_loaded.css b/style/lazy_loaded.css
+index da198a8..9e50cad 100644
+--- a/style/lazy_loaded.css
++++ b/style/lazy_loaded.css
+@@ -15,3 +15,4 @@
+ @import url("multi_day.css");
+ @import url("overlay.css");
+ @import url("settings.css");
++@import url("calendar_chooser.css");

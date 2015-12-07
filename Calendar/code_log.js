@@ -198,3 +198,40 @@ section.innerHTML = `
 <p tabindex="0">ItemC</p>
 </div>
 `
+
+
+#startDate of Modify Event.
+var modify = document.querySelector('#modify-event-view');
+var startDate = modify.querySelector('[name="startDate"]');
+var softKeys = {
+  lsk: 'back', dpe: 'select', rsk: 'save'
+};
+var softKey = {};
+var lsk = {};
+lsk.name = 'back';
+softKey.lsk = lsk;
+['sk-modify-event-start-date', 'sk-modify-event-start-time', 'sk-modify-event-end-date', 'sk-modify-event-end-time'].forEach(
+function(name) {
+  var element = modify.querySelector('.' + name);
+  console.log(element);
+  SoftkeyHandler.register(element, softKeys);
+});
+
+debug('fields: ' + JSON.stringify(fields));
+
+
+# emulate keydown
+var evt = new CustomEvent(
+  "keydown",
+  {
+    detail:
+    {
+      message: "Hello There",
+      time: new Date(),
+      key: 'AcaSoftDown'
+    },
+    bubbles: true,
+    cancelable: true
+});
+evt.key = 'AcaSoftDown'
+window.dispatchEvent(evt);

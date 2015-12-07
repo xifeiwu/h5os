@@ -1,0 +1,127 @@
+commit 8a9dc219622b87618394e079b1aaaf5792a32343
+Author: xifei.wu <xifei.wu@acadine.com>
+Date:   Wed Dec 2 16:42:44 2015 +0800
+
+    add popupDialog for calendar to display.
+
+diff --git a/bower.json b/bower.json
+index 3fb7de5..f38da4b 100644
+--- a/bower.json
++++ b/bower.json
+@@ -47,6 +47,7 @@
+     "h5-separator": "git@git.acadine.com:gaia-components/h5-separator.git",
+     "h5-checkbox": "git@git.acadine.com:gaia-components/h5-checkbox.git#~0.0.9",
+     "h5-input-wrapper": "git@git.acadine.com:gaia-components/h5-input-wrapper.git#~0.0.2",
+-    "h5-two-line-li": "git@git.acadine.com:gaia-components/h5-two-line-li.git#~0.0.4"
++    "h5-two-line-li": "git@git.acadine.com:gaia-components/h5-two-line-li.git#~0.0.4",
++    "h5-dialog": "git@git.acadine.com:gaia-components/h5-dialog.git#~0.0.8"
+   }
+ }
+diff --git a/index.html b/index.html
+index f84de3f..68e1676 100644
+--- a/index.html
++++ b/index.html
+@@ -143,5 +143,8 @@
+   <h5-option-menu tabIndex="0"></h5-option-menu>
+ </section>
+ <input id="date-picker" class="hidden-input" aria-hidden="true" type="date">
++<section class="h5-dialog-container">
++  <h5-dialog tabindex="0"></h5-dialog>
++</section>
+ </body>
+ </html>
+diff --git a/js/views/month.js b/js/views/month.js
+index 67664fd..5e98303 100644
+--- a/js/views/month.js
++++ b/js/views/month.js
+@@ -13,6 +13,7 @@ var debug = require('debug')('month');
+ var navigationHandler = require('navigation_handler');
+ var InputParser = require('shared/input_parser/input_parser');
+ require('shared/h5-option-menu/dist/amd/script');
++require('shared/h5-dialog/dist/amd/script');
+ var _ = navigator.mozL10n.get;
+ 
+ // minimum difference between X and Y axis to be considered an horizontal swipe
+@@ -30,6 +31,7 @@ function Month() {
+     navigationHandler.getCurItem().focus();
+   }.bind(this));
+ 
++  var self = this;
+   var keys = ['month-view-current-date', 'month-view-go-to-date',
+     'month-view-calendars-to-display', 'month-view-settings'];
+   var items = [];
+@@ -69,7 +71,7 @@ function Month() {
+         this.datePicker.focus();
+         break;
+       case 'month-view-calendars-to-display':
+-        router.go('/settings/');
++        this._popUpDialog();
+         break;
+       case 'month-view-settings':
+         router.go('/advanced-settings/');
+@@ -80,6 +82,15 @@ function Month() {
+     }
+   }.bind(this));
+ 
++  var dialogSelector = '.h5-dialog-container h5-dialog';
++  this.dialog = document.querySelector(dialogSelector);
++  SoftkeyHandler.register(this.dialog, {
++    lsk: {
++      name: 'back',
++      action: self._closeDialog.bind(self)
++    }
++  });
++
+   var _observeSyncFreq = function(syncFreq) {
+     var keys = ['month-view-current-date', 'month-view-go-to-date',
+       'month-view-calendars-to-display', 'month-view-settings'];
+@@ -195,6 +206,28 @@ Month.prototype = {
+     navigationHandler.start();
+   },
+ 
++  _popUpDialog: function() {
++    this.dialog.open({
++      header: 'menuList',
++      initialValue: 'initial value'
++    });
++    var listTemplate = `
++<div>
++<p tabindex="0">ItemA</p>
++<p tabindex="0">ItemB</p>
++<p tabindex="0">ItemC</p>
++</div>
++`;
++    this.dialog.dialogMessage.innerHTML = listTemplate;
++  },
++
++  _closeDialog: function() {
++    if (this.dialog && this.dialog.classList.contains('opened')) {
++      this.dialog.close();
++      navigationHandler.getCurItem().focus();
++    }
++  },
++
+   _goToDay: function(date) {
+     this.controller.move(date);
+     this.controller.selectedDay = date;
+diff --git a/style/ui.css b/style/ui.css
+index 7814cfc..f271a64 100644
+--- a/style/ui.css
++++ b/style/ui.css
+@@ -338,6 +338,16 @@ html[dir="rtl"] #advanced-settings-view .account-list .error a {
+   width: 0px;
+   height: 0px;
+ }
++
++.h5-dialog-container {
++  top: 0;
++  left: 0;
++  width: 100%;
++  height: 100%;
++  position: absolute;
++  z-index: 1000;
++}
++
+ .p-sec {
+   font-size: 1.6rem;
+   font-weight: 400;
