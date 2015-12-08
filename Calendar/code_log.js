@@ -164,7 +164,13 @@ showDataBase(STORE.alarms);
 showDataBase(STORE.settings);
 showDataBase(STORE.calendars);
 
-
+var store = this.app.store('Account');
+fetch = store.all().then((accounts) => {
+  console.log(accounts);
+  for(var key in accounts) {
+    console.log(key + '->' + accounts[key]);
+  }
+});
 
     ids.forEach(function(id) {
       var trans = this.db.transaction('events');
