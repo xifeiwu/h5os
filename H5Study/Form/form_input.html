@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/sliict.dtd">
+<html>
+  <head>    
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Input Focus</title>
+    <script>
+    window.addEventListener('load', function() {
+      var elements = document.getElementById('menulist');
+      menulist.addEventListener('change', function(e) {
+        target = e.target;
+        console.log(target.id + ' -> ' + target.value);
+      })
+    });
+    </script>
+    <style>
+    *:focus {
+      background-color: red;
+    }
+    ul {
+      margin: 0px;
+      border: 0px;
+      width: 100%;
+    }
+    ul li {
+      list-style: none;
+    }
+    ul li label {
+      width: 30%;
+    }
+    ul li span {
+      width: 70%;
+    }
+    </style>
+  </head>
+  <body>
+  <ul id="menulist" nav-scope nav-loop>
+    <li tabindex="0" class="username">
+      <label>用户名：</label>
+      <span nav-scope>
+        <input type="text" id="username" value="username" name="username">
+      </span>
+    </li>
+    <li tabindex="0" class="password">
+      <label>密码：</label>
+      <span nav-scope>
+          <input type="password" id="password" value="password">
+      </span>
+    </li>
+    <li tabindex="0" class="email">
+      <label>
+        Email：
+      </label>
+      <span nav-scope>
+        <input type="text" value="email" id="email">
+      </span>
+    </li>
+    <li tabindex="0" class="age">
+      <label>
+        年龄：
+      </label>
+      <span nav-scope>
+        <input type="radio" value="age-young" name="age" id="young">
+        <label for="young">
+            10~20
+        </label>
+        <input type="radio" value="age-middle" name="age" id="middle" class="pr1">
+        <label for="middle">
+            20~30
+        </label>
+        <input type="radio" value="age-old" name="age" id="old" class="pr1">
+        <label for="old">
+            30~40
+        </label>
+      </span>
+    </li>
+    <li tabindex="0" class="province">
+      <label>
+        省份：
+      </label>
+      <span nav-scope>
+        <select name="province" id="province" value="province">
+          <option id="choose" value="choose province">
+            --请选择省份--
+          </option>
+          <option id="shandong" value="shandong province">
+            山东省
+          </option>
+          <option id="beijing" value="beijing province">
+            北京市
+          </option>
+          <option id="jiangxi" value="jiangxi province">
+            江西省
+          </option>
+        </select>
+      </span>
+    </li>
+    <li tabindex="0" class="shopping">
+      <label>
+        购物网：
+      </label>
+      <span nav-scope nav-ignore>
+        <input type="checkbox" name="taobao" id="taobao" value="taobao">
+        <label for="taobao">
+          淘宝网
+        </label>
+        <input type="checkbox" name="dangdang" id="dangdang" value="dangdang">
+        <label for="dangdang">
+          当当网
+        </label>
+        <input type="checkbox" name="jingdong" id="jingdong" value="jingdong">
+        <label for="jingdong">
+          京东网
+        </label>
+      </span>
+    </li>
+    <li tabindex="0" class="button">
+      <label>
+      </label>
+      <span colspan="2" style="padding:10px 0 18px 0;" nav-scope nav-ignore>
+        <input id="submit" type="submit" value="提 交">
+        <input id="reset" type="reset" value="重 置">
+      </span>
+    </li>
+  </ul>
+  </body>
+</html>
