@@ -1,0 +1,168 @@
+
+for (var key in accounts) {
+  debug('account: ' + key + '->' +
+   JSON.stringify(accounts[key]));
+}
+account: 
+61dfc11d-0bd1-4562-b835-ac5e06b52046
+->
+{
+  entrypoint: ,
+  calendarHome: ,
+  domain: ,
+  password: ,
+  user: ,
+  providerType: Local,
+  preset: local,
+  _id: 61dfc11d - 0bd1 - 4562 - b835 - ac5e06b52046
+}
+
+
+for (_id in self.calendarList) {
+  debug('calendar: ' + _id + ' -> ' +
+   JSON.stringify(self.calendarList[_id]));
+}
+calendar: 
+local-first 
+-> 
+{
+  remote: {
+    name: Offline calendar,
+    id: local - first,
+    color: #f97c17
+  },
+  accountId: 61dfc11d - 0bd1 - 4562 - b835 - ac5e06b52046,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: local - first
+}
+
+
+
+# account and calendar data in calendar_chooser.js
+  var accountList = [
+    {
+      entrypoint: '/caldav/v2/',
+      calendarHome: '/caldav/v2/iscas2012%40gmail.com/',
+      domain: 'https://apidata.googleusercontent.com',
+      password: '',
+      user: 'iscas2012@gmail.com',
+      providerType: 'Caldav',
+      preset: 'google',
+      oauth: Object,
+      error: undefined,
+      _id: 1
+    },
+    {
+      entrypoint: '/',
+      calendarHome: '/dav/xifei.wu/Calendar/',
+      domain: 'https://caldav.calendar.yahoo.com',
+      password: 'Acadinewxf2015',
+      user: 'xifei.wu@yahoo.com',
+      providerType: 'Caldav',
+      preset: 'yahoo',
+      oauth: undefined,
+      error: undefined,
+      _id: 2
+    },
+    {
+      entrypoint: '',
+      calendarHome: '',
+      domain: '',
+      password: '',
+      user: '',
+      providerType: 'Local',
+      preset: 'local',
+      oauth: undefined,
+      error: undefined,
+      _id: '0f428110-931a-481f-b637-b03687a020cd'
+    }
+  ];
+  this.accountList = {};
+  accountList.forEach(function(element) {
+    this.accountList[element._id] = element;
+  }.bind(this));
+  var calendarList = [
+    {
+      error: undefined,
+      remote: {
+        color:'#00aacc',
+        description:'iscas2012@gmail.com',
+        id:'/caldav/v2/iscas2012%40gmail.com/events/',
+        name:'iscas2012@gmail.com',
+        privilegeSet:['read', 'read-free-busy',
+        'read-current-user-privilege-set', 'write', 'write-content',
+        'write-properties', 'bind', 'unbind'],
+        syncToken:'63585068751',
+        url:'/caldav/v2/iscas2012%40gmail.com/events/'
+      },
+      accountId: 1,
+      localDisplayed: true,
+      lastEventSyncDate: 'new Date()',
+      lastEventSyncToken: '63585068751',
+      firstEventSyncDate: 'new Date()',
+      _id: 1
+    },
+
+    {
+      error: undefined,
+      remote: {
+        color: '#ff0000',
+        name: 'Google Holiday'
+      },
+      accountId: 1,
+      localDisplayed: false,
+      lastEventSyncDate: new Date(),
+      lastEventSyncToken: '63585157993',
+      firstEventSyncDate: new Date(),
+      _id: 2
+    },
+    {
+      error: undefined,
+      remote:  {
+        color: '#00ff00',
+        name: 'Google Home'
+      },
+      accountId: 1,
+      localDisplayed: false,
+      lastEventSyncDate: new Date(),
+      lastEventSyncToken: '63585157993',
+      firstEventSyncDate: new Date(),
+      _id: 3
+    },
+    {
+      error: undefined,
+      remote:  {
+        color: '#0000ff',
+        name: 'Yahho Holiday'
+      },
+      accountId: 2,
+      localDisplayed: true,
+      lastEventSyncDate: new Date(),
+      lastEventSyncToken: '1-2',
+      firstEventSyncDate: new Date(),
+      _id: 4
+    },
+    {
+      error: undefined,
+      remote: {
+        name: 'Offline calendar',
+        color: '#f97c17'
+      },
+      accountId: '0f428110-931a-481f-b637-b03687a020cd',
+      localDisplayed: false,
+      lastEventSyncDate: '',
+      lastEventSyncToken: '',
+      firstEventSyncDate: null,
+      _id: 'local-first'
+    }
+  ];
+  this.calendarList = {};
+  calendarList.forEach(function(element) {
+    this.calendarList[element._id] = element;
+    for (var key in element.remote) {
+      this.calendarList[element._id][key] = element.remote[key];
+    }
+  }.bind(this));

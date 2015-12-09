@@ -15,7 +15,16 @@ event: {
 calendar:
 {
   error: undefined,
-  remote: Object,
+  remote: 
+  {
+    color:"#00aacc",
+    description:"iscas2012@gmail.com",
+    id:"/caldav/v2/iscas2012%40gmail.com/events/",
+    name:"iscas2012@gmail.com",
+    privilegeSet:["read", "read-free-busy", "read-current-user-privilege-set", "write", "write-content", "write-properties", "bind", "unbind"],
+    syncToken:"63585068751",
+    url:"/caldav/v2/iscas2012%40gmail.com/events/"
+  },
   accountId: 1,
   localDisplayed: true,
   lastEventSyncDate: Date 2015 - 12 - 06T07: 20 : 02.326Z,
@@ -23,6 +32,7 @@ calendar:
   firstEventSyncDate: Date 2015 - 11 - 27T16: 00 : 00.000Z,
   _id: 1
 }
+
 {
   error: undefined,
   remote: Object,

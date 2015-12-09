@@ -163,6 +163,7 @@ showDataBase(STORE.busytimes);
 showDataBase(STORE.alarms);
 showDataBase(STORE.settings);
 showDataBase(STORE.calendars);
+showDataBase(STORE.accounts);
 
 var store = this.app.store('Account');
 fetch = store.all().then((accounts) => {
