@@ -2,3 +2,4 @@
 maybe some selector is danger.
 2. navigation_map have to many debug output, and some unused keydown listener.
 3. something about js Date.
+4. the add and remove event of database Accounts and Calendards.
