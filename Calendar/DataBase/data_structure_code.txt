@@ -23,20 +23,34 @@ for (_id in self.calendarList) {
    JSON.stringify(self.calendarList[_id]));
 }
 calendar: 
-local-first 
--> 
+local-first->
 {
   remote: {
     name: Offline calendar,
-    id: local - first,
+    id: local-first,
     color: #f97c17
   },
-  accountId: 61dfc11d - 0bd1 - 4562 - b835 - ac5e06b52046,
+  accountId: 61dfc11d-0bd1-4562-b835-ac5e06b52046,
   localDisplayed: true,
   lastEventSyncDate: ,
   lastEventSyncToken: ,
   firstEventSyncDate: null,
-  _id: local - first
+  _id: local-first
+}
+
+B->
+{
+  remote: {
+    name: B,
+    id: local-first,
+    color: #00aacc
+  },
+  accountId: 5b0d2fc0-0246-4865-b810-cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: B
 }
 
 
@@ -166,3 +180,84 @@ local-first
       this.calendarList[element._id][key] = element.remote[key];
     }
   }.bind(this));
+
+
+A - >{
+  remote: {
+    name: A,
+    id: local - first,
+    color: #00aacc
+  },
+  accountId: 5b0d2fc0 - 0246 - 4865 - b810 - cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: A
+}
+B - >{
+  remote: {
+    name: B,
+    id: local - first,
+    color: #00aacc
+  },
+  accountId: 5b0d2fc0 - 0246 - 4865 - b810 - cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: B
+}
+E - >{
+  remote: {
+    name: E,
+    id: local - first,
+    color: #00aacc
+  },
+  accountId: 5b0d2fc0 - 0246 - 4865 - b810 - cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: E
+}
+K - >{
+  remote: {
+    name: K,
+    id: local - first,
+    color: #00aacc
+  },
+  accountId: 5b0d2fc0 - 0246 - 4865 - b810 - cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: K
+}
+M - >{
+  remote: {
+    name: M,
+    id: local - first,
+    color: #bad600
+  },
+  accountId: 5b0d2fc0 - 0246 - 4865 - b810 - cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: M
+}
+local - first - >{
+  remote: {
+    name: Home,
+    id: local - first,
+    color: #f97c17
+  },
+  accountId: 5b0d2fc0 - 0246 - 4865 - b810 - cc1b1e4c3f18,
+  localDisplayed: true,
+  lastEventSyncDate: ,
+  lastEventSyncToken: ,
+  firstEventSyncDate: null,
+  _id: local - first
+}
+

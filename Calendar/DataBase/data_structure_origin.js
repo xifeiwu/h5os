@@ -65,7 +65,11 @@ calendar:
 }
 {
   error: undefined,
-  remote: Object,
+  remote: {
+    color: "#f97c17",
+    id: "local-first",
+    name: "Offline calendar",
+  },
   accountId: "0f428110-931a-481f-b637-b03687a020cd",
   localDisplayed: false,
   lastEventSyncDate: "",
