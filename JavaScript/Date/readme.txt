@@ -6,7 +6,6 @@ UTC: 世界协调时间。UTC是最主要的世界时间标准，是经过平均
 
 2. 标准化
 Date有个Date.prototype.toLocaleString()方法可以将时间字符串返回用户本地字符串格式，这个方法还有两个子方法Date.prototype.toLocaleDateString和Date.prototype.toLocaleTimeString，这两个方法返回值分别表示日期和时间，加一起就是Date.prototype.toLocaleString的结果。
-在gecko或浏览器中，通过new Date()得到的Date对象，都是UTC时间。
 
 JavaScript getTimezoneOffset()方法
 getTimezoneOffset() 方法可返回格林威治时间和本地时间之间的时差，以分钟为单位。
@@ -39,3 +38,8 @@ hours - 0(代表午夜)-23之间的小时数
 minutes - 0-59之间的分钟数
 seconds - 0-59之间的秒数
 microseconds - 0-999之间的毫秒数
+
+5. 默认值
+在gecko或浏览器中，通过new Date()得到的Date对象，都是UTC时间。
+getDate时Local Date
+如果获得UTC Date需要使用getUTCDate

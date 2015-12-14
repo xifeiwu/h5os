@@ -164,6 +164,7 @@ showDataBase(STORE.alarms);
 showDataBase(STORE.settings);
 showDataBase(STORE.calendars);
 showDataBase(STORE.accounts);
+showDataBase(STORE.icalComponents);
 
 var store = this.app.store('Account');
 fetch = store.all().then((accounts) => {
