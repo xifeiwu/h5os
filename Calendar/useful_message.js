@@ -1,4 +1,0 @@
-setup_calendar [calendar]  "5b0d2fc0-0246-4865-b810-cc1b1e4c3f18 -> {\"entrypoint\":\"\",\"calendarHome\":\"\",\"domain\":\"\",\"password\":\"\",\"user\":\"\",\"providerType\":\"Local\",\"preset\":\"local\",\"_id\":\"5b0d2fc0-0246-4865-b810-cc1b1e4c3f18\"}" bundle.js:3767:4
-setup_calendar [calendar]  "localAccountId: 5b0d2fc0-0246-4865-b810-cc1b1e4c3f18" bundle.js:3767:4
-setup_calendar [calendar]  "calendar to store: {\"_id\":\"B\",\"accountId\":\"5b0d2fc0-0246-4865-b810-cc1b1e4c3f18\",\"remote\":{\"name\":\"B\",\"id\":\"local-first\",\"color\":\"#F97C17\"}}" bundle.js:3767:4
-setup_calendar [calendar]  "in _dbListener. update: B -> {\"remote\":{\"name\":\"B\",\"id\":\"local-first\",\"color\":\"#00aacc\"},\"accountId\":\"5b0d2fc0-0246-4865-b810-cc1b1e4c3f18\",\"localDisplayed\":true,\"lastEventSyncDate\":\"\",\"lastEventSyncToken\":\"\",\"firstEventSyncDate\":null,\"_id\":\"B\"}"
