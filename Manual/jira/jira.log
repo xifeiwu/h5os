@@ -1,1 +1,4 @@
 CORE-1155: directly enable adb devtool when debugging with webide. r=alive
+
+type = BUG
+OPEN VERIFY IN PROCESS
