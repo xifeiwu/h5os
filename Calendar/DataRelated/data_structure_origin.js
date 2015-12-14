@@ -12,6 +12,24 @@ event: {
   }]
 }
 
+event to store 
+eventToStore = {
+  calendarId: 'local-first',
+  remote: {
+    "title": ".4555",
+    "location": "ila",
+    "repeat": "never",
+    "calendarId": "local-first",
+    "description": "dd",
+    "startDate": "2015-10-27T12:00:00.000Z",
+    "endDate": "2015-10-27T13:00:00.000Z",
+    "alarms": [{
+        "action": "DISPLAY",
+        "trigger": -300
+    }]
+  }
+}
+
 calendar:
 {
   error: undefined,
