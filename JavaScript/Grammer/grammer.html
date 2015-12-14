@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <script>
+      function loadjs(file, callback) {
+        if(!file) {
+          console.log("need to specify a javascript name.");
+          return;
+        }
+        var script, scripts;
+        scripts = document.head.getElementsByTagName("script");
+        
+        for(var i = 0; i < scripts.length; i++) {
+          //if(scripts[i].src && (scripts[i].src.match(/\/([a-zA-Z0-9_]*\.js)$/)[1] == file)) {
+          if(scripts[i].name && scripts[i].name == file){
+            document.head.removeChild(scripts[i]);
+          }
+        }
+        var script = document.createElement("script");
+        script.src = file;
+        script.type = "text/javascript";
+        script.name = file;
+        script.addEventListener('load', callback);
+        document.head.appendChild(script);
+        return script;
+      }
+      window.onload = function() {
+        document.title = "javascript grammer study";
+        var grammer = loadjs("grammer.js", function(){
+          var grammer = document.head.getElementsByTagName("script")[1];
+          console.log("load grammer.js success:");
+          console.log(grammer);
+        });
+      }
+      function grammer(file) {
+        document.title = file;
+        loadjs(file, function(){console.log("load " + file +" success.");});
+      }
+      window.l = grammer;
+    </script>
+  </head>
+  <body></body>
+</html>
