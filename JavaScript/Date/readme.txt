@@ -43,3 +43,73 @@ microseconds - 0-999之间的毫秒数
 在gecko或浏览器中，通过new Date()得到的Date对象，都是UTC时间。
 getDate时Local Date
 如果获得UTC Date需要使用getUTCDate
+
+> var date = new Date('2015-12-07T23:18:37.338Z')
+undefined
+> date
+Tue Dec 08 2015 07:18:37 GMT+0800 (CST)
+> date.getDate();
+8
+> date.getUTCDate();
+7
+> date.getTimezoneOffset();
+-480
+
+
+> app.timeController.selectedDay
+< Date 1970-01-11T00:00:00.000Z
+> app.timeController.selectedDay.getDate()
+< 10
+> app.timeController.selectedDay.getUTCDate()
+< 11
+> app.timeController.selectedDay.toLocaleString()
+< "Sat Jan 10 21:00:00 1970"
+
+6. diffrence between gecko and browser.
+In Gecko:
+new Date('2001', '11', '01')
+Date 2001-12-01T03:00:00.000Z
+In Browser:
+new Date('2001', '11', '01')
+Sat Dec 01 2001 00:00:00 GMT+0800 (CST)
+
+
+UTC - LOCAL = TIMEOFFSET
+UTC - TIMEOFFSET = LOCAL
+
+
+In Browser
+> var date = new Date('1970-01-18T00:00:00.000Z');
+< undefined
+> date
+< Sun Jan 18 1970 08:00:00 GMT+0800 (CST)
+> date.getTimezoneOffset();
+< -480
+> date.getTime()
+< 1468800000
+> var milli = date.getTime() + date.getTimezoneOffset() * 60 * 1000
+< undefined
+> milli
+< 1440000000
+> localDate = new Date(1440000000);
+< Sun Jan 18 1970 00:00:00 GMT+0800 (CST)
+
+In Gecko
+var date = new Date('1970-01-18T00:00:00.000Z');
+undefined
+date
+Date 1970-01-18T00:00:00.000Z
+date.getTimezoneOffset();
+660
+date.getTime()
+1468800000
+var milli = date.getTime() + date.getTimezoneOffset() * 60 * 1000
+undefined
+milli
+1508400000
+localDate = new Date(milli);
+Date 1970-01-18T11:00:00.000Z
+date.getDate()
+17
+localDate.getDate();
+18
