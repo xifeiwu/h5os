@@ -1,4 +1,8 @@
-1. 
+1. The Error of add Event May be related with offline Calendar.
 2. navigation_map have to many debug output, and some unused keydown listener.
 3. learn more about the add and remove event of database Accounts and Calendards.
 4. something about JSON.stringify(obj), some properties of obj is no output.
+
+
+Summery:
+1. if we add this.controller.move(date); in KeyDownEvent callback, focus error may happen. The error may be occured by the callback of monthChange action.
