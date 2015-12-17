@@ -166,6 +166,9 @@ showDataBase(STORE.calendars);
 showDataBase(STORE.accounts);
 showDataBase(STORE.icalComponents);
 
+#another way to show showDataBase
+window.app.db.getStore('Calendar')._cached
+
 var store = this.app.store('Account');
 fetch = store.all().then((accounts) => {
   console.log(accounts);
