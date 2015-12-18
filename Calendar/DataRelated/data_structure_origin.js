@@ -135,3 +135,82 @@ calendar:
   _id: "0f428110-931a-481f-b637-b03687a020cd"
 }
 
+##busytime
+{
+  "_id": "10-100a92c1-d3fa-4166-a497-1fedabb7546b-2598b51c-f537-4268-84af-75c12fe8c3e0",
+  "eventId": "10-100a92c1-d3fa-4166-a497-1fedabb7546b",
+  "calendarId": 10,
+  "start": {
+    "utc": 1483200000,
+    "offset": 10800000
+  },
+  "end": {
+    "utc": 1486800000,
+    "offset": 10800000
+  }
+}
+{
+  "_id": "10-469446cf-8b6a-49fc-b834-82baa017d0c8-c54eefb1-cc02-4ec3-8eb5-e815d49df6e9",
+  "eventId": "10-469446cf-8b6a-49fc-b834-82baa017d0c8",
+  "calendarId": 10,
+  "start": {
+    "utc": 1429200000,
+    "offset": 10800000
+  },
+  "end": {
+    "utc": 1432800000,
+    "offset": 10800000
+  }
+}
+{
+  "_id": "10-65bd1f62-1583-4979-af1c-f5c785df1515-e723fbf1-d8d7-45ce-88e2-edf0fffa78fc",
+  "eventId": "10-65bd1f62-1583-4979-af1c-f5c785df1515",
+  "calendarId": 10,
+  "start": {
+    "utc": 1584000000,
+    "offset": 10800000
+  },
+  "end": {
+    "utc": 1587600000,
+    "offset": 10800000
+  }
+}
+{
+  "_id": "10-8e89e358-cbc0-4039-9b17-4b353ab4561f-8c88c6fd-23cf-4aec-9736-7ea81b8e5d68",
+  "eventId": "10-8e89e358-cbc0-4039-9b17-4b353ab4561f",
+  "calendarId": 10,
+  "start": {
+    "utc": 1429200000,
+    "offset": 10800000
+  },
+  "end": {
+    "utc": 1432800000,
+    "offset": 10800000
+  }
+}
+{
+  "_id": "10-d89483e2-c75d-470e-91a4-5155acfcb0b8-9c36eab8-6b64-488a-ac8b-5aa0f77bab0b",
+  "eventId": "10-d89483e2-c75d-470e-91a4-5155acfcb0b8",
+  "calendarId": 10,
+  "start": {
+    "utc": 1483200000,
+    "offset": 10800000
+  },
+  "end": {
+    "utc": 1486800000,
+    "offset": 10800000
+  }
+}
+{
+  "_id": "local-first-7af8c217-c444-4a25-9324-7f91fb6b30b1-64f25f12-ab46-4d56-a09e-31b87a090ec3",
+  "eventId": "local-first-7af8c217-c444-4a25-9324-7f91fb6b30b1",
+  "calendarId": "local-first",
+  "start": {
+    "utc": 1328400000,
+    "offset": 10800000
+  },
+  "end": {
+    "utc": 1335600000,
+    "offset": 10800000
+  }
+}

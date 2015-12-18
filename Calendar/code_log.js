@@ -131,7 +131,7 @@ function showDataBase(name) {
   req.onsuccess = function(evt) {
     var cursor = evt.target.result;
     if (cursor) {
-      console.debug("cursor.value:", cursor.value);
+      console.debug("cursor.value:", JSON.stringify(cursor.value));
       cursor.continue();
     }
   }
