@@ -22,3 +22,20 @@ _onCalendarDisplayToggle: function(e) {
     this.WAIT_BEFORE_PERSIST
   );
 },
+
+# for navigation_map reconstruction
+  currentContainerID = 'month-view';
+  this.navSetup('month-view', '.month.active .focusable');
+  var currentDate = new Date();
+  this.setFocusOnMonthView(currentDate);
+
+
+  var container = (containerId === undefined) ? document.body :
+               document.getElementById('month-view');
+
+  if (container) {
+    elements = container.querySelectorAll(query);
+    if (elements.length > 0) {
+      switch(containerId) {
+        case MONTH_VIEW:
+          monthViewNavUpdate(elements);
