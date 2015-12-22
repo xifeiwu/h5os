@@ -7,3 +7,18 @@
     </select>
   </a>
 </li>
+
+
+_onCalendarDisplayToggle: function(e) {
+  var input = e.target;
+  var id = input.value;
+
+  if (this._updateTimeouts[id]) {
+    clearTimeout(this._updateTimeouts[id]);
+  }
+
+  this._updateTimeouts[id] = setTimeout(
+    this._persistCalendarDisplay.bind(this, id, !!input.checked),
+    this.WAIT_BEFORE_PERSIST
+  );
+},
