@@ -1,0 +1,17 @@
+var selector =
+`  
+<optgroup data-l10n-id="preset-local" label="local">
+  <option>
+    ADJ
+  </option>
+  <option data-l10n-id="calendar-local">
+    Home
+  </option>
+</optgroup>
+<optgroup data-l10n-id="preset-yahoo" label="yahoo">
+  <option>
+    xifei wu
+  </option>
+</optgroup>
+`
+var calendarList = document.querySelector('[name="calendarId"]');
