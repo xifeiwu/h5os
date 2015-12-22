@@ -1,3 +1,4 @@
+#＃ the data structure of account
 
 for (var key in accounts) {
   debug('account: ' + key + '->' +
@@ -14,9 +15,11 @@ account:
   user: ,
   providerType: Local,
   preset: local,
-  _id: 61dfc11d - 0bd1 - 4562 - b835 - ac5e06b52046
+  _id: 61dfc11d-0bd1-4562-b835-ac5e06b52046
 }
 
+
+#＃ the data structure of calendar
 
 for (_id in self.calendarList) {
   debug('calendar: ' + _id + ' -> ' +
