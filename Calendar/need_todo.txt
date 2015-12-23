@@ -7,3 +7,8 @@
 
 Summery:
 1. if we add this.controller.move(date); in KeyDownEvent callback, focus error may happen. The error may be occured by the callback of monthChange action.
+2. Visual Cursor需要browser权限
+3. add calendar相关页面：
+  -> Settings -> Default Calendar
+  -> Calendar to Display
+  -> Add Event -> Calendar
