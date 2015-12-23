@@ -1,0 +1,1 @@
+cursor.value: {"_id":"syncAlarm","createdAt":"2015-12-21T01:49:20.401Z","updatedAt":"2015-12-23T02:50:08.983Z","value":{"alarmId":210,"start":"2015-12-23T02:50:08.901Z","end":"2015-12-23T03:05:08.901Z"}}
