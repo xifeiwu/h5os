@@ -1,5 +1,0 @@
-1. Visual Cursor需要browser权限
-2. add calendar相关页面：
-	-> Settings -> Default Calendar
-	-> Calendar to Display
-	-> Add Event -> Calendar
