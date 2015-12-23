@@ -1,1 +1,2 @@
-cursor.value: {"_id":"syncAlarm","createdAt":"2015-12-21T01:49:20.401Z","updatedAt":"2015-12-23T02:50:08.983Z","value":{"alarmId":210,"start":"2015-12-23T02:50:08.901Z","end":"2015-12-23T03:05:08.901Z"}}
+cursor.value: {"_id":"syncAlarm","createdAt":"2015-12-21T01:49:20.401Z","updatedAt":"2015-12-23T08:12:20.223Z","value":{"alarmId":234,"start":"2015-12-23T08:12:20.051Z","end":"2015-12-23T08:42:20.051Z"}}
+cursor.value: {"_id":"syncFrequency","createdAt":"2015-12-23T03:32:47.063Z","updatedAt":"2015-12-23T03:32:47.063Z","value":30}
