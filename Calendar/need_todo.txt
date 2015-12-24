@@ -4,6 +4,12 @@
 4. something about JSON.stringify(obj), some properties of obj is no output.
 5. navigation_handler and navigation_map need reconstruction.
 6. why forceRestart in app.js work, while in other place is useless. The content of forceRestart is only window.location.href = "app://calendar.gaiamobile.org/month/";
+7. Learn how the focus is transfered to its child element when fire enter.
+    <li>
+      <select>
+        <option></option>
+      </select>
+    </li>
 
 Summery:
 1. if we add this.controller.move(date); in KeyDownEvent callback, focus error may happen. The error may be occured by the callback of monthChange action.
