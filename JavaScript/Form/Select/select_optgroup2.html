@@ -2,16 +2,41 @@
     "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Change Selec Style</title>
+    <title>HTML Model</title>
     <script>
-      window.addEventListener('load', function() {
-        console.log('in window load.');
-        this.selectNode = document.querySelector('[name="calendarId"]');
+    window.addEventListener('load', function() {
+      console.log('window load success.');
+      // used for test focus child element.
+      // list.firstElementChild.focus();
+
+      // for override select by span
+      override.querySelector('select').addEventListener('change',
+        function(evt) {
+          var target = evt.target;
+          var value = target.value;
+          var optionNode = target.querySelector('[value="' + value + '"]');
+          var spanNode = override.querySelector('span');
+          spanNode.innerHTML = optionNode.getAttribute('name');
+          override.focus();
       });
+      itemlist.addEventListener('keydown', function(evt) {
+        console.log(evt);
+        if (evt.target == override) {
+          override.querySelector('select').focus();
+        }
+      });
+      override.focus();
+    });
     </script>
     <style type="text/css">
-    select {
+    ul {
+      list-style-type: none;
+      margin: 0px;
+      padding: 0px;
+    }
+    #override select {
       appearance: none;
       background: none repeat scroll 0% 0% transparent;
       box-sizing: border-box;
@@ -19,26 +44,65 @@
       border-right: 0px none;
       border-left: 0px none;
       border-bottom: 0.1rem solid var(--white-color);
-      font-size: 2.1rem
+      font-size: 2.1rem;
+      position: absolute;
+      z-index: -1;
+      -moz-appearance: none;
+    }
+    #override span {
+      background-color: white;
+      font-size: 2.1rem;
     }
     </style>
   </head>
   <body>
+    <ul id="itemlist">
+      <li id="override" tabindex="0">
+        <select name="calendarId">
+          <optgroup label="local">
+            <option name="local - ADJ" value="1">
+              ADJ
+            </option>
+            <option name="local - Home" value="2">
+              Home
+            </option>
+          </optgroup>
+          <optgroup label="yahoo">
+            <option name="yahoo - xifei wu" value="3">
+              xifei wu
+            </option>
+          </optgroup>
+        </select>
+        <span>The Value</span>
+      </li>
+    </ul>
+
     <select name="calendarId" class="loading undefined" nav-scope="" nav-ignore="">
       <optgroup data-l10n-id="preset-local" label="local">
-        <option value="1">
+        <option>
           ADJ
         </option>
-        <option data-l10n-id="calendar-local"  value="2">
+        <option data-l10n-id="calendar-local">
           Home
         </option>
       </optgroup>
       <optgroup data-l10n-id="preset-yahoo" label="yahoo">
-        <option  value="3">
+        <option>
           xifei wu
         </option>
       </optgroup>
     </select>
+
+    <ul id="list">
+      <li tabindex="0">
+        <select>
+          <option>AAAA</option>
+          <option>BBBB</option>
+          <option>CCCC</option>
+        </select>
+      </li>
+    </ul>
+
     <br>
   </body>
 </html>
