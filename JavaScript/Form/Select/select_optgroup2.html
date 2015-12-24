@@ -3,22 +3,38 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>HTML Model</title>
+    <title>Change Selec Style</title>
     <script>
+      window.addEventListener('load', function() {
+        console.log('in window load.');
+        this.selectNode = document.querySelector('[name="calendarId"]');
+      });
     </script>
+    <style type="text/css">
+    select {
+      appearance: none;
+      background: none repeat scroll 0% 0% transparent;
+      box-sizing: border-box;
+      border-top: 0px none;
+      border-right: 0px none;
+      border-left: 0px none;
+      border-bottom: 0.1rem solid var(--white-color);
+      font-size: 2.1rem
+    }
+    </style>
   </head>
   <body>
     <select name="calendarId" class="loading undefined" nav-scope="" nav-ignore="">
       <optgroup data-l10n-id="preset-local" label="local">
-        <option>
+        <option value="1">
           ADJ
         </option>
-        <option data-l10n-id="calendar-local">
+        <option data-l10n-id="calendar-local"  value="2">
           Home
         </option>
       </optgroup>
       <optgroup data-l10n-id="preset-yahoo" label="yahoo">
-        <option>
+        <option  value="3">
           xifei wu
         </option>
       </optgroup>
