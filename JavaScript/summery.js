@@ -205,3 +205,9 @@ history.replaceState({page: 3}, "title 3", "?page=3"); //修改当前激活的�
 history.back(); // 弹出 "location: http://example.com/example.html?page=1, state: {"page":1}"
 history.back(); // 弹出 "location: http://example.com/example.html, state: null
 history.go(2);  // 弹出 "location: http://example.com/example.html?page=3, state: {"page":3}
+
+17. set value of HTML component.
+such as an option or select
+if set optionNode.label = '3333'; then the dom node appears as below:
+<option label="3333" value="2">ADJ</option>
+if set optionNode.fullName = 'hello'; the property of fullName does not appear.
