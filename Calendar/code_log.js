@@ -246,3 +246,11 @@ var evt = new CustomEvent(
 });
 evt.key = 'AcaSoftDown'
 window.dispatchEvent(evt);
+
+
+#l10n-data-id
+account-calendar-format={{account}}-{{calendar}}
+_('account-calendar-format', {
+  account: _('preset-' + account.preset),
+  calendar: calendar.remote.name
+});
