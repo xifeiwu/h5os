@@ -166,7 +166,7 @@ showDataBase(STORE.calendars);
 showDataBase(STORE.accounts);
 showDataBase(STORE.icalComponents);
 
-#another way to show showDataBase
+# another way to show showDataBase
 window.app.db.getStore('Calendar')._cached
 
 var store = this.app.store('Account');
@@ -211,7 +211,7 @@ section.innerHTML = `
 `
 
 
-#startDate of Modify Event.
+# startDate of Modify Event.
 var modify = document.querySelector('#modify-event-view');
 var startDate = modify.querySelector('[name="startDate"]');
 var softKeys = {
@@ -248,7 +248,7 @@ evt.key = 'AcaSoftDown'
 window.dispatchEvent(evt);
 
 
-#l10n-data-id
+# l10n-data-id
 account-calendar-format={{account}}-{{calendar}}
 _('account-calendar-format', {
   account: _('preset-' + account.preset),
