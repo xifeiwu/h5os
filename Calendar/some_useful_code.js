@@ -45,3 +45,52 @@ _onCalendarDisplayToggle: function(e) {
   var layout = isAllDay ? 'allday' : 'standard';
   settings.getValue(layout + 'AlarmDefault', next.bind(this));
 
+# some code for h5Dialog
+/**
+ * When the dialogTextInput get focus, the owner of softkey is
+ * Input Method, so we have to listen the keydown event,
+ * and do something we need.
+ * dpe key is used to get the value in dialogTextInput, as the evt.key
+ * passed to dialogTextInput is undefined, evt.keyCode is used.
+ * lsk is used to cancel the operation of input, if we do not stop
+ * keydown propagation, the key down event will be passed to the current
+ * page, it is not we want. The evt.keyCode passed to dialogTextInput
+ * is 0, which is no correct, so evt.key is used.
+*/
+this.h5Dialog.dialogTextInput.addEventListener('keydown', (evt) => {
+  if (evt.keyCode === KeyEvent.DOM_VK_RETURN) {
+    switch (this._currentDialogAction) {
+      case 'add':
+        this._saveCalendar(this.h5Dialog.dialogTextInput.value.trim());
+        break;
+      case 'rename':
+        this._renameCalendar(this.h5Dialog.dialogTextInput.value.trim());
+        break;
+    }
+    evt.stopPropagation();
+    evt.preventDefault();
+  }
+  if (evt.key === 'AcaSoftLeft') {
+      this._closeDialog();
+      evt.stopPropagation();
+      evt.preventDefault();
+  }
+});
+
+this.h5Dialog.addEventListener('keydown', (evt) => {
+  switch (evt.key) {
+    case 'AcaSoftLeft':
+      this._closeDialog();
+      evt.stopPropagation();
+      evt.preventDefault();
+    break;
+    case 'AcaSoftRight':
+      if (this._currentDialogAction &&
+          this._currentDialogAction === 'delete') {
+        this._deleteCalendar();
+      }
+      evt.stopPropagation();
+      evt.preventDefault();
+    break;
+  }
+});
