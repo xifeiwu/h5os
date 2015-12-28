@@ -158,7 +158,7 @@ alameda.js
 
 14.DOM
 
-15.gaia's requirejs
+15.gaia`s requirejs
 dynamic load of js and css.
 Import HTML: through property of is and element.html`s name.
 
@@ -211,3 +211,4 @@ such as an option or select
 if set optionNode.label = '3333'; then the dom node appears as below:
 <option label="3333" value="2">ADJ</option>
 if set optionNode.fullName = 'hello'; the property of fullName does not appear.
+while if I use setAttribute then the property will appear in dom node.
