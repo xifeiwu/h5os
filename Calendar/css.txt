@@ -17,3 +17,13 @@ list-style-position: outside;
 list-style-type: none;
 text-alignleftvisibility: hidden;
 -moz-user-select: none;
+
+#setup-calendar-view .setup-calendar-container {
+  height: calc(100% - 6.2rem);
+  overflow-y: scroll;
+}
+
+# show the full content when the line is too long.
+white-space: normal;
+word-wrap: break-word;
+word-break: break-all;
