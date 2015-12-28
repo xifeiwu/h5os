@@ -27,3 +27,9 @@ text-alignleftvisibility: hidden;
 white-space: normal;
 word-wrap: break-word;
 word-break: break-all;
+
+#
+#setup-calendar-view .setup-calendar-container {
+  height: calc(100% - 6.2rem);
+  overflow-y: scroll;
+}
