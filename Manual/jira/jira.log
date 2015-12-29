@@ -8,3 +8,4 @@ Application=Calendar AND assignee=xifei.wu and type=Bug and status=Resolved
 
 CORE-3056: There should be no scroll bar in h5-input-wrapper when there is only one line
 CORE-1274: Use the SoftkeyManager API to replace metachange soft-keys
+CORE-2276: Cannot add repeating events
