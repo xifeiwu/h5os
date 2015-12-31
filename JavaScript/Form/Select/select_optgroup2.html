@@ -20,6 +20,7 @@
           var spanNode = override.querySelector('span');
           spanNode.innerHTML = optionNode.getAttribute('name');
           override.focus();
+          console.log(value);
       });
       itemlist.addEventListener('keydown', function(evt) {
         console.log(evt);

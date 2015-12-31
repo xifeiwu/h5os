@@ -5,15 +5,34 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
     <script>
+    window.addEventListener('load', function(){
+      var choose = document.querySelector('select');
+      choose.addEventListener('change', function(evt){
+        var target = evt.target;
+        var value = target.value;
+        console.log('change: ' + value);
+      });
+      choose.addEventListener('onchange', function(evt){
+        var target = evt.target;
+        var value = target.value;
+        console.log('onchange: ' + value);
+      });
+    });
     </script>
   </head>
   <body>
     <select>
       <optgroup label="Swedish Cars">
+<option value="A">A</option>
+<option value="B">B</option>
+<option value="c">C</option>
       </optgroup>
 
       <optgroup label="German Cars">
       </optgroup>
+<option value="D">D</option>
+<option value="E">E</option>
+<option value="F">F</option>
     </select>
     <br>
   </body>
