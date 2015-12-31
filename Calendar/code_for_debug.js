@@ -1,5 +1,8 @@
 NO_NETWORK=1 make install-gaia APP=calendar
 
+acacaltest@gmail.com
+whyhaoshuai
+
 week.setAttribute('aria-selected', 'true');
 
 navigation_map, navSetup

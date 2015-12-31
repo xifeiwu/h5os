@@ -20,7 +20,7 @@
   -> Settings -> Default Calendar
   -> Calendar to Display
   -> Add Event -> Calendar
-
+4. Location of index db: /data/local/storage/default/
 # Calendar Start Message
 app [calendar]  "Will initialize calendar app..." 
     at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3016:4) bundle.js:3016:4
