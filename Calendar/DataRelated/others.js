@@ -16,6 +16,9 @@ providerType: "Caldav",
 user: "xifei.wu@yahoo.com",
 usernameType: "email"
 
+# location of Firefox Simulator in windows
+C:\Users\cos\AppData\Roaming\Mozilla\Firefox\Profiles\dt4vt9ta.default\extensions\fxos_2_2_simulator@mozilla.org\profile\webapps\calendar.gaiamobile.org
+
 # the process of add account
 worker/thread [calendar]  "Will listen for messages from the main thread..." caldav_worker.js:1474:4
 worker/manager [calendar]  {"name":"worker","message":"worker/initialize, [calendar] , \"Will create new caldav service...\""} bundle.js:3768:4
