@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <script>
+    'use strict';
+  function listenerArray() {
+    var deviceListeners = [];
+    function addDeviceListener(cb){
+      deviceListeners.push(cb);
+    }
+    function removeDeviceListener(cb){
+      for(var index in deviceListeners){
+        console.log(deviceListeners[index]);
+        if(deviceListeners[index] == cb) {
+          deviceListeners.splice(index, 1);
+        }
+      }
+    }
+    function callDeviceListener(args){
+      for(var index in deviceListeners){
+        deviceListeners[index](args);
+      }
+    }
+    function a(){console.log('in function a', arguments);}
+    function b(){console.log('in function b', arguments);}
+    function c(){console.log('in function c', arguments);}
+    function d(){console.log('in function d', arguments);}
+    addDeviceListener(a);
+    addDeviceListener(b);
+    addDeviceListener(c);
+    addDeviceListener(d);
+    console.log(deviceListeners);
+    callDeviceListener('aaa');
+    removeDeviceListener(a);
+    console.log(deviceListeners);
+    callDeviceListener('aaa');
+  }
+
+  function someOperation(json) {
+    var event;
+    try {
+      event = (json.forEach) ? json : JSON.parse(json);
+    } catch (e) {
+      throw new Error('Could not parse json: "' + json + '"');
+    }
+    var args = Array.prototype.slice.call(arguments).slice(1);
+
+  }
+
+  window.addEventListener('load', function(evt){
+    listenerArray();
+  });
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
