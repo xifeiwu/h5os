@@ -4,10 +4,18 @@ worker/manager [calendar]  {"name":"worker","message":"worker/thread, [calendar]
 determineHttpStatusError
 worker.instance.postMessage(['_dispatch', data]);
 
-
+# some error may be happen
 TypeError: this.accountList[calendar.accountId] is undefined lazy_loaded.js:2912:6
 TypeError: optionSelected is null lazy_loaded.js:3028:0
 
+# model of yahoo caldav account
+domain: "https://caldav.calendar.yahoo.com",
+entrypoint: "/",
+passwrod: "155***",
+preset: "yahoo",
+providerType: "Caldav",
+user: "xifei.wu@yahoo.com",
+usernameType: "email"
 
 # error log in feature-phone when add yahoo account
 worker/thread [calendar]  "Will listen for messages from the main thread..." caldav_worker.js:1473:4

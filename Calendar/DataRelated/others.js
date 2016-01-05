@@ -7,14 +7,5 @@ path: '/event/detail/local-first-d761afc0-3242-4725-a2ff-99b090f4662d-a6b99115-0
 pathname:
 title:
 
-# model of yahoo caldav account
-domain: "https://caldav.calendar.yahoo.com",
-entrypoint: "/",
-passwrod: "155***",
-preset: "yahoo",
-providerType: "Caldav",
-user: "xifei.wu@yahoo.com",
-usernameType: "email"
-
 # location of Firefox Simulator in windows
 C:\Users\cos\AppData\Roaming\Mozilla\Firefox\Profiles\dt4vt9ta.default\extensions\fxos_2_2_simulator@mozilla.org\profile\webapps\calendar.gaiamobile.org
