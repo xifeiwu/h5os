@@ -160,6 +160,21 @@ function removeDataById(name, id) {
   }
 }
 
+function deleteDatabase() {
+  var req = indexedDB.deleteDatabase(DB_NAME);
+
+  req.onblocked = function() {
+    console.log('deleteDatabase blocked');
+  };
+
+  req.onsuccess = function(event) {
+    console.log('deleteDatabase success');
+  };
+
+  req.onerror = function(event) {
+    console.log('deleteDatabase error');
+  };
+}
 getConnection();
 showDataBase(STORE.events);
 showDataBase(STORE.busytimes);
