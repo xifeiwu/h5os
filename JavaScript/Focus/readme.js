@@ -14,3 +14,14 @@ html中的tabIndex属性可以设置键盘中的TAB键在控件中的移动顺�
 如果你犯了一个错误，把同一个tabIndex赋予给多个元素，像其它元素一样，它们会以一个0值tabIndex进行处理。  
 将tabIndex赋值为-1，则在使用[Tab]键时，此元素被忽略。
 注意：如果使用-1值时，onfocus与onblur事件仍被启动。   tabIndex的值可为0至32767之间的任意数字
+
+
+// You can't focus on a hidden element.
+// You can use opacity: 0 instead of display: none and you will be able to focus on the element.
+/**
+ * If given a value of "-1", the element can't be tabbed to but focus can be given to the element programmatically (using element.focus()).
+ * If given a value of 0, the element can be focused via the keyboard and falls into the tabbing flow of the document.
+ * Values greater than 0 create a priority level with 1 being the most important.
+*/
+
+
