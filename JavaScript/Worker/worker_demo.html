@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Web Worker</title>
+    <script>
+    window.addEventListener('load', function() {
+      var board = document.querySelector('#message');
+      var content = document.querySelector('.content');
+      var myWorker = new Worker("responder.js");
+      function addContentToBoard(value) {
+        // var node = document.createTextNode(value);
+        var node = document.createElement('div');
+        node.textContent = value;
+        board.appendChild(node);
+      }
+      myWorker.onmessage = function (oEvent) {
+        console.log();
+        addContentToBoard('Worker said: ' + oEvent.data);
+      };
+      document.querySelector('.send').addEventListener('click', function() {
+        var value = content.value;
+        content.value = '';
+        myWorker.postMessage(value);
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <br>
+    <form>
+      <fieldset>
+        <legend>said to worker</legend>
+        Content：<input class="content" type="text"/>
+        <input class="send" type="button" value="start say"/>
+      </fieldset>
+    </form>
+    <p id="message"></p>
+    <br>
+    <br>
+  </body>
+</html>

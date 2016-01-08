@@ -1,7 +1,5 @@
-var myWorker = new Worker("my_task.js");
+var myWorker = new Worker("responder.js");
 
 myWorker.onmessage = function (oEvent) {
   console.log("Worker said : " + oEvent.data);
 };
-
-myWorker.postMessage("ali");
