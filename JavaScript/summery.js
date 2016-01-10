@@ -212,3 +212,4 @@ if set optionNode.label = '3333'; then the dom node appears as below:
 <option label="3333" value="2">ADJ</option>
 if set optionNode.fullName = 'hello'; the property of fullName does not appear.
 while if I use setAttribute then the property will appear in dom node.
+The property set by setAttribute can not be accessed by []. such as, node.setAttribute('name', 'node'), then node.name is null.
