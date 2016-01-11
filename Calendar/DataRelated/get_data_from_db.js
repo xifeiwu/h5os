@@ -27,7 +27,7 @@ function showDataBase(name) {
   var transaction = connection.transaction(name, 'readonly');
   var store = transaction.objectStore(name);
   var req = store.count();
-  req.success = function(evt) {
+  req.onsuccess = function(evt) {
     console.log('There are ' + evt.target.result + ' elements in store ' + name);
   };
   req.onerror = function() {
@@ -41,7 +41,7 @@ function showDataBase(name) {
       cursor.continue();
     }
   }
-  req.error = function(evt) {
+  req.onerror = function(evt) {
     console.log('request cursor error.');
   }
 }
