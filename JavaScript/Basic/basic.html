@@ -5,12 +5,40 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
     <script>
-
+      function loadjs(fileName, callback) {
+        if(!fileName) {
+          console.log("need to specify a javascript name.");
+          return;
+        }
+        var script, scripts;
+        scripts = document.head.getElementsByTagName("script");
+        
+        for(var i = 0; i < scripts.length; i++) {
+          //if(scripts[i].src && (scripts[i].src.match(/\/([a-zA-Z0-9_]*\.js)$/)[1] == fileName)) {
+          if(scripts[i].name && scripts[i].name == fileName){
+            document.head.removeChild(scripts[i]);
+          }
+        }
+        var script = document.createElement("script");
+        script.src = fileName;
+        script.type = "text/javascript";
+        script.setAttribute('name', fileName);
+        if (callback) {
+          script.addEventListener('load', callback(fileName));
+        }
+        document.head.appendChild(script);
+        return script;
+      }
+      window.onload = function() {
+        document.title = "javascript basic study";
+//        loadjs("basic.js", function(fileName){
+//          console.log('fileName: ' + fileName);
+//          var grammer = document.head.querySelector('script[name="' + fileName + '"]');
+//          console.log(grammer);
+//        });
+        loadjs('./ApplyCallBind/apply_call_diff.js');
+      }
     </script>
   </head>
-  <body>
-    <br>
-    <br>
-    <br>
-  </body>
+  <body></body>
 </html>
