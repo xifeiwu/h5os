@@ -23,17 +23,15 @@
         script.src = fileName;
         script.type = "text/javascript";
         script.setAttribute('name', fileName);
-        script.addEventListener('load', callback(fileName));
+        if (callback) {
+          script.addEventListener('load', callback(fileName));
+        }
         document.head.appendChild(script);
         return script;
       }
       window.onload = function() {
-        document.title = "javascript grammer study";
-        loadjs("grammer.js", function(fileName){
-          console.log('fileName: ' + fileName);
-          var grammer = document.head.querySelector('script[name="' + fileName + '"]');
-          console.log(grammer);
-        });
+        document.title = "javascript basic study";
+        loadjs('basic.js');
       }
     </script>
   </head>
