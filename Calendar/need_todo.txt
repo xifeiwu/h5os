@@ -2,7 +2,7 @@
 1. The Error of add Event May be related with offline Calendar.
 2. navigation_map have to many debug output, and some unused keydown listener.
 3. learn more about the add and remove event of database Accounts and Calendars.
-4. something about JSON.stringify(obj), some properties of obj is no output.
+4. something about JSON.stringify(obj), some properties of obj is no outputed.
 5. navigation_handler and navigation_map need reconstruction.
 6. why forceRestart in app.js work, while in other place is useless. The content of forceRestart is only window.location.href = "app://calendar.gaiamobile.org/month/";
 7. Learn how the focus is transfered to its child element when fire enter.
@@ -11,7 +11,8 @@
         <option></option>
       </select>
     </li>
-8. when change something in calendar db, may be some related event needs change too.
+   May be it is completed by navigation manager.
+8. The same thing is done about calendar list in page setup_calendar, advanced_settings and modify_event, and a error in advanced_settings need fix.
 
 # Summery:
 1. if we add this.controller.move(date); in KeyDownEvent callback, focus error may happen. The error may be occured by the callback of monthChange action.
