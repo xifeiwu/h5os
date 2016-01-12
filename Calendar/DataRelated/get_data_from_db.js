@@ -79,6 +79,8 @@ function deleteDatabase() {
   };
 }
 getConnection();
+
+
 showDataBase(STORE.events);
 showDataBase(STORE.busytimes);
 showDataBase(STORE.alarms);

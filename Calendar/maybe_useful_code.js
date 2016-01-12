@@ -94,3 +94,11 @@ this.h5Dialog.addEventListener('keydown', (evt) => {
     break;
   }
 });
+
+
+#some db operation
+accountStore.get(model._id, function(err, store) {
+  if (!err) {
+    accountStore.remove(model._id);
+  }
+});
