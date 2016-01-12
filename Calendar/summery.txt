@@ -1,0 +1,7 @@
+# Summery about event list
+The former page of event list:
+month-view:     router.go('/event/list/');
+modify-event:   pathToGo = '/event/list/' + busytimeOrId._id; router.go(pathToGo);
+event-detail:   action: () => {
+                  router.go('/event/list/' + this.busytimeId);
+                }
