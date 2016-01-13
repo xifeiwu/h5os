@@ -5,3 +5,29 @@ modify-event:   pathToGo = '/event/list/' + busytimeOrId._id; router.go(pathToGo
 event-detail:   action: () => {
                   router.go('/event/list/' + this.busytimeId);
                 }
+
+# something about keydown event.
+when press csk in h5-dialog textInput, only e.keyCode is correct, and e.key is undefined.
+if (e.keyCode === KeyboardEvent.DOM_VK_RETURN) {
+  this.elements.dialogTextInput.blur();
+}
+In some condition, e.keyCode is zero, and a.key is correct, the use of e.key as below:
+switch(evt.key) {
+  case 'BrowserBack':
+    break;
+  case 'ArrowLeft':
+    break;
+  case 'ArrowRight':
+    break;
+  case 'ArrowDown':
+    break;
+  case 'ArrowUp':
+    break;
+  case 'AcaSoftLeft':
+    evt.preventDefault();
+    break;
+  case 'Enter':
+    break;
+  case 'AcaSoftRight':
+    break;
+}
