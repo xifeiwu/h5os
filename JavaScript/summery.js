@@ -164,6 +164,20 @@ Import HTML: through property of is and element.html`s name.
 
 16.
 CustomEvent
+  var evt = new CustomEvent('h5os-date-changed', {
+    detail: {
+      toDate: newDate
+    },
+    bubbles: true,
+    cancelable: false
+  });
+  document.dispatchEvent(evt);
+  document.addEventListener('h5os-date-changed', function(e) {
+    debug('h5os-date-changed, e.detail.toDate: ' + e.detail.toDate);
+    var todate = e.detail.toDate;
+    this.navSetup(MONTH_VIEW, '.month.active .focusable');
+    this.setFocusOnMonthView(todate);
+  }.bind(this));
 
 17.
 addEventListener and handleEvent
