@@ -63,7 +63,32 @@ function removeDataById(name, id) {
   }
 }
 
-function deleteDatabase() {
+function clearDataBase(name) {
+  var transaction = connection.transaction(name, 'readwrite');
+  var store = transaction.objectStore(name);
+  var reqDelete;
+  var reqCursor = store.openCursor();
+  reqCursor.onsuccess = function(evt) {
+    var cursor = evt.target.result;
+    if (cursor) {
+      // console.debug("cursor.value:", JSON.stringify(cursor.value));
+      var id = cursor.value._id;
+      reqDelete = store.delete(id);
+      reqDelete.onsuccess = function(evt) {
+        console.debug('delete success: ' + id);
+      }
+      reqDelete.onerror = function(evt) {
+        console.debug('delete error: ' + id);
+      }
+      cursor.continue();
+    }
+  }
+  reqCursor.onerror = function(evt) {
+    console.log('request cursor error.');
+  }
+}
+
+function deleteAllDataBase() {
   var req = indexedDB.deleteDatabase(DB_NAME);
 
   req.onblocked = function() {
@@ -80,11 +105,13 @@ function deleteDatabase() {
 }
 getConnection();
 
+// deleteAllDataBase()
+// showDataBase(STORE.events);
+// showDataBase(STORE.busytimes);
+// showDataBase(STORE.alarms);
+// showDataBase(STORE.settings);
+// showDataBase(STORE.calendars);
+// showDataBase(STORE.accounts);
+// showDataBase(STORE.icalComponents);
 
-showDataBase(STORE.events);
-showDataBase(STORE.busytimes);
-showDataBase(STORE.alarms);
-showDataBase(STORE.settings);
-showDataBase(STORE.calendars);
-showDataBase(STORE.accounts);
-showDataBase(STORE.icalComponents);
+// clearDataBase(STORE.calendars);
