@@ -18,9 +18,10 @@ Setup Calendar: Offline Calendar; Online Account.
 
 The form of Calendar List and Account List: 
 Calendar To Display: ul and li
+Advanced Settings -> Default Calendar
 Modify Event: Select
 Setup Calendar: 
-
+The value of ModifyEvent is changed follow Advanced Settings.
 9. The same thing is done about calendar list in page setup_calendar, advanced_settings and modify_event, and a error in advanced_settings need fix.
 
 10. advanced_settings._renderCalendarLocale
