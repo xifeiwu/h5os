@@ -8,6 +8,10 @@
   </a>
 </li>
 
+# add dom node
+insertAdjacentHTML(type, html);
+afterbegin
+beforeend
 
 _onCalendarDisplayToggle: function(e) {
   var input = e.target;
@@ -102,3 +106,53 @@ accountStore.get(model._id, function(err, store) {
     accountStore.remove(model._id);
   }
 });
+
+# test controller/db_listener.js
+,
+
+  testDBListener: function() {
+    // get db listener
+    this.dbListener = this.app.dbListenerController;
+    // test calendar realted api.
+    this.dbListener.on('local-calendar-change', (calendars) => {
+      debug('signal local-calendar-change');
+      calendars.forEach((calendar) => {
+        console.log(calendar);
+      });
+    });
+    this.dbListener.on('calendar-change', (calendars) => {
+      debug('signal calendar-change');
+      calendars.forEach((calendar) => {
+        console.log(calendar);
+      });
+    });
+    debug('local calendar');
+    this.dbListener.getData('calendar', true).forEach((calendar) => {
+      console.log(calendar);
+    });
+    debug('all calendar');
+    this.dbListener.getData('calendar').forEach((calendar) => {
+      console.log(calendar);
+    });
+    // test account realted api.
+    this.dbListener.on('local-account-change', (accounts) => {
+      debug('signal local-account-change');
+      accounts.forEach((account) => {
+        console.log(account);
+      });
+    });
+    this.dbListener.on('account-change', (accounts) => {
+      debug('signal account-change');
+      accounts.forEach((account) => {
+        console.log(account);
+      });
+    });
+    debug('local account');
+    this.dbListener.getData('account', true).forEach((account) => {
+      console.log(account);
+    });
+    debug('all account');
+    this.dbListener.getData('account').forEach((account) => {
+      console.log(account);
+    });
+  }
