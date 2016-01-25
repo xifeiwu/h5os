@@ -13,29 +13,9 @@
 
 
 # Summery:
-  
-2. Visual Cursor需要browser权限
-3. Calendar List相关页面：
-  -> Settings -> Default Calendar
-  -> Calendar to Display
-  -> Add Event -> Calendar
-  -> Setup Calendar
-More info about Calendar List.
-Calendar To Display: Offline Account -> Offline Calendar; Online Account -> Online Calendar
-Modify Event: Offline Account -> Offline Calendar
-Setup Calendar: Offline Calendar; Online Account.
-AdvancedSetting -> default calendar: Offline Account -> Offline Calendar
-
-The form of Calendar List and Account List: 
-Calendar To Display: ul and li
-Advanced Settings -> Default Calendar
-Modify Event: Select
-Setup Calendar: 
-The value of ModifyEvent is changed follow Advanced Settings.
-
-4. Location of index db: /data/local/storage/default/
-5. The fail of database operation maybe is caused by personal db operation, such as add or delete calendar by scirpt.
-6. Some property of Object can not outputed by JSON.stringify(Object), such as the data.params in onactive of a page.
+1. The use of global toast.
+this.app.toast.show({message: _('error-prior-to-1970')});
+2. the class past present and future is set in month_day.js
 
 # Has Done:
 1. The Error of add Event May be related with offline Calendar.
