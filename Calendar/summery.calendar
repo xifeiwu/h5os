@@ -65,3 +65,13 @@ The value of ModifyEvent is changed follow Advanced Settings.
 # The fail of database operation maybe is caused by personal db operation, such as add or delete calendar by scirpt.
 
 # Some property of Object can not outputed by JSON.stringify(Object), such as the data.params in onactive of a page.
+
+
+
+# Summery about Calendar App:
+1. The use of global toast.
+this.app.toast.show({message: _('error-prior-to-1970')});
+2. the class past present and future is set in month_day.js
+3. Some files is not used any more.
+settings.js   is replaced by advanced_settings.js;
+view_event.js is replaced by event_detail.js

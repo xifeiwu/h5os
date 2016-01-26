@@ -12,11 +12,6 @@
    May be it is completed by navigation manager.
 
 
-# Summery:
-1. The use of global toast.
-this.app.toast.show({message: _('error-prior-to-1970')});
-2. the class past present and future is set in month_day.js
-
 # Has Done:
 1. The Error of add Event May be related with offline Calendar.
 2. learn more about the add and remove event of database Accounts and Calendars.
