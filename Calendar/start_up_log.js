@@ -84,3 +84,7 @@ controllers/recurring_events [calendar]  "Will try to complete expansion (tries 
     at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3016:4) bundle.js:3016:4
 controllers/recurring_events [calendar]  "Expansion attempt did expand:" false 
     at module.exports/< (app://calendar.gaiamobile.org/js/bundle.js:3016:4)
+arrow function的使用，calendar chooser在onactive的时候更新checkbox的状态，提交pr。了解modify event中关于date的逻辑，将提示改为dialog，提交相关pr。了解MDN localization，data-l10n-args,data-l10n-id,data-l10n-date-format的使用。看Alarm的template及相关pr。看禾一提交的关于setup calendar的pr，构思对h5-dialog input blur的处理，在skype上咨询相关问题，看h5-input－wrapper。
+通过skype沟通及代码调试了解input上的softkey与IME softkey的关系，input的softkey会被覆盖，但addEventListener可以使用，了解了h5-input－wrapper的部分作用。添加空calendar会在dailog上给出提示，提交相关pr。看css transform、animation等。看数据库操作相关代码，写使用index及IDBKeyRange的demo，构思rename calendar bug的解决方案。贴报销单。
+借力很重要，基础组件很重要。
+团队可以相互借鉴。个人闷头思路窄，做很容易进入死胡同。
