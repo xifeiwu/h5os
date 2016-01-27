@@ -62,11 +62,19 @@ The value of ModifyEvent is changed follow Advanced Settings.
 
 # Location of index db: /data/local/storage/default/
 
-# The fail of database operation maybe is caused by personal db operation, such as add or delete calendar by scirpt.
+# The fail of database operation maybe is caused by personal db operation, such as add or delete calendar by script.
 
 # Some property of Object can not outputed by JSON.stringify(Object), such as the data.params in onactive of a page.
 
+# Some thing need to notice about toast.
+Sometimes, global component such as toast dialog optionmenu, not work as expected. There may be some reasons: z-index is smaller than current section; the section of global component is placed after current section.
 
+# About focus and blur
+Try to focus on an element in its blur listener function always end with fail.
+If focus is called in nextTick funciton, it works well.
+function nextTick(callback) {
+  Promise.resolve().then(callback);
+}
 
 # Summery about Calendar App:
 1. The use of global toast.
