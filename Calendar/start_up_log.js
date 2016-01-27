@@ -88,3 +88,6 @@ arrow function的使用，calendar chooser在onactive的时候更新checkbox的�
 通过skype沟通及代码调试了解input上的softkey与IME softkey的关系，input的softkey会被覆盖，但addEventListener可以使用，了解了h5-input－wrapper的部分作用。添加空calendar会在dailog上给出提示，提交相关pr。看css transform、animation等。看数据库操作相关代码，写使用index及IDBKeyRange的demo，构思rename calendar bug的解决方案。贴报销单。
 借力很重要，基础组件很重要。
 团队可以相互借鉴。个人闷头思路窄，做很容易进入死胡同。
+经验很重要。
+在一个大项目上深耕比将经历分散到多个小项目要好。
+利用现有库。
