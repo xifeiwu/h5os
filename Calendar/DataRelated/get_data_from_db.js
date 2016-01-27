@@ -88,6 +88,22 @@ function clearDataBase(name) {
   }
 }
 
+function getSelectedData(name, indexName, indexValue) {
+  var transaction = connection.transaction(name, 'readwrite');
+  var indexedStore = transaction.objectStore(name).index(indexName);
+  var req = indexedStore.openCursor(IDBKeyRange.only(indexValue));
+  req.onsuccess = function(event) {
+    var cursor = event.target.result;
+    if (cursor) {
+      console.debug("cursor.value:", JSON.stringify(cursor.value));
+      cursor.continue();
+    }
+  };
+  req.onerror = function(evt) {
+    console.log('getSelectedData request cursor error.');
+  };
+}
+
 function deleteAllDataBase() {
   var req = indexedDB.deleteDatabase(DB_NAME);
 
@@ -113,5 +129,7 @@ getConnection();
 // showDataBase(STORE.calendars);
 // showDataBase(STORE.accounts);
 // showDataBase(STORE.icalComponents);
+
+// getSelectedData(STORE.events, 'calendarId', 1);
 
 // clearDataBase(STORE.calendars);
