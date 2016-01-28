@@ -156,7 +156,12 @@ document.body.appendChild(xFoo);
 13.AMD与COMMOJS
 alameda.js
 
-14.DOM
+14.DOM Tree Related
+difference between Node and Element
+parentNode and parentElement
+
+elem.classList.contains
+elem.hasAttribute
 
 15.gaia`s requirejs
 dynamic load of js and css.
