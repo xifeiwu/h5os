@@ -69,18 +69,6 @@ The value of ModifyEvent is changed follow Advanced Settings.
 # Some thing need to notice about toast.
 Sometimes, global component such as toast dialog optionmenu, not work as expected. There may be some reasons: z-index is smaller than current section; the section of global component is placed after current section.
 
-# About focus and blur
-Try to focus on an element in its blur listener function always end with fail.
-If focus is called in nextTick funciton, it works well.
-function nextTick(callback) {
-  Promise.resolve().then(callback);
-}
-below are comments copied from h5-input-wrapper. refocus should after blur.
-// We need to do setTimeout because both finishTextEdit and finishSelect
-// moves focus to the input wrapper and which causes the "focus" event
-// occurs before the original "blur" event from the perspective of soft key
-// helper and clears all of the soft keys.
-
 # Summery about Calendar App:
 1. The use of global toast.
 this.app.toast.show({message: _('error-prior-to-1970')});
