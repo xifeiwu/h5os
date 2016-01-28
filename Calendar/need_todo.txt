@@ -11,7 +11,7 @@
     </li>
    May be it is completed by navigation manager.
 6. How the events list related with calendar_to_display, how localDisplay works?
-7. work logic of softKeyHandler.
+7. Learn the work logic of softKeyHandler.
 8. Why shared/h5-dialog/dist/amd/script can be required in js/controller/dialog.js
 
 # Has Done:
