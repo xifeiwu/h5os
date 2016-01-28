@@ -5,17 +5,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
     <script>
-    window.onload = function() {      
+    'use strict';
+    window.onload = function() {
       var foo = document.getElementById('foo');
+      getChildNode();
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           console.log('mutation.type = ' + mutation.type);
+          console.log('mutation.target: ');
+          console.log(mutation.target);
           switch(mutation.type) {
             case 'childList':
-              for (var i = 0; i < mutation.addedNodes.length; i++) {
+              for (let i = 0; i < mutation.addedNodes.length; i++) {
                 console.log('content: added, ' + mutation.addedNodes);
               }          
-              for (var i = 0; i < mutation.removedNodes.length; i++) {
+              for (let i = 0; i < mutation.removedNodes.length; i++) {
                 console.log('content: remove, ' +mutation.removedNodes);
               }
               break;
@@ -30,13 +34,40 @@
         childList: true,
         attributes: true,
         subtree: true,
+        characterData: true,
       });
+    };
+    function getChildNode() {
+      var foo = document.getElementById('foo');
+      var child = foo.querySelector('#child');
+      if (!child) {
+        child = document.createElement('div');
+        child.setAttribute('id', 'child');
+        foo.appendChild(child);
+      }
+      return child;
+    }
+    function changeDOM() {
+      var foo = document.getElementById('foo');
       var bar = document.createElement('div');
-      bar.textContent = 'bar';
-      console.log('before append');
+      console.log('append a child.');
       foo.appendChild(bar);
+      console.log('remove a child.');
       foo.removeChild(bar);
-      console.log('after remove');
+      bar.textContent = 'bar';
+    }
+
+    function changeAttribute() {
+      var foo = document.getElementById('foo');
+      foo.setAttribute('note', 'the main node');
+      foo.classList.add('testMutationObserver');
+      foo.dataset.node = 'this is the main node.';
+    }
+    function changeChildAttribute() {
+      var child = getChildNode();
+      child.setAttribute('note', 'the child node');
+      child.classList.add('testMutationObserver');
+      child.dataset.node = 'this is the child node.';
     }
     </script>
   </head>
