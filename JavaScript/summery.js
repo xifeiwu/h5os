@@ -189,9 +189,15 @@ indexDB
 appendChild and cloneNode
 if element already is its childNode, appendChild will do nothing.
 
-20.
-Array and Object-lick Array
+20. Array Operation
+Array and Object-like Array
 Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组
+
+Another way to convert Object to Array
+Object.keys(obj).map(function)
+var arr = Object.keys(obj).map((key) => {return obj[key]});
+demo:
+var obj = {name: 'Jack', age: 22};
 
 21.
 keycode and keyValue in Professional JavaScript
