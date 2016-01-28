@@ -19,8 +19,6 @@
 </style>
 
 <script type="text/javascript">
-
-
 function load() {
   tr_one = document.getElementById("tr_one");
   tr_one.addEventListener("keydown", function(evt) {
@@ -36,8 +34,11 @@ function load() {
 
   tr_two = document.getElementById("tr_two");
   tr_two.addEventListener("keydown", function(evt) {
-    console.log('In callback of tr_two.');
+    console.log('In first callback of tr_two.');
     //evt.stopPropagation();
+  }, false);
+  tr_two.addEventListener("keydown", function(evt) {
+    console.log('In second callback of tr_two.');
   }, false);
 
   t_daddy = document.getElementById("t-daddy");
@@ -46,14 +47,17 @@ function load() {
   }, false);
 
   window.addEventListener('keydown', function() {
-    console.log('In callback of window.');
+    console.log('In callback of window. with useCapture=true');
   }, true);
-
+  window.addEventListener('keydown', function() {
+    console.log('In callback of window. with useCapture=false');
+  });
 }
+window.addEventListener('load', load);
 </script>
 </head>
 
-<body onload="load();">
+<body>
 
 <table id="t-daddy" tabindex="0">
  <tr id="tr_one" tabindex="0">
