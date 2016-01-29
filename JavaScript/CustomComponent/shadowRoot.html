@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', () => {
+      // base demo for shadowRoot.
+      // var host = document.querySelector('button');
+      // host.style.display = 'block';
+      // var root = host.createShadowRoot();
+      // root.textContent = 'こんにちは、影の世界!';
+      // console.log(host.textContent);
+
+      // simple demo for shadowRoot.
+      // var nameTag = document.querySelector('#nameTag');
+      // nameTag.style.display = 'block';
+      // var shadow = nameTag.createShadowRoot();
+      // var template = document.querySelector('#nameTagTemplate');
+      // var clone = document.importNode(template.content, true);
+      // shadow.appendChild(clone);
+
+      // the use of content select
+      var contentSelect = document.querySelector('#contentSelect');
+      contentSelect.style.display = 'block';
+      var shadow = contentSelect.createShadowRoot();
+      var template = document.querySelector('#contentSelectTemplate');
+      shadow.appendChild(document.importNode(template.content, true));
+    });
+    </script>
+
+  </head>
+  <body>
+    <br>
+    <button style="display: none">Hello, world!</button>
+
+    <br>
+    <div id="nameTag" style="display: none">
+      <span style="color: red" class="name">Name: </span>
+      bob
+    </div>
+    <template id="nameTagTemplate">
+      <style>
+      .outer {
+        border: 2px solid brown;
+        border-radius: 1em;
+        background: red;
+        font-size: 20pt;
+        width: 12em;
+        height: 7em;
+        text-align: center;
+      }
+      .boilerplate {
+        color: white;
+        font-family: sans-serif;
+        padding: 0.5em;
+      }
+      .name {
+        color: black;
+        background: white;
+        font-family: "Marker Felt", cursive;
+        font-size: 45pt;
+        padding-top: 0.2em;
+      }
+      </style>
+      <div class="outer">
+        <div class="boilerplate">Hi! My name is</div>
+        <div class="name">
+          <content select=".name"></content>
+        </div>
+      </div>
+    </template>
+
+    <div id="contentSelect" style="display: none">
+      <div class="first">Bob</div>
+      <div>B. Love</div>
+      <div class="email">bob@</div>
+    </div>
+    <template id="contentSelectTemplate">
+      <div style="background: purple; padding: 1em;">
+      <div style="color: red;">
+        <content select=".first"></content>
+      </div>
+      <div style="color: yellow;">
+        <content select="div"></content>
+      </div>
+      <div style="color: blue;">
+        <content select=".email"></content>
+      </div>
+    </div>
+    </template>
+  </body>
+</html>
