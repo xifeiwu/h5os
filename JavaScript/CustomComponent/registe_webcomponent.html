@@ -31,15 +31,21 @@
       }
       //Called when an attribute on a custom element changes.
       Panel.attributeChangedCallback = function(attrName, oldValue, newValue) {
-        console.log("In attributeChangedCallback.");
+        console.log("In attributeChangedCallback, oldValue=" +
+          oldValue + ' && newValue=' + newValue);
       }
       var MyPanel = document.registerElement('my-panel', { //Step 2
         prototype: Panel
       });
 
       window.onload = function() {
+        // two ways of using web component.
+        // 1. constructor
+        // 2. html tag
+        // The first way of using web component.
         window.panelLater = new MyPanel();
-        panelLater.id = "panelLater";
+        panelLater.id = 'panelLater';
+        panelLater.innerHTML = '<h1>Former Panel</h1>';
         document.body.appendChild(panelLater);
       }
 
@@ -51,11 +57,12 @@
     </style>
   </head>
   <body>
-    <my-panel id="panelFormer">
+    <!-- the second way of using web component. -->
+<!--     <my-panel id="panelFormer">
       <h2>Introduction</h2>
       <h1>My custom panel</h1>
       <p>This is the content of the panel, we can add anything we need!</p>
-    </my-panel>
+    </my-panel> -->
     <template>
       <style>
         #panel{
