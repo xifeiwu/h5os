@@ -1,0 +1,5 @@
+message_handler [calendar]  "Received alarm message!" bundle.js:3018:4
+controllers/notifications [calendar]  "Will request cpu wake lock..." bundle.js:3018:4
+controllers/notifications [calendar]  "Received cpu lock. Will issue notification..." bundle.js:3018:4
+controllers/notifications [calendar]  "Will send event notification with title:" "3" "body:" "started just now" bundle.js:3018:4
+controllers/notifications [calendar]  "Will release cpu wake lock..."
