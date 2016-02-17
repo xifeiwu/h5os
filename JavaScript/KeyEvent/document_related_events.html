@@ -5,16 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
     <script>
+      console.log("document readyState in inner script: " + document.readyState);
       document.addEventListener("readystatechange", function(event){
         console.log("readystatechange: " + document.readyState);
       });
       document.addEventListener("DOMContentLoaded", function(event){
-        console.log("DOMContentLoaded");
+        console.log("DOMContentLoaded finish.");
+      });
+      document.addEventListener("visibilitychange", function() {
+        console.log('visibility state of document: ' + document.visibilityState);
       });
 
-      function addDocumentEvent(event) {
-        document.addEventListener(event, function(event){console.log(event);}, false);
-      }
       window.onload = function() {
         document.title="documet related events";
         var myDiv = document.getElementById("myDiv");
