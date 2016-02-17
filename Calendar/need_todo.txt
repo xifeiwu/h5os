@@ -9,9 +9,13 @@
         <option></option>
       </select>
     </li>
-   May be it is completed by navigation manager.
+   May be it is done by navigation manager.
 8. Why shared/h5-dialog/dist/amd/script can be required in js/controller/dialog.js
 9. the format of iCalendar, demo: 周三 2016/1/27 19:44
+10. read CSS3: The Missing Manual. learn more about css.
+11. CSS generated content
+12. the template logic for alert in modify event.
+
 # Has Done:
 1. The Error of add Event May be related with offline Calendar.
 2. learn more about the add and remove event of database Accounts and Calendars.
