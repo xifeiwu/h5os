@@ -139,3 +139,6 @@ accountStore.get(model._id, function(err, store) {
       console.log(account);
     });
   }
+
+# the log of add busytime when connect network.
+pull events [calendar]  "add busytime" {"start":{"tzid":"Etc/UTC","offset":0,"utc":877035600000},"end":{"tzid":"Etc/UTC","offset":0,"utc":877039200000},"recurrenceId":{"tzid":"Etc/UTC","offset":0,"utc":877035600000},"eventId":"26-adb1ef1c-55f3-4d4f-9b09-2a2140ef6a6f","isException":false,"_id":"26-adb1ef1c-55f3-4d4f-9b09-2a2140ef6a6f-64cdf1cb-4d0f-4ac1-b69d-07b128e81468","calendarId":26,"startDate":"1997-10-16T21:00:00.000Z","endDate":"1997-10-16T22:00:00.000Z"}
