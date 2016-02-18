@@ -3,9 +3,14 @@
  * The MozAlarmsManager is used to trigger an alarm as specific time.
  */
 
+// add listener for mozMessage.
+navigator.mozSetMessageHandler('alarm', message => {
+  console.log('Received alarm message: ' + JSON.stringify(message));
+  var data = message.data;
+});
 
 // new Date("Jan 3, 1970 20:47:00")
-// Add a new alarm to mozAlarms.
+// Add a new alarm five seconds later to mozAlarms.
 var alarm = {
   date: new Date(new Date().getTime() + 5 * 1000),
   respectTimezone: 'ignoreTimezone',
@@ -46,7 +51,6 @@ request.onsuccess = function(e) {
     }
   }
 };
-
 request.onerror = function() {
   var msg = 'failed to get alarms';
   console.error('CALENDAR:', msg);
