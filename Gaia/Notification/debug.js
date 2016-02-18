@@ -38,25 +38,3 @@ req.onerror = function() {
   var msg = 'failed to get alarms';
   console.error('CALENDAR:', msg);
 };
-
-
-
-
-var alarm = {
-  date: new Date("March 3, 1970 20:45:00"),
-  respectTimezone: 'ignoreTimezone',
-  data: {
-    message: "Do something dude!"
-  }
-};
-
-var request = navigator.mozAlarms.add(alarm.date, alarm.respectTimezone, alarm.data);
-
-request.onsuccess = function () {
-  console.log('A new alarm has been set:' + this.result);
-  alarm.id = this.result; // get the id of the new alarm.
-}
-
-request.onerror = function () {
-  console.log('operation failed: ' + this.error);
-}
