@@ -38,3 +38,13 @@ var keys = {lsk: 'Back', dpe: 'Select', rsk: 'Ok'};
 console.log(SoftKeysHelper._convertKeys(keys));
 var plainKeys = 'lsk=Back, dpe=Select, rsk=Ok';
 console.log(SoftKeysHelper._revertKeys(plainKeys));
+
+
+# The use of mozApps
+var request = navigator.mozApps.getSelf();
+request.onsuccess = (event) => {
+  console.log(event.target.result);
+};
+request.onerror = () => {
+  console.log(new Error('mozApps.getSelf failed!'));
+};
