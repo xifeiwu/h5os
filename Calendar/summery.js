@@ -14,4 +14,21 @@ below are comments copied from h5-input-wrapper. refocus should after blur.
 the flow of event propagation.
 refocus should after blur all-complete.
 some asynchronous function may cause incorrect work sequence.
-transaction of indexedDB should execute one after another. 
+transaction of indexedDB should execute one after another.
+
+# day_observer.findAssociated
+
+# The function definition in js module
+# the first way of defining getUrlById is wrong.
+define(function(require, exports) {
+'use strict';
+  exports.myfunc = function(param) {
+    getUrlById(param.id);
+  }
+  getUrlById = function(id) {
+    return '/alarm-display/' + id;
+  };
+  function getUrlById(id) {
+    return '/alarm-display/' + id;
+  }
+});
