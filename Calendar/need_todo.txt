@@ -16,6 +16,7 @@
 11. CSS generated content
 12. the template logic for alert in modify event.
 13. the difference between router.canonicalPath and router.last
+14. fix timezone change introduce another bug.
 
 # Maybe need ToDo:
 1.  the _returnTo path should not be detected in event_base.js.
