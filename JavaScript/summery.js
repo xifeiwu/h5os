@@ -184,6 +184,13 @@ CustomEvent
     this.setFocusOnMonthView(todate);
   }.bind(this));
 
+another demo:
+window.addEventListener('moztimechange', (evt) => {
+  console.log('Noticed timezone change!');
+  console.log(evt.target);
+});
+window.dispatchEvent(new Event('moztimechange'));
+
 17.
 addEventListener and handleEvent
 
