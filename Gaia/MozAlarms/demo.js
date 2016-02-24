@@ -55,3 +55,41 @@ request.onerror = function() {
   var msg = 'failed to get alarms';
   console.error('CALENDAR:', msg);
 };
+
+
+# unrelated code about notification.
+As alarm is always work with notification, which is used to notice user that alarm is triggered.
+Notice: Notification is a W3C standard.
+> The core code.
+  var notification = new Notification('Notification Title', {
+    icon: '',
+    body: "Hey there! You've been notified!",
+  });
+  notification.onclick = function () {
+    console.log("http://stackoverflow.com/a/13328397/1269037");
+  };
+
+> The full code
+  document.addEventListener('DOMContentLoaded', function () {
+    if (Notification.permission !== "granted")
+      Notification.requestPermission();
+  });
+
+  function notifyMe() {
+    console.log('in function notifyMe.');
+    if (!Notification) {
+      alert('Desktop notifications not available in your browser. Try Chromium.'); 
+      return;
+    }
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    } else {
+      var notification = new Notification('Notification Title', {
+        icon: '',
+        body: "Hey there! You've been notified!",
+      });
+      notification.onclick = function () {
+        console.log("http://stackoverflow.com/a/13328397/1269037");
+      };
+    }
+  }
