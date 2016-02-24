@@ -25,6 +25,13 @@ function getConnection() {
 
 function showDataBase(name) {
   var transaction = connection.transaction(name, 'readonly');
+  transaction.oncomplete = function commitComplete() {
+    console.log('the transaction is complete.');
+  };
+
+  transaction.onerror = function commitError(e) {
+    console.log('the transaction is error.');
+  };
   var store = transaction.objectStore(name);
   var req = store.count();
   req.onsuccess = function(evt) {
@@ -33,15 +40,15 @@ function showDataBase(name) {
   req.onerror = function() {
     console.log('request store count error');
   };
-  req = store.openCursor();
-  req.onsuccess = function(evt) {
+  var viewData = store.openCursor();
+  viewData.onsuccess = function(evt) {
     var cursor = evt.target.result;
     if (cursor) {
       console.debug("cursor.value:", JSON.stringify(cursor.value));
       cursor.continue();
     }
   }
-  req.onerror = function(evt) {
+  viewData.onerror = function(evt) {
     console.log('request cursor error.');
   }
 }
@@ -102,6 +109,11 @@ function getSelectedData(name, indexName, indexValue) {
   req.onerror = function(evt) {
     console.log('getSelectedData request cursor error.');
   };
+
+  // var req = indexedStore.mozGetAll(IDBKeyRange.only(indexValue));
+  // req.onsuccess = function(e) {
+  //   console.log(e.target.result);
+  // };
 }
 
 function deleteAllDataBase() {
