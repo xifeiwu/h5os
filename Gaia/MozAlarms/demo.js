@@ -28,7 +28,7 @@ request.onerror = function () {
 }
 
 
-// This demo is used to get all the alarms
+// Show All The Alarms
 var alarms = window.navigator.mozAlarms;
 var request = alarms.getAll();
 request.onsuccess = function(e) {
@@ -39,22 +39,36 @@ request.onsuccess = function(e) {
   var mozAlarm;
   if (length == 0) {
     console.log('There is no alarm.');
-  }
-  for (var i = 0; i < length; i++) {
-    mozAlarm = data[i].data;
-    console.log(mozAlarm);
-    if (
-      mozAlarm &&
-      'eventId' in mozAlarm &&
-      'trigger' in mozAlarm
-    ) {
-    }
+  } else {
+    console.log('There are ' + length + ' alarms.');
+    for (var i = 0; i < length; i++) {
+      mozAlarm = data[i].data;
+      console.log(mozAlarm);
+      if (
+        mozAlarm &&
+        'eventId' in mozAlarm &&
+        'trigger' in mozAlarm
+      ) {
+      }
+    }    
   }
 };
 request.onerror = function() {
   var msg = 'failed to get alarms';
   console.error('CALENDAR:', msg);
 };
+
+// Remove All Alarms
+var request = navigator.mozAlarms.getAll();
+request.onsuccess = function () {
+  this.result.forEach(function (alarm) {
+    navigator.mozAlarms.remove(alarm.id);
+  });
+  console.log('remove all alarm success.');
+}
+request.onerror = function () {
+  console.log('operation failed: ' + this.error);
+}
 
 
 # unrelated code about notification.
