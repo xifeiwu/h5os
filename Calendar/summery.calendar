@@ -100,3 +100,6 @@ workQueue ->
 
 8. The log of Notification
 When the add an event with alert(alarm), a alarm object will be added to MozAlarmManager Queue, even the event is delete. But when the alarm is triggered, the code will detect whether the busytime of notification exist. If not, the Notification will not send, so It will work ok even the alarm in  MozAlarmManager Queue is not correct.
+
+9.
+An IndexedDB transaction that was not yet complete has been aborted due to page navigation.
