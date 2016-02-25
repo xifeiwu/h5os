@@ -43,7 +43,7 @@ microseconds - 0-999之间的毫秒数
 
 5. 默认值
 在gecko或浏览器中，通过new Date()得到的Date对象，都是UTC时间。
-getDate时Local Date
+getDate, getHours, getDay获得的都是本地时间（Local Date）
 如果获得UTC Date需要使用getUTCDate
 
 > var date = new Date('2015-12-07T23:18:37.338Z')
