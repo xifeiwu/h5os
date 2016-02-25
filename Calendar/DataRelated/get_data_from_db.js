@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const DB_NAME = 'b2g-calendar';
 const DB_VERSION = 15;

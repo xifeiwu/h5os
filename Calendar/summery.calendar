@@ -50,7 +50,7 @@ In monthly view, if we add this.controller.move(date); in KeyDownEvent callback,
   section.month .present {
     color: var(--highlight-color);
   }
-  class present is set by calc.relativeState
+  class present is set in views/month_day.jsby calc.relativeState
 
 # Something about timeController(js/controller/time.js)
 > There are two important variables in timeController: position and selectedDay
@@ -72,6 +72,8 @@ app._initUI
 selectedDayChange
 view/month._changeSelectedDay
 app._initUI
+> Something new added
+presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
 
 # Visual Cursor需要browser权限
 

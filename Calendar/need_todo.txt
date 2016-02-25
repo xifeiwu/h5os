@@ -22,6 +22,7 @@
 1.  the _returnTo path should not be detected in event_base.js.
     event_base.js下的dispatch需要注意。
 2.  the workflow of jumpping from one page to another is not clear.
+3.  presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
 
 # Has Done:
 1. The Error of add Event May be related with offline Calendar.
