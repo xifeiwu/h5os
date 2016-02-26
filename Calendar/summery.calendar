@@ -154,3 +154,20 @@ Maybe caused by transaction of add data to database.
 
 10.
 An IndexedDB transaction that was not yet complete has been aborted due to page navigation.
+
+11. Something about recurring_events
+controllers/recurring_events is required and initialized in app.js, and listen for signal 'monthchange'.
+js/controllers/recurring_events.js
+queueExpand  -> expand -> _expandProvider -> provider/abstract.ensureRecurrencesExpanded
+js/provider/abstract.js
+ensureRecurrencesExpanded -> icalComponents.findRecurrencesBefore -> _expandComponents -> worker/manager.stream
+
+js/worker/manager.js <-> thread.js <-> service/caldav.js
+js/provider/caldav_pull_events.js(stream.on) <-> js/responder(var stream = new Responder();) <-> service/caldav.js(stream.emit)
+
+js/service/caldav.js
+expandComponents(components, options) -> expandComponents
+components is ical string array.
+var options = {
+  maxDate: Calc.dateToTransport(maxDate)
+};
