@@ -17,3 +17,28 @@ function testError(err) {
     console.log('callback fail.');
   }
 }
+
+busytime = {
+  "start": {
+    "tzid": "UTC",
+    "offset": 0,
+    "utc": 1450699200000
+  },
+  "end": {
+    "tzid": "UTC",
+    "offset": 0,
+    "utc": 1450702800000
+  },
+  "recurrenceId": {
+    "tzid": "UTC",
+    "offset": 0,
+    "utc": 1450699200000
+  },
+  "eventId": "1-84acdb6f-bb29-4892-ac06-520ab7394bf9",
+  "isException": false,
+  "_id": "1-84acdb6f-bb29-4892-ac06-520ab7394bf9-82557bc5-1337-4bd5-a62b-a00128558052",
+  "calendarId": 1,
+  "startDate": "2015-12-21T12:00:00.000Z",
+  "endDate": "2015-12-21T13:00:00.000Z"
+}
+var {_id, startDate, endDate, eventId} = busytime;
