@@ -27,6 +27,18 @@ _onCalendarDisplayToggle: function(e) {
   );
 },
 
+# the format of manifest.webapp
+{
+  "name": "On the Edge",
+  "orientation": "portrait",
+  "description": "On the Edge",
+  "launch_path": "http://static.egret-labs.org/h5game/jianpan/v3/4/index.html",
+  "developer": {
+    "name": "egret",
+    "url": ""
+  }
+}
+
 # get and set value in db Setting
   var settings = this.app.store('Setting');
   var layout = isAllDay ? 'allday' : 'standard';
