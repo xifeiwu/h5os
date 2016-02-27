@@ -75,6 +75,11 @@ app._initUI
 > Something new added
 presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
 
+# sync calendar time with system time, which is usually changed by settings.
+At beginning, the calendar app will restart when moztimechange, it will cause calendar app frequently restart when SIM card is inserted.
+Now, it will check if timezone is changed in moztimechange listener, if timezone is changed, calendar will restart, else presentDay will update. If current is not the same as previous one, current calendar day will update.
+All action above is respond to timechange manually, app._syncTodayDate is used for normal time change.
+
 # Visual Cursor需要browser权限
 
 # Calendar List相关页面：
