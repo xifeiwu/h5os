@@ -160,7 +160,84 @@ Maybe caused by transaction of add data to database.
 10.
 An IndexedDB transaction that was not yet complete has been aborted due to page navigation.
 
-11. Something about recurring_events
+11. Workflow of calendar worker machanic.
+> work flow
+The entrance point of main thread is serviceController, which is only used in app.js and provider/abstract.js, in the form of serviceController.stream.
+controller/service extends worker/manager, and add 'caldav' worker at js/caldav_worker.js, and this is all what controller/service done,almost all the method is extend from worker/manager.
+All the work of sending and receiving message from worker is done by worker/manager, the most important method provided by worker/manager is stream and request.
+The stream method returns a Responder object named stream with an important method stream.request, in this method, 
+> worker/manager
+start a worker:
+_ensureActiveWorker -> _startWorker -> _scheduleCleanup()
+
+> The process of argument transfor from provider/abstract to service/caldav.js
+take abstract.ensureRecurrencesExpanded for example
+ensureRecurrencesExpanded -> _expandComponents
+provicer/abstract._expandComponents:
+  @'caldav' is a role string
+  @'expandComponents' is signal name
+  @comps are iCalComponent string array
+  @options = {
+    maxDate: Calc.dateToTransport(maxDate)
+  };
+  var stream = this.service.stream(
+    'caldav',
+    'expandComponents',
+    comps,
+    options
+  );
+worker/manager.stream
+  @id self increment
+  @role: 'caldav'
+  @payload: all parameters from abstract._expandComponents except 'caldav'
+  var data = {
+    id: this._lastId++,
+    role: role,
+    payload: args,
+    type: 'stream'
+  };
+  worker.instance.postMessage(['_dispatch', data]);
+worker/thread._initEvents
+  self.roles[data.role].respond(
+    data.payload,
+    self._remoteEmitter(data.id),
+    callback
+  );
+  > give value to the variable <
+  self.roles['caldav'].respond(
+    ['expandComponents', comps, options],
+    _remoteEmitter: function(this._lastId) {
+      var self = this;
+      return {
+        emit: function emitRemote() {
+          var args = Array.prototype.slice.call(arguments);
+          self.worker.postMessage([id + ' stream'].concat(args));
+        }
+      };
+    },
+    callback
+  )
+js/responder.respond
+  respond: function respond(json) {
+    var event = Responder.parse(json);
+    var args = Array.prototype.slice.call(arguments).slice(1);
+    this.emit.apply(this, event.concat(args));
+    return event;
+  },
+  > give value to the emit function <
+  this.emit(['expandComponents', comps, options, self._remoteEmitter(data.id), callback]);
+
+service/caldav.expandComponents
+  @stream: 
+  {
+    emit: function emitRemote() {
+      var args = Array.prototype.slice.call(arguments);
+      self.worker.postMessage([id + ' stream'].concat(args));
+    }
+  }
+  expandComponents: function(components, options, stream, callback)
+
+12. Something about recurring_events
 controllers/recurring_events is required and initialized in app.js, and listen for signal 'monthchange'.
 js/controllers/recurring_events.js
 queueExpand  -> expand -> _expandProvider -> provider/abstract.ensureRecurrencesExpanded
@@ -176,3 +253,11 @@ components is ical string array.
 var options = {
   maxDate: Calc.dateToTransport(maxDate)
 };
+-> expandComponents 
+components.forEach(() => {expandRecurringEvent})
+-> expandRecurringEvent 
+
+-> parseEvent
+13. Format of object stored in db
+There are five properties: ical, eventId, calendarId, iterator, lastRecurrenceId.
+what is 
