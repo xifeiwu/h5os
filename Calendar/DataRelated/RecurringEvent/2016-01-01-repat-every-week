@@ -1,0 +1,208 @@
+# This Event is from 1:00AM to 2:00AM
+# Event
+{
+    "calendarId": "local-first",
+    "remote": {
+        "alarms": [],
+        "id": "3bc8c514-f00c-474c-b707-5134c62b2aa0",
+        "title": "Title",
+        "recurrenceId": null,
+        "isRecurring": true,
+        "repeat": "every-week",
+        "description": "",
+        "location": "",
+        "start": {
+            "tzid": "America/Adak",
+            "offset": -36000000,
+            "utc": 1451610000000
+        },
+        "end": {
+            "tzid": "America/Adak",
+            "offset": -36000000,
+            "utc": 1451613600000
+        },
+        "timeStamp": 1451642554630,
+        "color": "#6115BF"
+    },
+    "_id": "local-first-3bc8c514-f00c-474c-b707-5134c62b2aa0"
+}
+# iCalComponent
+{
+    "eventId": "local-first-3bc8c514-f00c-474c-b707-5134c62b2aa0",
+    "lastRecurrenceId": {
+        "tzid": "America/Adak",
+        "offset": -36000000,
+        "utc": 1464915600000
+    },
+    "ical": "BEGIN:VCALENDAR\r\nPRODID:-//H5OS//Calendar 1.0//EN\r\nVERSION:2.0\r\nBEGIN:VTIMEZONE\r\nTZID:America/Adak\r\nBEGIN:STANDARD\r\nTZOFFSETFROM:-1000\r\nTZOFFSETTO:-1000\r\nDTSTART:20160101T010000\r\nEND:STANDARD\r\nEND:VTIMEZONE\r\nBEGIN:VEVENT\r\nDTSTART;TZID=America/Adak:20160101T010000\r\nDTEND;TZID=America/Adak:20160101T020000\r\nRRULE:FREQ=WEEKLY;BYDAY=FR\r\nDTSTAMP;TZID=America/Adak:20160101T000234\r\nUID:3bc8c514-f00c-474c-b707-5134c62b2aa0\r\nDESCRIPTION:\r\nLOCATION:\r\nSEQUENCE:0\r\nSTATUS:CONFIRMED\r\nSUMMARY:Title\r\nTRANSP:OPAQUE\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+    "iterator": {
+        "ruleIterators": [{
+            "initialized": true,
+            "rule": {
+                "freq": "WEEKLY",
+                "byday": "FR"
+            },
+            "dtstart": {
+                "year": 2016,
+                "month": 1,
+                "day": 1,
+                "hour": 1,
+                "minute": 0,
+                "second": 0,
+                "isDate": false,
+                "timezone": "America/Adak"
+            },
+            "by_data": {
+                "BYDAY": ["FR"],
+                "BYSECOND": [0],
+                "BYMINUTE": [0],
+                "BYHOUR": [1],
+                "BYMONTHDAY": [1]
+            },
+            "days": [],
+            "last": {
+                "year": 2016,
+                "month": 6,
+                "day": 10,
+                "hour": 1,
+                "minute": 0,
+                "second": 0,
+                "isDate": false,
+                "timezone": "America/Adak"
+            },
+            "by_indices": {
+                "BYSECOND": 0,
+                "BYMINUTE": 0,
+                "BYHOUR": 0,
+                "BYDAY": 0,
+                "BYMONTH": 0,
+                "BYWEEKNO": 0,
+                "BYMONTHDAY": 0
+            },
+            "occurrence_number": 24
+        }],
+        "ruleDates": [],
+        "exDates": [],
+        "ruleDateInc": 0,
+        "exDateInc": 0,
+        "last": {
+            "year": 2016,
+            "month": 6,
+            "day": 3,
+            "hour": 1,
+            "minute": 0,
+            "second": 0,
+            "isDate": false,
+            "timezone": "America/Adak"
+        },
+        "dtstart": {
+            "year": 2016,
+            "month": 1,
+            "day": 1,
+            "hour": 1,
+            "minute": 0,
+            "second": 0,
+            "isDate": false,
+            "timezone": "America/Adak"
+        },
+        "complete": false
+    },
+    "calendarId": "local-first"
+}
+
+# event returned by parseEvent
+{
+    "component": ["vevent", 
+    [
+      [
+        "dtstart", 
+        {
+            "tzid": "America/Adak"
+        },
+        "date-time", 
+        "2016-01-01T01:00:00"
+      ], 
+
+      [
+        "dtend", 
+        {
+            "tzid": "America/Adak"
+        },
+        "date-time", 
+        "2016-01-01T02:00:00"
+      ], 
+
+      [
+        "rrule", 
+        {},
+        "recur", 
+        {
+          "freq": "WEEKLY",
+          "byday": "FR"
+        }
+      ], 
+
+      [
+        "dtstamp", 
+        {
+          "tzid": "America/Adak"
+        },
+        "date-time", 
+        "2016-01-01T00:18:34"
+      ], 
+
+      [
+        "uid", 
+        {},
+        "text", 
+        "b8c6e9be-6d3a-4686-8433-41c76af7ec15"
+      ], 
+
+      [
+        "description", 
+        {},
+        "text", 
+        ""
+      ], 
+
+      [
+        "location", 
+        {},
+        "text", 
+        ""
+      ], 
+
+      [
+        "sequence", 
+        {},
+        "integer", 
+        0
+      ], 
+
+      [
+        "status", 
+        {},
+        "text", 
+        "CONFIRMED"
+      ], 
+
+      [
+        "summary", 
+        {},
+        "text", 
+        "2"
+      ], 
+
+      [
+        "transp", 
+        {},
+        "text", 
+        "OPAQUE"
+      ]
+    ], 
+    []
+    ],
+    "_rangeExceptionCache": {},
+    "exceptions": {},
+    "rangeExceptions": []
+}
