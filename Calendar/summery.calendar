@@ -238,26 +238,116 @@ service/caldav.expandComponents
   expandComponents: function(components, options, stream, callback)
 
 12. Something about recurring_events
-controllers/recurring_events is required and initialized in app.js, and listen for signal 'monthchange'.
-js/controllers/recurring_events.js
-queueExpand  -> expand -> _expandProvider -> provider/abstract.ensureRecurrencesExpanded
-js/provider/abstract.js
-ensureRecurrencesExpanded -> icalComponents.findRecurrencesBefore -> _expandComponents -> worker/manager.stream
+# the logic of recurring event in main thread
+controllers/recurring_events is only required and initialized in app.js, and listen for signal 'monthchange'.
+> js/controllers/recurring_events.js
+'monthchange' -> queueExpand -> expand -> _expandProvider -> provider/abstract.ensureRecurrencesExpanded
+> js/provider/abstract.js
+ensureRecurrencesExpanded -> icalComponents.findRecurrencesBefore -> _expandComponents -> 
+# _expandComponents is an important method in main thread.
+> caldav_pull_events is used to receive data by stream responder and presist them.
+> stream is a responder, the function stream.request is used to start the worker, initial the worker receiver on pendding queue, send message to worker, and then waitting for respond data. when the data received is send to caldav_pull_events by stream listener.
+> code below
+  var stream = this.service.stream(
+    'caldav',
+    'expandComponents',
+    comps,
+    options
+  );
+  var pull = new CaldavPullEvents(
+    stream,
+    {
+      account: account,
+      calendar: calendar,
+      app: this.app,
+      stores: [
+        'busytimes', 'alarms', 'icalComponents'
+      ]
+    }
+  );
+  stream.request(function(err) {
+    callback(null, pull);
+  });
+## The middleware of connection
+# worker/manager is main-thread side middleware. stream is used to transfer data from worker/manager to its listener(caldav_pull_events).
+  stream: function(role /*, args...*/) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    var stream = new Responder();
+    var self = this;
+    var data = {
+      id: this._lastId++,
+      role: role,
+      payload: args,
+      type: 'stream'
+    };
+    stream.request = function(callback) {
+      var worker = self._ensureActiveWorker(role);
+      self._addPending(worker, {
+        id: data.id,
+        stream: stream,
+        callback: callback
+      });
+      worker.instance.postMessage(['_dispatch', data]);
+    };
+    return stream;
+  }
+# worker/thread is the worker-thread side middleware
+> The data is received in caldav_worker, and send to thread immediately.
+self.addEventListener('message', function onMessage(msg) {
+  // caldav is instance of service/caldav.js
+  if (typeof(caldav) !== 'undefined') {
+    return self.thread.respond(msg.data);
+  }
+});
+> worker/thread is entrance point of worker thread.
+worker/thread will listen for 'dispatch' signal after it was initialized, and then send the data received and two append to it role(now, there is only one role 'caldav' and its worker is service/caldav). The method _remoteEmitter and _requestCallback is called by service and send the data to main thread(worker/manager) using method postMessage.
+  _remoteEmitter: function(id) {
+    var self = this;
+    return {
+      emit: function emitRemote() {
+        var args = Array.prototype.slice.call(arguments);
+        self.worker.postMessage([id + ' stream'].concat(args));
+      }
+    };
+  }, 
+  _requestCallback: function(id) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    args.unshift(id + ' end');
+    if (args[1] instanceof Error) {
+      args[1] = this._wrapError(args[1]);
+    }
+    this.worker.postMessage(args);
+  },
+  this.on('_dispatch', function(data) {
+      var callback = self._requestCallback.bind(
+        self, data.id
+      );
+      if (data.type && data.type === 'stream') {
+        self.roles[data.role].respond(
+          data.payload,
+          self._remoteEmitter(data.id),
+          callback
+        );
+      } else {
+        self.roles[data.role].respond(
+          data.payload, callback
+        );
+      }
+    });
+  },
+# service/caldav is added to worker/thread.roles in worker/initialize, and thread.roles.caldav is used to send data from service/caldav to worker/thread, at last the data wrapped and send to main thread.
+  var thread = self.thread = new Thread(window);
+  thread.addRole('caldav');
+  window.console = new thread.console('worker');
+  require(['service/caldav'], (CaldavService) => {
+    // Lazily loaded so that we can prime environment first.
+    debug('Will create new caldav service...');
+    self.caldav = new CaldavService(thread.roles.caldav);
+  });
+> service/caldav is where the main operation done in worker thread, the operation from main thread is send to worker/thread, and then send to service/caldav by thread.role responder, the result is send to main thread in service/caldav by function _remoteEmitter and _requestCallback which is past from worker/thread.
 
-js/worker/manager.js <-> thread.js <-> service/caldav.js
-js/provider/caldav_pull_events.js(stream.on) <-> js/responder(var stream = new Responder();) <-> service/caldav.js(stream.emit)
+> worker/manager <-> worker/thread <-> service/caldav.js
 
-js/service/caldav.js
-expandComponents(components, options) -> expandComponents
-components is ical string array.
-var options = {
-  maxDate: Calc.dateToTransport(maxDate)
-};
--> expandComponents 
-components.forEach(() => {expandRecurringEvent})
--> expandRecurringEvent 
-
--> parseEvent
 13. Format of object stored in db
 There are five properties: ical, eventId, calendarId, iterator, lastRecurrenceId.
 what is 
