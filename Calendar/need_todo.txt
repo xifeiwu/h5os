@@ -14,6 +14,8 @@
 10. read CSS3: The Missing Manual. learn more about css.
 11. CSS generated content
 13. the difference between router.canonicalPath and router.last
+14. Learn more detail about recurring-event.
+  How to avoid recreate busytime when expandComponent
 
 # Maybe need ToDo:
 1.  the _returnTo path should not be detected in event_base.js.
