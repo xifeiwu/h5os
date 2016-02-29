@@ -236,6 +236,21 @@ service/caldav.expandComponents
     }
   }
   expandComponents: function(components, options, stream, callback)
+service/caldav.expandRecurringEvent
+  @ical: component
+  @options: {
+              maxDate: options.maxDate,
+              iterator: component.iterator,
+              minDate: component.lastRecurrenceId
+            }
+  @stream: streams
+  expandRecurringEvent(ical, localOpts, stream, (err, iter, lastRecurId, uid) => {
+  });
+service/caldav.parseEvent
+  @component: iCalendar string
+  @event: ICAL.Event
+  parseEvent(component, (err, event) => {
+  });
 
 12. Something about recurring_events
 # the logic of recurring event in main thread
