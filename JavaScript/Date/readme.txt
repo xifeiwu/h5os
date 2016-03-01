@@ -109,3 +109,33 @@ date.getDate()
 17
 localDate.getDate();
 18
+
+# summery
+从1970年1月1日到现在本地时间，走过了多少毫秒
+date.valueOf()
+1451708581624
+getLocalTime(date)
+"2016-01-01T18:23:01" bundle.js:24266:4
+date.getTime()
+1451708581624
+
+exports.dateToTransport = function(date) {
+  var result = Object.create(null);
+  var utc = Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    date.getMilliseconds()
+  );
+  var localUtc = date.valueOf();
+  var offset = utc - localUtc;
+  result.utc = utc;
+  result.offset = offset;
+  return result;
+};
+the result of is dateToTransport(date)
+{utc: 1451672581624, offset: -36000000 }
+utc是指当utc是当前本地时间时需要走多少毫秒。
