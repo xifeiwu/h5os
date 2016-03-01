@@ -215,3 +215,8 @@ worker/thread will listen for 'dispatch' signal after it was initialized, and th
  */
 ParseEvent(component, function(err, event) {
 });
+
+5. The logic of creating recurring-event.
+provider/local
+createEvent -> _simulateCaldavProcess
+_simulateCaldavProcess(event, ical, callback);
