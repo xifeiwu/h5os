@@ -363,6 +363,14 @@ worker/thread will listen for 'dispatch' signal after it was initialized, and th
 
 > worker/manager <-> worker/thread <-> service/caldav.js
 
+13. Some important functions about recurring event.
+/**
+ * Parse an ical data/string into primary
+ */
+ParseEvent(component, function(err, event) {
+});
+
+expandRecurringEvent
 13. Format of object stored in db
 There are five properties: ical, eventId, calendarId, iterator, lastRecurrenceId.
 what is 
