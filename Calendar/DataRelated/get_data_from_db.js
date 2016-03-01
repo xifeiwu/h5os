@@ -133,6 +133,29 @@ function deleteAllDataBase() {
     console.log('deleteDatabase error');
   };
 }
+
+function showCounts() {
+  var allDB = Object.keys(STORE).map((key) => {return STORE[key]});
+  var transaction = connection.transaction(allDB, 'readonly');
+  transaction.oncomplete = function commitComplete() {
+    console.log('showCounts is complete.');
+  };
+  transaction.onerror = function commitError(e) {
+    console.log('showCounts is error.');
+  };
+  allDB.forEach((name) => {
+    var store = transaction.objectStore(name);
+    var req = store.count();
+    req.onsuccess = function(evt) {
+      console.log('There are ' + evt.target.result +
+        ' elements in store ' + name);
+    };
+    req.onerror = function() {
+      console.log('request store count error');
+    };
+  })
+}
+
 getConnection();
 
 // deleteAllDataBase()
