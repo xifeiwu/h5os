@@ -275,3 +275,5 @@ updateEventThisOnly: function(date, event, busytime, callback) {
 }
 find iCalString by eventId
 add exceptionEvent to iCalString using ical/composer
+delete origin event by eventId
+_simulateCaldavProcess use iCalString
