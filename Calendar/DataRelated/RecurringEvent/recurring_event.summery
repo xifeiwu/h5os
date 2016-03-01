@@ -210,13 +210,68 @@ worker/thread will listen for 'dispatch' signal after it was initialized, and th
 > worker/manager <-> worker/thread <-> service/caldav.js
 
 4. Some important functions about recurring event.
+#provider/abstract.ensureRecurrencesExpanded -> _expandComponents -> service/caldav.expandComponents
+/**
+ * Ensures recurring events are expanded up to the given date.
+ */
+ensureRecurrencesExpanded: function(maxDate, callback) {
+});
+/**
+ * Ensures recurring events are expanded up to the given date using iCalString Array.
+ */
+_expandComponents: function(calendarId, comps, options, callback) {
+  var stream = this.service.stream(
+    'caldav',
+    'expandComponents',
+    comps,
+    options
+  );
+  var pull = new CaldavPullEvents(
+    stream,
+    {
+      account: account,
+      calendar: calendar,
+      app: this.app,
+      stores: [
+        'busytimes', 'alarms', 'icalComponents'
+      ]
+    }
+  );
+  stream.request(function(err) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    callback(null, pull);
+  });
+}
+
+#service/caldav.js
+> expandComponents -> expandRecurringEvent -> parseEvent
 /**
  * Parse an ical data/string into primary
+ * some parameter are added to options, other work is done by parseEvent.
  */
-ParseEvent(component, function(err, event) {
+expandRecurringEvent: function(component, options, stream, callback) {
+}
+/**
+ * Parse an ical data/string into primary.
+ * @ component is an iCalString.
+ * @ event is an instance of ICAL.Event, with some important method, such as, iterator, getOccurrenceDetails.
+ */
+parseEvent(component, function(err, event) {
 });
+> streamEventsFromLocal
+parseEvent by ical, and get ICAL.Event, 
+process the event by _formatEventFromLocal, and get a result.
+pass the result to caldav_pull_event by 'event' signal
 
-5. The logic of creating recurring-event.
-provider/local
-createEvent -> _simulateCaldavProcess
-_simulateCaldavProcess(event, ical, callback);
+6. Logic of update recurring event
+> updateEventThisOnly
+@date, current date
+@event: new event data
+@busytime: busytime id(not used)
+updateEventThisOnly: function(date, event, busytime, callback) {
+}
+find iCalString by eventId
+add exceptionEvent to iCalString using ical/composer
