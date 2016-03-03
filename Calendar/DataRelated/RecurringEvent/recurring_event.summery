@@ -273,6 +273,9 @@ pass the result to caldav_pull_event by 'event' signal
 @busytime: busytime id(not used)
 updateEventThisOnly: function(date, event, busytime, callback) {
 }
+origin：change iCalString, delete event, simulateCaldavProcess with updated iCalString.
+now: create event with new data, remove related busytime, update iCalString.
+
 find iCalString by eventId
 add exceptionEvent to iCalString using ical/composer
 delete origin event by eventId

@@ -27,6 +27,7 @@
   },
   '_id': 'local-first-1352d3d9-4bb0-4267-b5bc-6d5014954896'
 }
+> Exception Event
 {
   'calendarId': 'local-first',
   'remote': {

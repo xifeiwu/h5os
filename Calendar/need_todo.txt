@@ -16,6 +16,8 @@
 1.13. the difference between router.canonicalPath and router.last
 1.14. Learn more detail about recurring-event.
   How to avoid recreate busytime when expandComponent
+1.15. The use of this.emit.apply(this, event.concat(args));
+1.16. In update of event_mutation, if error will occur when event has no corresponding icalComponent.
 
 # Maybe need ToDo:
 1.  the _returnTo path should not be detected in event_base.js.

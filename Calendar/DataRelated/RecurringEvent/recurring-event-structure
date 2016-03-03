@@ -1,0 +1,127 @@
+1. Recurring event and normal event
+> Recurring Event
+{
+  'calendarId': 'local-first',
+  'remote': {
+    'alarms': [],
+    'id': '1352d3d9-4bb0-4267-b5bc-6d5014954896',
+    'title': 'Title',
+    'recurrenceId': null,
+    'isRecurring': true,
+    'repeat': 'every-week',
+    'description': '',
+    'location': '',
+    'start': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1451610000000
+    },
+    'end': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1451613600000
+    },
+    'timeStamp': 1451788474838,
+    'color': '#6115BF'
+  },
+  '_id': 'local-first-1352d3d9-4bb0-4267-b5bc-6d5014954896'
+}
+> Exception Event
+{
+  'calendarId': 'local-first',
+  'remote': {
+    'alarms': [],
+    'id': '1352d3d9-4bb0-4267-b5bc-6d5014954896',
+    'title': 'Title',
+    'recurrenceId': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1452225600000
+    },
+    'isRecurring': false,
+    'repeat': 'never',
+    'description': '',
+    'location': 'Com',
+    'start': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1452225600000
+    },
+    'end': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1452229200000
+    },
+    'timeStamp': 1451788474832,
+    'color': '#6115BF'
+  },
+  'parentId': 'local-first-1352d3d9-4bb0-4267-b5bc-6d5014954896',
+  '_id': 'local-first-1352d3d9-4bb0-4267-b5bc-6d5014954896-1452225600000'
+}
+> Normal Event
+{
+  'remote': {
+    'start': {
+      'utc': 1451908800000,
+      'offset': -36000000
+    },
+    'startDate': '2016-01-04T22:00:00.000Z',
+    'end': {
+      'utc': 1451912400000,
+      'offset': -36000000
+    },
+    'endDate': '2016-01-04T23:00:00.000Z',
+    'title': 'A',
+    'location': '',
+    'repeat': 'never',
+    'description': '',
+    'recurrenceId': '',
+    'timeStamp': 1451943692677,
+    'isRecurring': false,
+    'alarms': [],
+    'color': '#6115BF',
+    'id': 'e45d608b-ca77-4247-b558-4b31831753f0'
+  },
+  'calendarId': 'local-first',
+  '_id': 'local-first-e45d608b-ca77-4247-b558-4b31831753f0'
+}
+
+
+2. The recurring-event busytime is different from normal busytime
+{
+  '_id': 'local-first-e45d608b-ca77-4247-b558-4b31831753f0-44505fa4-90d1-42b2-88aa-67d63ab5b33d',
+  'eventId': 'local-first-e45d608b-ca77-4247-b558-4b31831753f0',
+  'calendarId': 'local-first',
+  'start': {
+    'utc': 1451908800000,
+    'offset': -36000000
+  },
+  'end': {
+    'utc': 1451912400000,
+    'offset': -36000000
+  }
+}
+
+{
+  'start': {
+    'tzid': 'America/Adak',
+    'offset': -36000000,
+    'utc': 1464915600000
+  },
+  'end': {
+    'tzid': 'America/Adak',
+    'offset': -36000000,
+    'utc': 1464919200000
+  },
+  'recurrenceId': {
+    'tzid': 'America/Adak',
+    'offset': -36000000,
+    'utc': 1464915600000
+  },
+  'eventId': 'local-first-9119c679-c8d9-4758-81a7-ebb670f03a2d',
+  'isException': false,
+  '_id': 'local-first-9119c679-c8d9-4758-81a7-ebb670f03a2d-d8ca2684-8970-4440-acd0-e3d198f66ea1',
+  'calendarId': 'local-first',
+  'startDate': '2016-06-03T11:00:00.000Z',
+  'endDate': '2016-06-03T12:00:00.000Z'
+}
