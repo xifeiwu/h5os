@@ -1,0 +1,145 @@
+# Value of event returned by parseEvent.
+{
+  'component': ['vevent', [
+  ['dtstart', {
+    'tzid': 'America/Adak'
+  },
+  'date-time', '2016-01-01T01:00:00'
+  ], 
+  ['dtend', {
+    'tzid': 'America/Adak'
+  },
+  'date-time', '2016-01-01T02:00:00'], 
+  ['rrule', {},
+  'recur', {
+    'freq': 'WEEKLY',
+    'byday': 'FR'
+  }
+  ], 
+  ['dtstamp', {
+    'tzid': 'America/Adak'
+  },
+  'date-time', '2016-01-02T15:27:37'
+  ], 
+  ['uid', {},
+  'text', '9119c679-c8d9-4758-81a7-ebb670f03a2d'
+  ], 
+  ['description', {},
+  'text', ''], 
+  ['location', {},
+  'text', ''], 
+  ['sequence', {},
+  'integer', 0], 
+  ['status', {},
+  'text', 'CONFIRMED'], 
+  ['summary', {},
+  'text', 'Title'], 
+  ['transp', {},
+  'text', 'OPAQUE']
+  ], []],
+  '_rangeExceptionCache': {},
+  'exceptions': {
+    '2016-01-08T04:00:00': 
+    {
+      'component': ['vevent', [
+      [
+      'dtstart', 
+      {
+        'tzid': 'America/Adak'
+      },
+      'date-time', '2016-01-08T04:00:00'
+      ], 
+      ['dtend', {
+        'tzid': 'America/Adak'
+      },
+      'date-time', '2016-01-08T05:00:00'], 
+      ['recurrence-id', 
+      {
+        'tzid': 'America/Adak'
+      },
+      'date-time', '2016-01-08T04:00:00'
+      ], ['dtstamp', {
+        'tzid': 'America/Adak'
+      },
+      'date-time', '2016-01-02T16:34:33'], 
+      [
+      'uid', {},
+      'text', '1352d3d9-4bb0-4267-b5bc-6d5014954896'
+      ], 
+      [
+      'description', {},
+      'text', ''
+      ], 
+      [
+      'location', {},
+      'text', 'Com'
+      ], 
+      ['sequence', {},
+      'integer', 0], 
+      ['status', {},
+      'text', 'CONFIRMED'], 
+      ['summary', {},
+      'text', 'Title'], 
+      ['transp', {},
+      'text', 'OPAQUE']
+      ], []
+      ],
+      '_rangeExceptionCache': {},
+      'exceptions': {},
+      'rangeExceptions': []
+    }
+  },
+  'rangeExceptions': []
+}
+
+#
+{
+  'alarms': [],
+  'id': '9119c679-c8d9-4758-81a7-ebb670f03a2d',
+  'title': 'Title',
+  'recurrenceId': null,
+  'isRecurring': true,
+  'repeat': null,
+  'description': '',
+  'location': '',
+  'start': {
+    'tzid': 'America/Adak',
+    'offset': -36000000,
+    'utc': 1451610000000
+  },
+  'end': {
+    'tzid': 'America/Adak',
+    'offset': -36000000,
+    'utc': 1451613600000
+  },
+  'timeStamp': 1451946928435,
+  'exceptions': [
+  {
+    'alarms': [],
+    'id': '1352d3d9-4bb0-4267-b5bc-6d5014954896',
+    'title': 'Title',
+    'recurrenceId': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1452225600000
+    },
+    'isRecurring': false,
+    'repeat': 'never',
+    'description': '',
+    'location': 'Com',
+    'start': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1452225600000
+    },
+    'end': {
+      'tzid': 'America/Adak',
+      'offset': -36000000,
+      'utc': 1452229200000
+    },
+    'timeStamp': 1451946928428,
+    'exceptions': null,
+    'color': '#FF0000'
+  }],
+  'color': '#FF0000'
+}
