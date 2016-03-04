@@ -29,6 +29,16 @@ Date 2015-12-07T03:18:37.338Z
 date.toLocaleFormat('%Y-%m-%dT%H:%M:%S');
 "2015-12-07T11:18:37"
 
+toString显示的是Local Time
+> date = new Date();
+< Date 2016-01-05T02:02:12.376Z
+> date.toString('yyyyMMddTHHmmss')
+< "20160104T160212"
+
+new Date()会返回参数指定的UTC time
+> new Date('2016-01-01')
+< Date 2016-01-01T00:00:00.000Z
+
 > Date有个Date.prototype.toLocaleString()方法可以将时间字符串返回用户本地字符串格式，这个方法还有两个子方法Date.prototype.toLocaleDateString和Date.prototype.toLocaleTimeString，这两个方法返回值分别表示日期和时间，加一起就是Date.prototype.toLocaleString的结果。
 
 > get time zone
