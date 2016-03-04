@@ -151,3 +151,18 @@ accountStore.get(model._id, function(err, store) {
       console.log(account);
     });
   }
+
+# Crete busytime with all properties.
+  createBusytime: function(event) {
+    return {
+      _id: event._id + '-' + uuid.v4(),
+      eventId: event._id,
+      calendarId: event.calendarId,
+      recurrenceId: event.remote.recurrenceId,
+      start: event.remote.start,
+      end: event.remote.end,
+      startDate: Calc.dateFromTransport(event.remote.start),
+      endDate: Calc.dateFromTransport(event.remote.end),
+      isException: true
+    };
+  },
