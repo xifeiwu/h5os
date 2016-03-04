@@ -17,3 +17,19 @@ for(var i = 0; i < 10; i++) {
 }
 console.log(odd);
 console.log(even);
+
+var MyClass = function(name) {
+  this.name = name;
+}
+MyClass.prototype = {
+  getName: function() {
+    return this.name;
+  },
+
+  toString: function() {
+    return 'My name is ' + this.name;
+  }
+}
+var myClass = new MyClass('hehe.');
+console.log(myClass);
+console.log(JSON.stringify(myClass));
