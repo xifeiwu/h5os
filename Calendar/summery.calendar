@@ -196,3 +196,14 @@ value of busytime
 > event_detail:
 normal: value of Event.
 recurring: value of Event, but DateTime is from Busytime.
+
+14. something hard to understand in H5OS: 
+date = new Date('2016-03-14T22:00:00.000Z')
+Date 2016-03-14T22:00:00.000Z
+date.toLocaleString()
+"Mon Mar 14 13:00:00 2016"
+date2 = new Date('2016-03-07T22:00:00.000Z');
+Date 2016-03-07T22:00:00.000Z
+date2.toLocaleString()
+> The 
+11:59AM -> 12:00PM -> 12:59PM -> 01:00PM -> 11:59PM -> 12:00AM(next day)

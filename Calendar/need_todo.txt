@@ -27,6 +27,11 @@ Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remai
 2.  the workflow of jumpping from one page to another is not clear.
 3.  presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
 
+
+date = new Date('2016-03-14T22:00:00.000Z');
+date.toLocaleString();
+date2 = new Date('2016-03-07T22:00:00.000Z');
+date2.toLocaleString();
 # Has Done:
 1.1. The Error of add Event May be related with offline Calendar.
 1.2. learn more about the add and remove event of database Accounts and Calendars.
