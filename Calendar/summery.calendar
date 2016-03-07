@@ -160,6 +160,32 @@ Maybe caused by transaction of add data to database.
 10.
 An IndexedDB transaction that was not yet complete has been aborted due to page navigation.
 
+12. The logic of event_base
+event_base is super class of modify_event, event_base does not have method onactive.
+The active of modify_event: call onactive of event_base, add keydown event listener.
+The view.onactive is called as event_base does not have function onactive.
+The first entry point of event base is dispatch.
+  onactive: function() {
+    EventBase.prototype.onactive.apply(this, arguments);
+    this.element.addEventListener('keydown', this._keyDownHandler);
+  },
+  onactive: function() {
+    // seen can be set to anything other than false to override this behaviour
+    if (this.seen === false) {
+      this.onfirstseen();
+    }
+
+    // intentionally using 'in'
+    if ('dispatch' in this) {
+      this.dispatch.apply(this, arguments);
+    }
+
+    this.seen = true;
+    if (this.element) {
+      this.element.classList.add(this.activeClass);
+    }
+  },
+
 13. The value shown in modify_event, event_list and event_detail.
 > modify_event:
 value of event, with startDate and endDate set by current time.
