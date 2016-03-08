@@ -26,7 +26,8 @@ Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remai
     event_base.js下的dispatch需要注意。
 2.  the workflow of jumpping from one page to another is not clear.
 3.  presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
-
+4. The callback value of localProvider.createEvent is diffrent between recurring and non-recurring event.
+5. The iCalComponent is pushed to iCalQueue twice in caldav_pull_event, one from signal event and another is from 'component' signal.
 
 date = new Date('2016-03-14T22:00:00.000Z');
 date.toLocaleString();

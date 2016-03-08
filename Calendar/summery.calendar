@@ -186,6 +186,39 @@ The first entry point of event base is dispatch.
     }
   },
 
+12. The logic of primary function(listener of saveKey)
+-> formData(get the data of form)
+  var fields = {
+    title: this.getEl('title').value,
+    location: this.getEl('location').value,
+    repeat: this.getEl('repeat').value,
+    calendarId: this.getEl('calendarId').value,
+    description: this.getEl('description').value,
+    isAllDay: this.getEl('allday').checked,
+    recurrenceId: '',
+    timeStamp: ,
+    isRecurring: ,
+    startDate: ,
+    endDate: ,
+    alarms: []
+  };
+-> this.event.updateAttributes(update event model using form data)
+-> save logic
+1. if the event isSaved, then update this event.
+> if (event.remote.isRecurring && originalRepeat !== 'never')
+    current event is recurring, and former is recurring.
+    updateEventThisOnly(enable if repeat property is changed)
+    updateEventAllFuture
+  else
+    updateEvent
+    if (event.data.remote.isRecurring && originalRepeat === 'never')
+      update from normal event to recurring event.
+    else
+      update normal event
+
+2. if the event isNotSaved, then create a new event.
+  createEvent
+
 13. The value shown in modify_event, event_list and event_detail.
 > modify_event:
 value of event, with startDate and endDate set by current time.
@@ -198,6 +231,7 @@ normal: value of Event.
 recurring: value of Event, but DateTime is from Busytime.
 
 14. something hard to understand in H5OS: 
+timezone is American/Adak
 date = new Date('2016-03-14T22:00:00.000Z')
 Date 2016-03-14T22:00:00.000Z
 date.toLocaleString()
