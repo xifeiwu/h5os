@@ -160,7 +160,7 @@ Maybe caused by transaction of add data to database.
 10.
 An IndexedDB transaction that was not yet complete has been aborted due to page navigation.
 
-12. The logic of event_base
+11. The logic of event_base
 event_base is super class of modify_event, event_base does not have method onactive.
 The active of modify_event: call onactive of event_base, add keydown event listener.
 The view.onactive is called as event_base does not have function onactive.
@@ -241,3 +241,50 @@ Date 2016-03-07T22:00:00.000Z
 date2.toLocaleString()
 > The 
 11:59AM -> 12:00PM -> 12:59PM -> 01:00PM -> 11:59PM -> 12:00AM(next day)
+
+15. The date rule in Calendar
+The format of busytime and event on both local and online
+var cDate = {
+  start: {
+    tzid: "Asia/Baghdad",
+    offset: 10800000,
+    utc: 1457647200000
+  },
+  startDate: new Date('2016-03-10T19:00:00.000Z')
+}
+The mean of properties in cDate:
+> local date (current time):
+2016-03-10T22:00:00.000
+> cDate.start.utc (if utc time is local time, how many milliseconds from 1970.01.01)
+new Date(cDate.start.utc)
+Date 2016-03-10T22:00:00.000Z
+> cDate.startDate (the time of current utc time)
+cDate.startDate (when local)
+Date 2016-03-10T19:00:00.000Z
+> the functions used to transfor between startDate and start is:
+  > service.caldav.formatICALTime
+    from startDate to start.
+  > Calc.dateToTransport
+    from start to startDate.
+# The date in iCalendar string and ICAL component is local time.
+
+exports.dateToTransport = function(date) {
+  var result = Object.create(null);
+  var utc = Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    date.getMilliseconds()
+  );
+  var localUtc = date.valueOf();
+  var offset = utc - localUtc;
+  result.utc = utc;
+  result.offset = offset;
+  return result;
+};
+the result of is dateToTransport(date)
+{utc: 1451672581624, offset: -36000000 }
+utc是指当utc是当前本地时间时需要走多少毫秒。
