@@ -42,3 +42,15 @@ busytime = {
   "endDate": "2015-12-21T13:00:00.000Z"
 }
 var {_id, startDate, endDate, eventId} = busytime;
+
+
+var result = {
+  tzid: 'china',
+  // from seconds to ms
+  offset: 1000,
+  // from seconds to ms
+  utc: '431431'
+};
+result.isDate = true;
+console.log(result);
+// { tzid: "china", offset: 1000, utc: "431431", isDate: true }
