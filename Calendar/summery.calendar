@@ -207,9 +207,11 @@ The first entry point of event base is dispatch.
 1. if the event isSaved, then update this event.
 > if (event.remote.isRecurring && originalRepeat !== 'never')
     current event is recurring, and former is recurring.
-    updateEventThisOnly(enable if repeat property is changed)
+    updateEventThisOnly(is disabled when the repeat properties is not the same)
     updateEventAllFuture
   else
+    (current event is normal or former is normal)
+    [current event is normal, former is recurring. then delete all event except today]
     updateEvent
     if (event.data.remote.isRecurring && originalRepeat === 'never')
       update from normal event to recurring event.
