@@ -54,3 +54,15 @@ var result = {
 result.isDate = true;
 console.log(result);
 // { tzid: "china", offset: 1000, utc: "431431", isDate: true }
+
+
+// demo for Error
+function cb(err, data) {
+  if (err) {
+    console.log(err)
+  }
+}
+function getData(cb) {
+  cb(new Error('not found'));
+}
+getData(cb);
