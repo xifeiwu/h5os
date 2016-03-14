@@ -166,3 +166,22 @@ accountStore.get(model._id, function(err, store) {
       isException: true
     };
   },
+
+# logic for updateException event.
+var rDate = vEvent.recurrenceId.toJSDate().toString('yyyyMMddTHHmmss');
+var exDateProp = new ICAL.Property('EXDATE');
+exDateProp.setParameter('TZID', vTimezone.tzid);
+exDateProp.setValue(rDate);
+this._getRecurringVEvent(vCalendar).component.addProperty(exDateProp);
+vCalendar.removeSubcomponent(vEvent.component);
+
+this.deleteEvent(event, (err, evt) => {
+  if (err) {
+    return callback(err);
+  }
+  this._simulateCaldavProcess(event, vCalendar.toString(), (err) => {
+    if (err) {
+      return callback(err);
+    }
+  });
+});
