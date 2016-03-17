@@ -47,8 +47,8 @@ getTimezoneOffset()方法可返回格林威治时间和本地时间之间的时�
 
 
 
-
 3. constructor of Date.
+All the parameters passed to Date constructor is local date.
 new Date()
 new Date(milliseconds)
 new Date(datestring)
@@ -70,6 +70,12 @@ minutes - 0-59之间的分钟数
 seconds - 0-59之间的秒数
 microseconds - 0-999之间的毫秒数
 
+> date = new Date(2016, 0, 3)
+< Date 2016-01-02T16:00:00.000Z
+> date.getDate()
+< 3
+> date.getUTCDate()
+< 2
 
 6. diffrence between gecko and browser.
 In Gecko:
