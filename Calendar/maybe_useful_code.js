@@ -185,3 +185,18 @@ this.deleteEvent(event, (err, evt) => {
     }
   });
 });
+
+# parameter decision
+  // case 1. given a calendar
+  if (objectOrId instanceof CalendarModel) {
+    result.calendar = objectOrId;
+    accountStore.get(objectOrId.accountId, fetchAccount);
+    return;
+  }
+
+  // case 2 given a calendar id or object
+
+  if (typeof(objectOrId) === 'object') {
+    objectOrId = objectOrId.calendarId;
+  }
+    
