@@ -55,7 +55,6 @@ result.isDate = true;
 console.log(result);
 // { tzid: "china", offset: 1000, utc: "431431", isDate: true }
 
-
 // demo for Error
 function cb(err, data) {
   if (err) {
@@ -66,3 +65,12 @@ function getData(cb) {
   cb(new Error('not found'));
 }
 getData(cb);
+
+// The use of Map.
+var days = new Map();
+days.set('first', 'Monday');
+days.set('second', 'Tuesday');
+days.set('three', 'Wendesday');
+for (var key of days.keys()) {
+  console.log(days.get(key))
+}
