@@ -307,3 +307,14 @@ startDate = "2016-06-09T17:00:00.000Z"
 < Date 2016-06-09T17:00:00.000Z
 > date2.toString()
 < "Fri Jun 10 2016 01:00:00 GMT+0800 (CST)"
+
+16. date format transfer.
+> service/caldav.js 
+formatInputTime: from transportTime to ICALTime
+> ICALTime.toJSDate: from ICALTime to JSDate.
+> ical.js
+dateToTransport: from JSDate to transportTime.
+
+17. ical_recur_expansion
+service/caldav.js expandRecurringEvent -> parseEvent ->
+service/ical_recur_expansion forEach

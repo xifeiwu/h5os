@@ -20,6 +20,8 @@
 1.16. In update of event_mutation, if error will occur when event has no corresponding icalComponent.
 1.17. if the property repeat of recurring event is changed to never, a dialog will appear:
 Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remains on Calendar.
+1.18 A better way to organize coding summery.
+1.19 The result is not correct when there are more than one event in icalendar string.
 
 # Maybe need ToDo:
 1.  the _returnTo path should not be detected in event_base.js.
