@@ -41,16 +41,20 @@ request.onsuccess = function(e) {
     console.log('There is no alarm.');
   } else {
     console.log('There are ' + length + ' alarms.');
-    for (var i = 0; i < length; i++) {
-      mozAlarm = data[i].data;
-      console.log(mozAlarm);
-      if (
-        mozAlarm &&
-        'eventId' in mozAlarm &&
-        'trigger' in mozAlarm
-      ) {
-      }
-    }    
+    var showDetail = false;
+    if (showDetail) {
+      for (var i = 0; i < length; i++) {
+        mozAlarm = data[i].data;
+        console.log(mozAlarm);
+        if (
+          mozAlarm &&
+          'eventId' in mozAlarm &&
+          'trigger' in mozAlarm
+        ) {
+        }
+      }      
+    }
+  
   }
 };
 request.onerror = function() {
@@ -70,6 +74,26 @@ request.onerror = function () {
   console.log('operation failed: ' + this.error);
 }
 
+/**
+ * demo for remove alarm by id.
+ */
+_removeDependents: function(alarmId, trans) {
+  trans.addEventListener('complete', () => {
+    var request = navigator.mozAlarms.getAll();
+    request.onsuccess = function (e) {
+      e.target.result.some((alarm) => {
+        if (alarm.data._id === alarmId) {
+          navigator.mozAlarms.remove(alarm.id);
+          return true;
+        }
+        return false;
+      });
+    }
+    request.onerror = function () {
+      debug('remove alarm error.');
+    }
+  });
+},
 
 # unrelated code about notification.
 As alarm is always work with notification, which is used to notice user that alarm is triggered.
