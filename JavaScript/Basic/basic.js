@@ -80,6 +80,9 @@ function Timespan(startDate, endDate) {
   this.start = startDate.valueOf();
   this.end = endDate.valueOf();
 }
+Timespan.fromJSON = function(obj) {
+  return new Timespan(obj.start, obj.end);
+}
 Timespan.prototype = {
   toJSON: function() {
     return {
@@ -87,9 +90,4 @@ Timespan.prototype = {
       end: this.end
     };
   },
-  fromJSON: function(obj) {
-    this.start = obj.start;
-    this.end = obj.end;
-    return this;
-  }
 };
