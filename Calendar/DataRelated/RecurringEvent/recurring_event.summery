@@ -100,9 +100,9 @@ service/caldav.parseEvent
 
 3. Something about recurring_events
 # the logic of recurring event in main thread
-controllers/recurring_events is only required and initialized in app.js, and listen for signal 'monthchange'.
+controllers/recurring_events is only required and initialized in app.js, and listen for signal 'monthChange'.
 > js/controllers/recurring_events.js
-'monthchange' -> queueExpand -> expand -> _expandProvider -> provider/abstract.ensureRecurrencesExpanded
+'monthChange' -> queueExpand -> expand -> _expandProvider -> provider/abstract.ensureRecurrencesExpanded
 > js/provider/abstract.js
 ensureRecurrencesExpanded -> icalComponents.findRecurrencesBefore -> _expandComponents -> 
 # _expandComponents is an important method in main thread.
