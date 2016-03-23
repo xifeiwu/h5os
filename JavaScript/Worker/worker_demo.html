@@ -5,6 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Web Worker</title>
     <script>
+function Timespan(startDate, endDate) {
+  this.start = startDate.valueOf();
+  this.end = endDate.valueOf();
+}
+Timespan.prototype = {
+  toJSON: function() {
+    return {
+      start: this.start,
+      end: this.end
+    };
+  },
+  fromJSON: function(obj) {
+    this.start = obj.start;
+    this.end = obj.end;
+    return this;
+  }
+};
     window.addEventListener('load', function() {
       var board = document.querySelector('#message');
       var content = document.querySelector('.content');
@@ -20,8 +37,17 @@
         addContentToBoard('Worker said: ' + oEvent.data);
       };
       document.querySelector('.send').addEventListener('click', function() {
+        /**
+         * to post value
+         */
         var value = content.value;
         content.value = '';
+
+        /**
+         * worker can not use the method of object posted from main thread.
+         */
+        // var value = new Timespan(1, 100);
+
         myWorker.postMessage(value);
       });
     });
