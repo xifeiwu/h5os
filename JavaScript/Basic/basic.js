@@ -74,3 +74,22 @@ days.set('three', 'Wendesday');
 for (var key of days.keys()) {
   console.log(days.get(key))
 }
+
+// demo to get an Obj.
+function Timespan(startDate, endDate) {
+  this.start = startDate.valueOf();
+  this.end = endDate.valueOf();
+}
+Timespan.prototype = {
+  toJSON: function() {
+    return {
+      start: this.start,
+      end: this.end
+    };
+  },
+  fromJSON: function(obj) {
+    this.start = obj.start;
+    this.end = obj.end;
+    return this;
+  }
+};
