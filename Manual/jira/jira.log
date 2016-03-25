@@ -1,7 +1,5 @@
-CORE-1155: directly enable adb devtool when debugging with webide. r=alive
-
-type = BUG
-OPEN VERIFY IN PROCESS
+# search the status of calendar ticket.
+issuetype = Bug AND "Epic Link" = CORE-171 AND resolution = Unresolved ORDER BY due DESC
 
 Application=Calendar AND assignee=xifei.wu and type=Bug and status=Resolved
 Application=Calendar AND issuetype=Bug AND status!=Verified
@@ -10,6 +8,5 @@ issuetype = Bug AND "Epic Link" = CORE-171 AND resolution = Unresolved
 # search issue for Calendar
 issuetype = Bug AND "Epic Link" = CORE-171 AND resolution = Unresolved AND assignee != EMPTY And assignee != ext.t2mobile-qa
 
-CORE-3056: There should be no scroll bar in h5-input-wrapper when there is only one line
-CORE-1274: Use the SoftkeyManager API to replace metachange soft-keys
-CORE-2276: Cannot add repeating events
+# search the status of functional ticket status from vincent.
+project in (CORE, HSRV, OT) AND issuetype = Bug AND priority in (Highest, High) AND cf[10604] = Functionality AND assignee in (membersOf("Beijing RD")) AND resolution = Unresolved AND assignee = xifei.wu ORDER BY assignee ASC, createdDate DESC
