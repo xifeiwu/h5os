@@ -22,10 +22,10 @@ Timespan.prototype = {
     return this;
   }
 };
+    var myWorker = new Worker("responder.js");
     window.addEventListener('load', function() {
       var board = document.querySelector('#message');
       var content = document.querySelector('.content');
-      var myWorker = new Worker("responder.js");
       function addContentToBoard(value) {
         // var node = document.createTextNode(value);
         var node = document.createElement('div');

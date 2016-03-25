@@ -98,7 +98,7 @@ function clearDataBase(name) {
 }
 
 function getSelectedData(name, indexName, indexValue) {
-  var transaction = connection.transaction(name, 'readwrite');
+  var transaction = connection.transaction(name, 'readonly');
   var indexedStore = transaction.objectStore(name).index(indexName);
   var req = indexedStore.openCursor(window.IDBKeyRange.only(indexValue));
   req.onsuccess = function(event) {
