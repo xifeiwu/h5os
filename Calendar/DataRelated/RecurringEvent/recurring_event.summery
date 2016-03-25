@@ -10,7 +10,7 @@ initialize an Responder object named stream, and add function request to stream,
 The logic of stream.request is: _ensureActiveWorker, _startWorker, add listener to the pending queue, postMessage to the worker.
 _ensureActiveWorker(role) -> self._addPending -> worker.instance.postMessage
 
-2. The process of argument transfor from provider/abstract to service/caldav.js, take abstract.ensureRecurrencesExpanded for example.
+2. The process of argument transfer from provider/abstract to service/caldav.js, take abstract.ensureRecurrencesExpanded for example.
 ensureRecurrencesExpanded -> _expandComponents
 provicer/abstract._expandComponents:
   @'caldav' is a role string
@@ -266,17 +266,37 @@ parseEvent by ical, and get ICAL.Event,
 process the event by _formatEventFromLocal, and get a result.
 pass the result to caldav_pull_event by 'event' signal
 
-6. Logic of update recurring event
-> updateEventThisOnly
-@date, current date
-@event: new event data
-@busytime: busytime id(not used)
-updateEventThisOnly: function(date, event, busytime, callback) {
-}
-origin：change iCalString, delete event, simulateCaldavProcess with updated iCalString.
-now: create event with new data, remove related busytime, update iCalString.
 
-find iCalString by eventId
-add exceptionEvent to iCalString using ical/composer
-delete origin event by eventId
-_simulateCaldavProcess use iCalString
+5. The logic of recurring event
+> If calendarId or repeat is changed, updateEvent this only is not allowed.
+> After chagne exception event to recurring event, the exception event still exist.
+> Something not correct:
+isException is exist in Busytime, but not in Event.
+the logic of delete normal event and exception event should not the same.
+
+6. all-day recurring event and non-all-day recurring event.
+The format of recurrenceId in exception event is depended on whether its recurring event is all-day or not.
+There are many differences: 
+> The property of ICAL.Time:
+  if (parentModel.isAllDay) {
+    eventComp += 'RECURRENCE-ID;VALUE=DATE:' +
+      parentModel.startDate.toString('yyyyMMdd') + '\r\n';
+    eventComp += 'TRANSP:TRANSPARENT\r\n';
+  } else {
+    eventComp += 'RECURRENCE-ID;TZID=' + tzid + ':' +
+      parentModel.startDate.toString('yyyyMMddTHHmmss') + '\r\n';
+    eventComp += 'TRANSP:OPAQUE\r\n';
+  }
+> The format of transport time
+Transport time and JS Date object.
+  recurrenceId = {
+    'tzid': 'America/Adak',
+    'offset': -36000000,
+    'utc': 1452225600000
+  },
+  recurrenceId = {
+    'tzid':'floating',
+    'offset':0,
+    'utc':1464652800000,
+    'isDate':true
+  }

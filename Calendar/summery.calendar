@@ -292,8 +292,3 @@ exports.dateToTransport = function(date) {
 the result of is dateToTransport(date)
 {utc: 1451672581624, offset: -36000000 }
 utc是指当utc是当前本地时间时需要走多少毫秒。
-
-16. The logic of recurring event
-if calendarId or repeat is changed, updateEvent this only is not allowed.
-after chagne exception event to recurring event, the exception event still exist.
-the logic of editAllFuture.

@@ -28,11 +28,26 @@ Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remai
 3.  presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
 4. The callback value of localProvider.createEvent is diffrent between recurring and non-recurring event.
 5. The iCalComponent is pushed to iCalQueue twice in caldav_pull_event, one from signal event and another is from 'component' signal.
+6. The logic of Date.
+ModifyEvent will move to next day when current hour is 23(May be need to fix.), related data list below:
+> today = new Date();
+< Date 2016-01-05T15:15:59.824Z
+> today.getHours()
+< 23
+> date = new Date('2016-01-05T16:00:00.000Z');
+< Date 2016-01-05T16:00:00.000Z
+> date.toString('yyyyMMddTHHmmss')
+< "20160106T000000"
+> date.setHours(24)
+< 1452096000000
+> date.toString('yyyyMMddTHHmmss')
+< "20160107T000000"
 
 date = new Date('2016-03-14T22:00:00.000Z');
 date.toLocaleString();
 date2 = new Date('2016-03-07T22:00:00.000Z');
 date2.toLocaleString();
+
 # Has Done:
 1.1. The Error of add Event May be related with offline Calendar.
 1.2. learn more about the add and remove event of database Accounts and Calendars.
