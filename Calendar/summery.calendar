@@ -314,7 +314,3 @@ formatInputTime: from transportTime to ICALTime
 > ICALTime.toJSDate: from ICALTime to JSDate.
 > ical.js
 dateToTransport: from JSDate to transportTime.
-
-17. ical_recur_expansion
-service/caldav.js expandRecurringEvent -> parseEvent ->
-service/ical_recur_expansion forEach

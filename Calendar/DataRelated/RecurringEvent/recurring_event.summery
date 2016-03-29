@@ -266,15 +266,7 @@ parseEvent by ical, and get ICAL.Event,
 process the event by _formatEventFromLocal, and get a result.
 pass the result to caldav_pull_event by 'event' signal
 
-
-5. The logic of recurring event
-> If calendarId or repeat is changed, updateEvent this only is not allowed.
-> After chagne exception event to recurring event, the exception event still exist.
-> Something not correct:
-isException is exist in Busytime, but not in Event.
-the logic of delete normal event and exception event should not the same.
-
-6. all-day recurring event and non-all-day recurring event.
+5. all-day recurring event and non-all-day recurring event.
 The format of recurrenceId in exception event is depended on whether its recurring event is all-day or not.
 There are many differences: 
 > The property of ICAL.Time:
@@ -300,3 +292,36 @@ Transport time and JS Date object.
     'utc':1464652800000,
     'isDate':true
   }
+
+
+6. The logic of recurring event
+> If calendarId or repeat is changed, updateEvent this only is not allowed.
+> After chagne exception event to recurring event, the exception event still exist.
+> updateEventAllFuture:
+whether the new updated recurring event all future belongs to the main recurring event: change startTime or recurring rule.
+if they are belong to the same event, and will be deleted or update together.
+else the exception event of main recurring event will be rewrited by new recurring event.
+
+7. expand by month
+The point need to notice when change the expanding window from lastRecurrenceId to monthSpan:
+> the until of VEVENT will affect the exdate property.
+> edit all future will affect the busytimes of former edit all future and exdate busytimes.
+> google calendar应该没有event这个概念。
+> add component is called two times, the component is added in function handleEventSync again.
+> service/ical_recur_expansion.js, the unixtime is used for ICAL.Time.compare. For the initialization of ICAL.Time, the name of timezone can be used only after it is registered in ICAL.TimezoneService.
+So I think register it ahead is necessary.      
+var id = zone.tzid;
+if (!ICAL.TimezoneService.has(id)) {
+  ICAL.TimezoneService.register(id, zone);
+}
+
+getRecurringVEvent
+  var vEvents = vCalendar.getAllSubcomponents('vevent').forEach((component) => {
+    return new ICAL.Event(component);
+  }).filter((event) => {
+    return event.isRecurring();
+  });
+  if (!vEvents) {
+    return null;
+  }
+  return vEvents[0];
