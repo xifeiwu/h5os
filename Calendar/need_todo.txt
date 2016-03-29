@@ -61,3 +61,5 @@ date2.toLocaleString();
 1.12. the template logic for alert in modify event.
 2.4. why _detectPersistType return 'update' even ('_id' in object) is false. As store/ical_component.js rewrite _detectPersistType.
 
+# important pr
+https://git.acadine.com/feature-phone/calendar/pull/326
