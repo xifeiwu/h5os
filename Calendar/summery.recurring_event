@@ -315,6 +315,68 @@ if (!ICAL.TimezoneService.has(id)) {
   ICAL.TimezoneService.register(id, zone);
 }
 
+8. something about alarm
+> the alarm format in event
+5 minute before alert in js/modify_event->formData and service/caldav.js->expandRecurringEvent
+{
+  action: 'DISPLAY',
+  trigger: -300
+}
+in iCalendar string.
+exports.alarm = function(alarm) {
+  var alarmComp = '';
+  alarmComp += 'BEGIN:VALARM\r\n';
+  if (alarm.trigger < 0) {
+    alarmComp += 'TRIGGER:-PT' + (Math.abs(alarm.trigger) / 60) + 'M\r\n';
+  } else {
+    alarmComp += 'TRIGGER:PT' + (Math.abs(alarm.trigger) / 60) + 'M\r\n';
+  }
+  alarmComp += 'ACTION:' + alarm.action + '\r\n';
+  alarmComp += 'END:VALARM\r\n';
+  return alarmComp;
+};
+
+> the alarm structure in mozAlarms and IndexedDB
+{
+  "id": 1306,
+  "date": "2016-03-31T08:00:00.000Z",
+  "respectTimezone": "honorTimezone",
+  "data": {
+    "startDate": {
+      "offset": 0,
+      "utc": 1459411200000
+    },
+    "eventId": "local-first-66774b2e-8be9-4056-88a5-d75433f25f6e",
+    "busytimeId": "local-first-66774b2e-8be9-4056-88a5-d75433f25f6e-8fa3f328-91d2-4cc5-b8a7-5b35a5597633",
+    "_id": 148,
+    "triggered": {
+      "offset": 0,
+      "utc": 1459411200000
+    }
+  }
+}
+{
+  "startDate": {
+    "offset": 0,
+    "utc": 1459411200000
+  },
+  "eventId": "local-first-66774b2e-8be9-4056-88a5-d75433f25f6e",
+  "busytimeId": "local-first-66774b2e-8be9-4056-88a5-d75433f25f6e-8fa3f328-91d2-4cc5-b8a7-5b35a5597633",
+  "_id": 148,
+  "triggered": {
+    "offset": 0,
+    "utc": 1459411200000
+  }
+}
+> How to deal with alarm day before current time.
+The logic for recurring event and normal event is the same.
+  var alarmDate = Calc.dateFromTransport(item.end);
+  if (alarmDate.valueOf() < now) {
+    continue;
+  }
+  this.alarmQueue.push(alarm);
+
+
 getRecurringVEvent
   var vEvents = vCalendar.getAllSubcomponents('vevent').forEach((component) => {
     return new ICAL.Event(component);

@@ -45,7 +45,7 @@ request.onsuccess = function(e) {
     if (showDetail) {
       for (var i = 0; i < length; i++) {
         mozAlarm = data[i].data;
-        console.log(mozAlarm);
+        console.log(JSON.stringify(mozAlarm));
         if (
           mozAlarm &&
           'eventId' in mozAlarm &&
@@ -54,7 +54,6 @@ request.onsuccess = function(e) {
         }
       }      
     }
-  
   }
 };
 request.onerror = function() {
