@@ -28,62 +28,62 @@
 }
 > Exception Event
 {
-  'calendarId': 'local-first',
-  'remote': {
-    'alarms': [],
-    'id': '1352d3d9-4bb0-4267-b5bc-6d5014954896',
-    'title': 'Title',
-    'recurrenceId': {
-      'tzid': 'America/Adak',
-      'offset': -36000000,
-      'utc': 1452225600000
+  "calendarId": "local-first",
+  "remote": {
+    "alarms": [],
+    "id": "c21ltof3m4gd3ucs0pmhg2v6ho@google.com",
+    "title": "Title",
+    "recurrenceId": {
+      "tzid": "Asia/Shanghai",
+      "offset": 28800000,
+      "utc": 1452214800000
     },
-    'isRecurring': false,
-    'repeat': 'never',
-    'description': '',
-    'location': 'Com',
-    'start': {
-      'tzid': 'America/Adak',
-      'offset': -36000000,
-      'utc': 1452225600000
+    "isRecurring": false,
+    "isException": true,
+    "repeat": "never",
+    "description": "",
+    "location": "Com",
+    "start": {
+      "tzid": "Asia/Shanghai",
+      "offset": 28800000,
+      "utc": 1452312000000
     },
-    'end': {
-      'tzid': 'America/Adak',
-      'offset': -36000000,
-      'utc': 1452229200000
+    "end": {
+      "tzid": "Asia/Shanghai",
+      "offset": 28800000,
+      "utc": 1452315600000
     },
-    'timeStamp': 1451788474832,
-    'color': '#6115BF'
+    "timeStamp": 1452035477638,
+    "color": "#FF0000"
   },
-  'parentId': 'local-first-1352d3d9-4bb0-4267-b5bc-6d5014954896',
-  '_id': 'local-first-1352d3d9-4bb0-4267-b5bc-6d5014954896-1452225600000'
+  "parentId": "local-first-c21ltof3m4gd3ucs0pmhg2v6ho@google.com",
+  "_id": "local-first-c21ltof3m4gd3ucs0pmhg2v6ho@google.com-1452214800000"
 }
 > Normal Event
 {
-  'remote': {
-    'start': {
-      'utc': 1451908800000,
-      'offset': -36000000
+  "remote": {
+    "start": {
+      "utc": 1452067200000,
+      "offset": 28800000
     },
-    'startDate': '2016-01-04T22:00:00.000Z',
-    'end': {
-      'utc': 1451912400000,
-      'offset': -36000000
+    "startDate": "2016-01-06T00:00:00.000Z",
+    "end": {
+      "utc": 1452070800000,
+      "offset": 28800000
     },
-    'endDate': '2016-01-04T23:00:00.000Z',
-    'title': 'A',
-    'location': '',
-    'repeat': 'never',
-    'description': '',
-    'recurrenceId': '',
-    'timeStamp': 1451943692677,
-    'isRecurring': false,
-    'alarms': [],
-    'color': '#6115BF',
-    'id': 'e45d608b-ca77-4247-b558-4b31831753f0'
+    "endDate": "2016-01-06T01:00:00.000Z",
+    "title": "22a",
+    "location": "",
+    "repeat": "never",
+    "description": "",
+    "timeStamp": 1452035043310,
+    "isRecurring": false,
+    "alarms": [],
+    "color": "#6115BF",
+    "id": "68500248-f954-4710-993e-e59fdc1fd693"
   },
-  'calendarId': 'local-first',
-  '_id': 'local-first-e45d608b-ca77-4247-b558-4b31831753f0'
+  "calendarId": "local-first",
+  "_id": "local-first-68500248-f954-4710-993e-e59fdc1fd693"
 }
 
 
