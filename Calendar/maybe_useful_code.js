@@ -199,4 +199,85 @@ this.deleteEvent(event, (err, evt) => {
   if (typeof(objectOrId) === 'object') {
     objectOrId = objectOrId.calendarId;
   }
-    
+
++exports.getTimezone = function(calendarString) {
++  var vCalendar = ICAL.Component.fromString(calendarString);
++  var vTimezone = new ICAL.Timezone(
++    vCalendar.getFirstSubcomponent('vtimezone'));
++  var id = vTimezone.tzid;
++  if (!ICAL.TimezoneService.has(id)) {
++    ICAL.TimezoneService.register(id, vTimezone);
++  }
++  return vTimezone;
++};
+
+
+  // _toICALTime: function(milliseconds, tzid) {
+  //   var date = new Date(milliseconds);
+  //   return new ICAL.Time({
+  //     year: date.getFullYear(),
+  //     month: date.getMonth() + 1,
+  //     day: date.getDate(),
+  //     hour: date.getHours(),
+  //     minute: date.getMinutes(),
+  //     second: date.getSeconds(),
+  //     timezone: tzid
+  //   });
+  // },
+
+ /**
++ * convert the startDate in alarm to float timezone
++ */
++exports.toUTCTransport = function(startDate) {
++  if (startDate.offset !== 0) {
++    startDate.tzid = 'UTC';
++    startDate.utc = startDate.utc - startDate.offset;
++    startDate.offset = 0;
++  }
++  return startDate;
++};
+,
+
+  /*
+   * find all the busytimes with alarm in the date
+   *
+   * @param {Date} date to find.
+   * @param {IDBTransaction} trans transaction.
+   * @param {Function} callback node style [err, counts of busytimes].
+   */
+  findBusytimesByAlarm: function(date, trans, callback) {
+    var start = Calc.startOfDay(date).valueOf();
+    var end = Calc.endOfDay(date).valueOf();
+    var results = [];
+    if (typeof(trans) === 'function') {
+      callback = trans;
+      trans = undefined;
+    }
+    if (!trans) {
+      trans = this.db.transaction(this._store, 'readonly');
+    }
+    if (callback) {
+      trans.addEventListener('complete', function() {
+        if (callback) {
+          callback(null, results);
+        }
+      });
+      trans.addEventListener('error', function(event) {
+        if (callback) {
+          callback(event);
+        }
+      });
+    }
+    var indexedStore = trans.objectStore(this._store).index('alarm');
+    var req = indexedStore.openCursor(window.IDBKeyRange.bound(start, end));
+    req.onsuccess = function(evt) {
+      var cursor = evt.target.result;
+      if (cursor) {
+        results.push(cursor.value);
+        cursor.continue();
+      }
+    };
+    req.onerror = function(evt) {
+      debug('request cursor error.');
+    };
+  }
