@@ -281,3 +281,21 @@ this.deleteEvent(event, (err, evt) => {
       debug('request cursor error.');
     };
   }
+
+    // save icalComponent after delete all future busytimes
+    // and exception events.
+    var trans = this.app.db.transaction(
+      ['events', 'busytimes', 'icalComponents'],
+      'readwrite'
+    );
+    trans.addEventListener('complete', () => {
+      this.icalComponents.persist(component, callback);
+      this._deleteRecurEventIfNecessary(eventId);
+    });
+    trans.addEventListener('error', function(event) {
+      if (callback) {
+        callback(event);
+      }
+    });
+    this.busytimes.deleteFutureBusytimes(eventId, until, trans);
+    this.events.deleteFutureExEvents(eventId, until, trans);
