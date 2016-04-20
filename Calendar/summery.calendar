@@ -314,3 +314,37 @@ formatInputTime: from transportTime to ICALTime
 > ICALTime.toJSDate: from ICALTime to JSDate.
 > ical.js
 dateToTransport: from JSDate to transportTime.
+
+17. summery about Daylight Saving Time
+
+date = new Date('2016-02-07T22:00:00.000Z');
+date.toLocaleString();
+date2 = new Date('2016-02-14T22:00:00.000Z');
+date2.toLocaleString();
+
+date = new Date('2016-03-07T23:00:00.000Z');
+date.toLocaleString();
+date.getTimezoneOffset();
+date2 = new Date('2016-03-14T23:00:00.000Z');
+date2.toLocaleString();
+date2.getTimezoneOffset();
+
+> now = new Date()
+< Date 2016-03-08T04:57:11.072Z
+> now.getTime()
+< 1457413031072
+> now.toLocaleString()
+< "Mon Mar  7 23:57:11 2016"
+> now.setDate(now.getDate()+7);
+< 1458014231072
+> now.toLocaleString()
+< "Mon Mar 14 23:57:11 2016"
+const SECOND = 1000;
+const MINUTE = (SECOND * 60);
+const HOUR = MINUTE * 60;
+const SPANOFDAY = HOUR * 24;
+const SPANOFWEEK = HOUR * 24 * 7;
+> SPANOFWEEK
+< 604800000
+> 1458014231072 - 1457413031072
+< 601200000

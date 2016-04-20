@@ -45,10 +45,6 @@ ModifyEvent will move to next day when current hour is 23(May be need to fix.), 
 > date.toString('yyyyMMddTHHmmss')
 < "20160107T000000"
 
-date = new Date('2016-03-14T22:00:00.000Z');
-date.toLocaleString();
-date2 = new Date('2016-03-07T22:00:00.000Z');
-date2.toLocaleString();
 
 # Has Done:
 1.1. The Error of add Event May be related with offline Calendar.
