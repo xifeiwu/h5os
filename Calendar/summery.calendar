@@ -348,3 +348,20 @@ const SPANOFWEEK = HOUR * 24 * 7;
 < 604800000
 > 1458014231072 - 1457413031072
 < 601200000
+> new Date('2035-03-11T06:00:00.000Z').getTimezoneOffset()
+< 300
+> new Date('2035-03-11T07:00:00.000Z').getTimezoneOffset()
+< 240
+
+var date1 = new Date('2037-04-03T04:01:00.000Z');
+undefined
+var date2 = new Date('2038-04-03T04:01:00.000Z');
+undefined
+date1.toLocaleString()
+"Fri Apr  3 00:01:00 2037"
+date2.toLocaleString()
+"Fri Apr  2 23:01:00 2038"
+date1.getTimezoneOffset()
+240
+date2.getTimezoneOffset()
+300
