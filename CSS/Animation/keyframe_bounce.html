@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style type="text/css">
+      @keyframes bounce {
+        from {
+          top: 100px;
+          animation-timing-function: ease-out;
+        }
+        25% {
+          top: 200px;
+          animation-timing-function: ease-in;
+        }
+        50% {
+          top: 300px;
+          animation-timing-function: ease-out;
+        }
+        75% {
+          top: 200px;
+          animation-timing-function: ease-in;
+        }
+        to {
+          top: 100px;
+        }
+      }
+      section.area {
+        position: relative;
+        height: 500px;
+        border: 1px solid green;
+      }
+      div.ball {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border: 1px solid red;
+        border-radius: 25px;
+        top: 100px;
+        left: 200px;
+      }
+      div.ball.bounce {
+        animation: bounce 2000ms;
+      }
+    </style>
+    <script>
+    window.addEventListener('load', () => {
+      var ball = document.querySelector('div.ball');
+      var button = document.querySelector('button.start');
+      button.addEventListener('click', (evt) => {
+        ball.classList.toggle('bounce');
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <section class="area">
+      <div class="ball"></div>
+    </section>
+    <button class="start">Start</button>
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
