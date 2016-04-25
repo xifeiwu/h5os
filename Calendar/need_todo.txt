@@ -10,16 +10,10 @@
     </li>
    May be it is done by navigation manager.
 1.8. Why shared/h5-dialog/dist/amd/script can be required in js/controller/dialog.js
-1.9. the format of iCalendar, demo: 周三 2016/1/27 19:44
-1.10. read CSS3: The Missing Manual. learn more about css.
 1.11. CSS generated content
 1.13. the difference between router.canonicalPath and router.last
-1.14. Learn more detail about recurring-event.
-  How to avoid recreate busytime when expandComponent
 1.15. The use of this.emit.apply(this, event.concat(args));
 1.16. In update of event_mutation, if error will occur when event has no corresponding icalComponent.
-1.17. if the property repeat of recurring event is changed to never, a dialog will appear:
-Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remains on Calendar.
 1.18 A better way to organize coding summery.
 1.19 The result is not correct when there are more than one event in icalendar string.
 
@@ -56,6 +50,9 @@ ModifyEvent will move to next day when current hour is 23(May be need to fix.), 
 1.4. why forceRestart in app.js work, while in other place is useless. The content of forceRestart is only window.location.href = "app://calendar.gaiamobile.org/month/"; As forceRestart work ok if put it in function setTimeout or next_tick.
 1.12. the template logic for alert in modify event.
 2.4. why _detectPersistType return 'update' even ('_id' in object) is false. As store/ical_component.js rewrite _detectPersistType.
-
-# important pr
-https://git.acadine.com/feature-phone/calendar/pull/326
+1.9. the format of iCalendar, demo: 周三 2016/1/27 19:44
+1.10. read CSS3: The Missing Manual. learn more about css.
+1.14. Learn more detail about recurring-event.
+  How to avoid recreate busytime when expandComponent
+1.17. if the property repeat of recurring event is changed to never, a dialog will appear:
+Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remains on Calendar.
