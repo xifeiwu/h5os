@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style>
+      p.demoString {
+        white-space: nowrap;
+        /*width: 200px;*/
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+    </style>
+    <script>
+    'use strict';
+function wordsLayouts (title) {
+  var ctx = document.getElementById('calculator').getContext('2d');
+  var bodyStyle = window.getComputedStyle(document.body);
+  var textArea = document.querySelector('p.demoString');
+  var allStyles = window.getComputedStyle(textArea);
+  var width = parseFloat(allStyles.width);
+  width -= parseFloat(allStyles.paddingLeft);
+  width -= parseFloat(allStyles.paddingRight);
+  ctx.font = allStyles.fontSize + bodyStyle.fontFamily;
+  window.ctx = ctx;
+  window.allStyles = allStyles;
+  window.bodyStyle = bodyStyle;
+  window.textArea = textArea;
+  window.content = textArea.textContent;
+  window.pWidth = allStyles.width;
+  window.strWidth = ctx.measureText(textArea.textContent);
+
+  var content = textArea.textContent;
+  var result = '';
+  if (ctx.measureText(content).width < width * 3) {
+    result = '<span>' + content + '</span>';
+  } else {
+    var index = 1;
+    var length = content.length;
+    // var lineCnt = 0;
+    var start = 0;
+    // var end = 0;
+    var strContainer = [];
+    while (index <= length) {
+      var subStr = content.slice(start, index);
+      console.log(subStr + ' -> ' + ctx.measureText(subStr).width);
+      if (ctx.measureText(subStr).width > width) {
+        // break;
+        // lineCnt++;
+        strContainer.push(content.slice(start, index - 1));
+        start = index - 1;
+        console.log('');
+        console.log('');
+        continue;
+      }
+      index++;
+    }
+    strContainer.forEach((str) => {
+      result += '<span>' + str+ '</span>';
+    });
+  }
+  console.log(result);
+
+  // get middle data
+  // var stringWidth = ctx.measureText(textArea.textContent);
+  // var allChars = ['A', 'B', 'C', 'D', 'E', 'F',
+  //                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+  //                 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  // allChars.forEach((char) => {
+  //   lowerrCase = char.toLowerCase();
+  //   console.log(char + ' -> ' + ctx.measureText(char).width);
+  //   console.log(lowerrCase + ' -> ' + ctx.measureText(lowerrCase).width);
+  // });
+
+  // var lineNumber = 3;
+  // if (Math.ceil(ctx.measureText(title).width) < width * lineNumber) {
+  //   return title;
+  // }
+  // The widest string 'W' is used as a standard to define at where we start to
+  // add strings one by one until strings reaches the boundary.
+  // var stringsLimitation =
+  //   Math.floor((width * lineNumber)/ctx.measureText('W').width);
+  // var arr = title.slice(0, stringsLimitation);
+  // while (Math.ceil(ctx.measureText(arr).width) < width * lineNumber) {
+  //   arr += title.slice(stringsLimitation, stringsLimitation + 1);
+  //   stringsLimitation++;
+  // }
+  // arr += '...';
+  // return arr;
+}
+
+    window.addEventListener('load', wordsLayouts);
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <p class="demoString">Chinese spring day is pretty good. Do you want to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. We are here for your arriving and waitting for your messages.</p>
+    <canvas id="calculator"></canvas>
+    <br>
+  </body>
+</html>
