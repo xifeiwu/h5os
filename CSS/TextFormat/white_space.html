@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style type="text/css">
+    .container {
+      background-color: rgb(241, 241, 241);
+      width: 974px;
+      margin: 15px auto;
+    }
+    .radio {
+      line-height: 2rem;
+    }
+    .codeContainer, .resultContainer {
+      margin: 0px;
+      width: 50%;
+      float: left;
+    }
+    .header {
+      font-size: 2rem;
+    }
+    .content {
+      /*box-sizing: border-box;*/
+    }
+    .innerContent {
+      margin: 10px;
+      background-color: white;
+    }
+    .wrapperContent {
+      background-color: white;
+      margin: 10px;
+      height: 280px;
+    }
+
+      p.demo {
+        width: 500px;
+      }
+    </style>
+    <script>
+    window.addEventListener('load', function() {
+      var text = document.querySelector('.innerContent p');
+      var form = document.querySelector('form.innerContent');
+      var paragraph = document.querySelector('.wrapperContent p');
+      var i = 0;
+      for(; i < form.elements.length; i++) {
+        form.elements[i].addEventListener('change', function(evt){
+          console.log(this.value);
+          paragraph.style.whiteSpace = this.value;
+        });
+      }
+    });
+    </script>
+  </head>
+  <body>
+    <div id="container" class="container">
+      <div class="codeContainer">
+        <div class="header">
+          CSS Property:
+        </div>
+        <div class="content">
+          <form class="innerContent">
+            <!-- <div class="radio"> -->
+              <label>
+                <input type="radio" name="style" value="normal" checked>
+                normal
+              </label>
+            <!-- </div> -->
+            <!-- <div class="radio"> -->
+              <label><input type="radio" name="style" value="nowrap">
+                nowrap
+              </label>
+            <!-- </div> -->
+            <!-- <div class="radio"> -->
+              <label><input type="radio" name="style" value="pre">
+                pre
+              </label>
+            <!-- </div> -->
+            <!-- <div class="radio"> -->
+              <label><input type="radio" name="style" value="pre-line">
+                pre-line
+              </label>
+            <!-- </div> -->
+            <!-- <div class="radio"> -->
+              <label><input type="radio" name="style" value="pre-wrap">
+                pre-wrap
+              </label>
+            <!-- </div> -->
+            <!-- <div class="radio"> -->
+              <label><input type="radio" name="style" value="initial">
+                initial
+              </label>
+            <!-- </div> -->
+          </form>
+        </div>
+        <div class="resultContainer">
+        </div>
+      </div>
+      <div class="resultContainer">
+        <div class="header">
+          Result:
+        </div>
+        <div class="content">
+          <div class="wrapperContent">
+            <p>Chinese spring day is pretty good. Do you want to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. We are here for your arriving and waitting for your messages.</p>
+          </div>
+        </div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <p class="demo">Chinese spring day is pretty good. Do you want to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. We are here for your arriving and waitting for your messages.</p>
+    <br>
+  </body>
+</html>

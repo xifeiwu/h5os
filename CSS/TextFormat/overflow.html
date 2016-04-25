@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style type="text/css">
+      .overflow {
+        margin-top: 10px;
+      }
+      div.overflow {
+        width: 30rem;
+        border: 1px solid red;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+      span.overflow {
+        display: block;
+        width: 30rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /*word-wrap: break-word;*/
+        /*word-break: break-all;*/
+        color: red;
+        border: 1px solid red;
+      }
+    </style>
+    <script>
+    </script>
+  </head>
+  <body>
+<div class="overflow">
+Chinese spring day is pretty good. Do you want to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. We are here for your arriving.
+</div>
+<span class="overflow">
+Chinese spring day is pretty good. Do you want to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. We are here for your arriving.
+</span>
+    <br>
+  </body>
+</html>
