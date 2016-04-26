@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style>
+      .border {
+        width: 300px;
+        height: 200px;
+        margin: 100px auto 0px auto;
+        border: 5px gray solid;
+        border-radius: 20px;
+        background-color: red;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .border div.content{
+        color: white;
+        font-size: 3rem;
+        font-family: 'Aria';
+      }
+
+      div.process {
+        margin: 50px auto 0px auto;
+        width: 500px;
+        height: 5px;
+        border: 1px solid gray;
+        display: flex;
+        flex-direction: row;
+      }
+      div.process div.pos {
+        background-color: red;
+        height: 5px;
+        /*width: 40px;*/
+        /*flex-shrink: 0.5;*/
+        /*flex-grow: 0.1;*/
+        flex-basis: 190px;
+      }
+
+      #content {
+        -ms-box-orient: horizontal;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: flex;
+          
+        -webkit-justify-content: space-around;
+        justify-content: space-around;
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
+        -webkit-align-items: stretch;
+        align-items: stretch;
+      }
+      .box { 
+      flex-shrink: 1; 
+      border: 3px solid rgba(0,0,0,.2);
+      }
+      .box1 { 
+      flex-grow: 1; 
+      border: 3px solid rgba(0,0,0,.2);
+      }
+    </style>
+    <script>
+    </script>
+  </head>
+  <body>
+    <!-- demo for vertical align using flex -->
+    <div class="border">
+      <div class="content">CSS Flex</div>
+    </div>
+
+    <!-- demo for flex property used in element -->
+    <div class="process">
+      <div class="pos">
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <!-- demo for flex-shrink and flex-grow -->
+    <h4>This is a Flex-Grow</h4>
+    <h5>A,B,C and F are flex-shrink:1 . D and E are flex-grow:1 .</h5>
+    <div id="content">
+      <div class="box" style="background-color:red;">A</div>
+      <div class="box" style="background-color:lightblue;">B</div>
+      <div class="box" style="background-color:yellow;">C</div>
+      <div class="box1" style="background-color:brown;">D</div>
+      <div class="box1" style="background-color:lightgreen;">E</div>
+      <div class="box" style="background-color:brown;">F</div>
+    </div>
+  </body>
+</html>
