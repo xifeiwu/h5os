@@ -184,3 +184,34 @@ _('account-calendar-format', {
   account: _('preset-' + account.preset),
   calendar: calendar.remote.name
 });
+
+# for readout
+var title = document.querySelector('#event-detail-title');
+title.innerHTML = 'Chinese spring day is pre<span>tty good. Do you wa</span>nt to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. and We are here watting for your arriving, please contact with me when you are here.';
+
+var title = document.querySelector('#modify-event-view input[name="title"]');
+title.value = 'Chinese spring day is pretty good. Do you want to have a trip to china and see the scene. It must have a lot fun and have a goog memory here. We are here watting for your arriving, please contact with me when you are here.';
+
+
+#for dialog refocus
+
+forDebug.app.dialogController.show({
+  message: 'message',
+  dialogType: 'confirm',
+  softKeysHandler: {
+    rsk: {
+      name: 'ok',
+      action: () => {
+        forDebug.app.dialogController.close();
+        document.querySelector('#modify-event-view').focus();
+        return false;
+      }
+    },
+    lsk: {
+      action: () => {
+        return false;
+      }
+    },
+    dpe: {}
+  }
+});
