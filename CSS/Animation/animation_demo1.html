@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style>
+    div.wrapper {
+      height: 50px;
+      background-color: #edeff3;
+    }
+
+    div.wrapper[pressing] {
+      background: linear-gradient(
+        90deg,
+        var(--highlight-color, #1c6dea) 0%,
+        var(--press-color, #00d7bb) 50%,
+        var(--highlight-color, #1c6dea) 100%
+      ) repeat;
+      background-size: 400% 100%;
+      animation: h5-pressing 350ms cubic-bezier(0.3, 0, 0, 1);
+    }
+
+    @keyframes h5-pressing {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 100% 0;
+      }
+    }
+    </style>
+    <script>
+    window.addEventListener('load', () => {
+      var wrapper = document.querySelector('div.wrapper');
+      wrapper.addEventListener('keydown', (evt) => {
+        console.log(evt);
+        if (evt.keyCode === 13) {
+          wrapper.setAttribute('pressing', true);
+        }
+      });
+      wrapper.addEventListener('keyup', (evt) => {
+        if (evt.keyCode === 13) {
+          wrapper.removeAttribute('pressing');
+        }
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <div class="wrapper" tabindex="1"></div>
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
