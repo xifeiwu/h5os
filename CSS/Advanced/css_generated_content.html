@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style>
+    div.demo1 ol {
+    counter-reset: item;
+    list-style: none;
+    }
+    div.demo1 li {
+        display: block;
+    }
+    div.demo1 li:before {
+        counter-increment: item;
+        content: counters(item, ".")", ";
+    }
+
+    div.demo2 dl {
+      counter-reset: term definition;
+    }
+    div.demo2 dt {
+      counter-reset: definition;
+    }
+    div.demo2 dt:before {
+      counter-increment: term;
+      content: counter(term, upper-latin) ". ";
+    }
+    div.demo2 dd:before {
+      counter-increment: definition;
+      content: counter(definition, lower-latin) ". ";
+    }
+    </style>
+    <script>
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <br>
+    <div class="demo1">
+      <ol>
+        <li>item</li>
+        <li>item
+          <ol>
+            <li>item</li>
+            <li>item</li>
+            <li>item
+              <ol>
+                <li>item</li>
+                <li>item</li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+
+    <div class="demo2">
+      <dl>
+        <dt>term</dt>
+        <dd>definition</dd>
+        <dd>definition</dd>
+        <dd>definition</dd>
+        <dt>term</dt>
+        <dd>definition</dd>
+        <dt>term</dt>
+        <dd>definition</dd>
+      </dl>
+    </div>
+
+    <ul>
+      <li>item</li>
+      <li>item
+        <ul>
+          <li>item</li>
+          <li>item</li>
+          <li>item
+            <ul>
+              <li>item</li>
+              <li>item</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html>
