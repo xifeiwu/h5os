@@ -2,15 +2,7 @@
 1.1. How router and page.js works, the difference between router.state and router.modify.
 1.2. How the property of 'is' is related with the file under dir elements, the form of section like this:
 <section is="errors"></section>
-1.5. Learn how the focus is transfered to its child element when fire enter.
-    <li>
-      <select>
-        <option></option>
-      </select>
-    </li>
-   May be it is done by navigation manager.
 1.8. Why shared/h5-dialog/dist/amd/script can be required in js/controller/dialog.js
-1.11. CSS generated content
 1.13. the difference between router.canonicalPath and router.last
 1.15. The use of this.emit.apply(this, event.concat(args));
 1.16. In update of event_mutation, if error will occur when event has no corresponding icalComponent.
@@ -18,26 +10,12 @@
 1.19 The result is not correct when there are more than one event in icalendar string.
 
 # Maybe need ToDo:
-1.  the _returnTo path should not be detected in event_base.js.
+2.1.  the _returnTo path should not be detected in event_base.js.
     event_base.js下的dispatch需要注意。
-2.  the workflow of jumpping from one page to another is not clear.
-3.  presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
-4. The callback value of localProvider.createEvent is diffrent between recurring and non-recurring event.
-5. The iCalComponent is pushed to iCalQueue twice in caldav_pull_event, one from signal event and another is from 'component' signal.
-6. The logic of Date.
-ModifyEvent will move to next day when current hour is 23(May be need to fix.), related data list below:
-> today = new Date();
-< Date 2016-01-05T15:15:59.824Z
-> today.getHours()
-< 23
-> date = new Date('2016-01-05T16:00:00.000Z');
-< Date 2016-01-05T16:00:00.000Z
-> date.toString('yyyyMMddTHHmmss')
-< "20160106T000000"
-> date.setHours(24)
-< 1452096000000
-> date.toString('yyyyMMddTHHmmss')
-< "20160107T000000"
+2.2.  the workflow of jumpping from one page to another is not clear.
+2.3.  presentDay and related signal is added for listen present day change, there are still thing not correct fot classList of month_day if change system date, but it has no influence for APP.
+2.4. The callback value of localProvider.createEvent is diffrent between recurring and non-recurring event.
+2.5. The iCalComponent is pushed to iCalQueue twice in caldav_pull_event, one from signal event and another is from 'component' signal.
 
 
 # Has Done:
@@ -56,3 +34,26 @@ ModifyEvent will move to next day when current hour is 23(May be need to fix.), 
   How to avoid recreate busytime when expandComponent
 1.17. if the property repeat of recurring event is changed to never, a dialog will appear:
 Dates before and after Feb 6th will be deleted from calendar, only Feb 6th remains on Calendar.
+2.6. The logic of Date.
+ModifyEvent will move to next day when current hour is 23(May be need to fix.), related data list below:
+> today = new Date();
+< Date 2016-01-05T15:15:59.824Z
+> today.getHours()
+< 23
+> date = new Date('2016-01-05T16:00:00.000Z');
+< Date 2016-01-05T16:00:00.000Z
+> date.toString('yyyyMMddTHHmmss')
+< "20160106T000000"
+> date.setHours(24)
+< 1452096000000
+> date.toString('yyyyMMddTHHmmss')
+< "20160107T000000"
+1.5. Learn how the focus is transfered to its child element when fire enter.
+    <li>
+      <select>
+        <option></option>
+      </select>
+    </li>
+   May be it is done by navigation manager.
+  > the work of transfer is done by h5-input-wrapper
+1.11. CSS generated content
