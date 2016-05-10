@@ -81,7 +81,8 @@ service/caldav.expandComponents
       self.worker.postMessage([id + ' stream'].concat(args));
     }
   }
-  expandComponents: function(components, options, stream, callback)
+expandComponents: function(components, options, stream, callback)
+
 service/caldav.expandRecurringEvent
   @ical: component
   @options: {

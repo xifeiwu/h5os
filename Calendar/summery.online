@@ -1,0 +1,37 @@
+The process of add online account.
+
+setup_calendar._showOptionMenu
+modify_account.save
+utils/account_creation.send
+store/account.verifyAndPersist(important)
+  model
+  {
+    domain: https://caldav.calendar.yahoo.com
+    entrypoint: "/"
+    password: "15712872803"
+    preset: "yahoo"
+    providerType: "Caldav"
+    user: "xifei.wu@yahoo.com"  
+  }
+
+provider/caldav.getAccount
+  getAccount: function(account, callback) {
+    if (this.bailWhenOffline(callback)) {
+      return;
+    }
+
+    var self = this;
+    this.service.request(
+      'caldav',
+      'getAccount',
+      account,
+      function(err, data) {
+        if (err) {
+          return callback(
+            self._handleServiceError(err, { account: account })
+          );
+        }
+        callback(null, data);
+      }
+    );
+  },
