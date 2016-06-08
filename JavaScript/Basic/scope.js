@@ -10,31 +10,27 @@ function f() {
 }
 f(); // undefined
 
-//
+// the use of closure and IIFE
 var funcs = []; 
 for (var i = 0; i < 10; i++) {
-	console.log(i);
-	function getValue() {
-		var value = i;
-		return value;
-	}
-	funcs.push(() => {
-		console.log(getValue());
-	});
+  console.log(i);
+  var func = (function(ori) {
+    var value = ori;
+    return function() {
+      return value;
+    }
+  })(i);
+  funcs.push(func);
 }
 for (var j = 0; j < 10; j++) {
-	funcs[j]();
+  console.log(funcs[j]());
 }
 
-
-var a = [];
-for (var i = 0; i < 10; i++) {
-  	a[i] = function (i) {
-		function getValue(i) {
-			var value = i;
-			return value;
-		}
-    	console.log(getValue());
-  	};
+// the use of let.
+var values = [];
+for (let i = 0; i < 10; i++) {
+  values.push(i);
 }
-a[6]();
+for (var j = 0; j < 10; j++) {
+  console.log(values[j]);
+}
