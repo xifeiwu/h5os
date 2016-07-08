@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" /> -->
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', () => {
+      console.log('window has been loaded.');
+      function getLi(value) {
+        var li = document.createElement('li');
+        li.textContent = value;
+        return li;
+      }
+      var  values = []
+      values.push("网页可见区域宽clientWidth：" + document.body.clientWidth);
+      values.push("网页可见区域高clientHeight：" + document.body.clientHeight);
+      values.push("网页可见区域宽(包括边线的宽)offsetWidth：" + document.body.offsetWidth);
+      values.push("网页可见区域高(包括边线的宽)offsetHeight：" + document.body.offsetHeight);
+      values.push("网页正文全文宽：" + document.body.scrollWidth);
+      values.push("网页正文全文高：" + document.body.scrollHeight);
+      values.push("网页被卷去的高：" + document.body.scrollTop);
+      values.push("网页被卷去的左：" + document.body.scrollLeft);
+      values.push("网页正文部分上：" + window.screenTop);
+      values.push("网页正文部分左：" + window.screenLeft);
+      values.push("屏幕分辨率的高：" + window.screen.height);
+      values.push("屏幕分辨率的宽：" + window.screen.width);
+      values.push("屏幕可用工作区高度："+ window.screen.availHeight);
+      values.push("屏幕可用工作区宽度："+ window.screen.availWidth);
+      var log = document.querySelector('ul.log');
+      values.forEach((value) => {
+        log.appendChild(getLi(value));
+      });
+    })
+    </script>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  ul {
+    padding: 0px;
+    font-size: 15px;
+    margin: 0px;
+    width: 100%;
+  }
+   ul li{
+    list-style: none;
+   }
+  </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <ul class="log"></ul>
+    <br>
+  </body>
+</html>

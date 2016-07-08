@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML Model</title>
+    <style type="text/css">
+      :root {
+        --font-size: 30px;
+      }
+      div.demo {
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+        border-radius: 25px;
+        overflow: hidden;
+      }
+      .happy {
+        color: white;
+        font-size: calc(var(--font-size) * 0.5);
+        line-height: var(--font-size);
+        background-color: #4A89E0;
+        vertical-align: middle;        
+      }     
+    </style>
+    <script>
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <div class="demo1">The performance of background is different between block and inline.</div>
+    <p class="happy">开心一刻</p>
+    <span class="happy">开心一刻</span>
+    <br>
+    <div class="demo2">embeded p in div</div>
+    <div class="state">
+      <p class="category">{{category}}</p>
+      <p class="topics">{{topics}}</p>
+      <p class="stage">{{stage}}</p>
+    </div>
+    <br>
+    <p>
+      <p>This is first.</p>
+      <p>This is second.</p>
+      <p>This is third.</p>
+    </p>
+  </body>
+</html>
