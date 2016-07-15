@@ -91,3 +91,13 @@ Timespan.prototype = {
     };
   },
 };
+
+// reference value
+options = {
+  title: 'Header',
+  message: 'this is message',
+  footer: 'Footer'
+}
+if (!Array.isArray(options.footer)) {
+  options.footer = [options.footer];
+}

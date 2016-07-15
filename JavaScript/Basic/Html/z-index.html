@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', () => {
+      var btn = document.querySelector('input.btn');
+      btn.addEventListener('click', () => {
+        console.log('click here');
+      })
+    })
+    </script>
+    <style>
+    html {
+      height: 100%;
+    }
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+    .btn {
+      border: red solid 1px;
+      padding: 5px;
+    }
+    .mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      /*opacity: .5;*/
+    }
+    .mask .toast {
+      color: white;
+      background-color: rgba(0, 0, 0, .8);
+      padding: 3px 5px;
+    }
+    </style>
+  </head>
+  <body>
+    <br>
+    <div class="mask">
+      <p class="toast"><span>This is a toast</span></p>
+    </div>
+    <br>
+    <input type="button" class="btn" value="This is a button"></input>
+    <br>
+  </body>
+</html>
