@@ -8,44 +8,100 @@
     <script>
     </script>
     <style>
-  .arrow_box {
+/*  .arrow_box {
+    display: inline-block;
     position: relative;
-    background: rgba(0, 0, 0, .8);
-    /*border: 1px solid #c2e1f5;*/
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+    border-radius: 2px;
+    font-size: 14px;
+    line-height: 20px;
+    max-width: 60%;
+    text-align: center;
+    padding: 6px;
   }
-  .arrow_box:after, .arrow_box:before {
-    bottom: 100%;
-    left: 50%;
-    border: solid transparent;
+  .arrow_box:before, .arrow_box:after {
     content: " ";
-    height: 0;
-    width: 0;
     position: absolute;
-    pointer-events: none;
-  }
-
-  .arrow_box:after {
-    border-color: rgba(136, 183, 213, 0);
-    border-bottom-color: #88b7d5;
-    border-width: 30px;
-    margin-left: -30px;
+    border: solid transparent;
+    border-width: 10px;
   }
   .arrow_box:before {
-    border-color: rgba(194, 225, 245, 0);
-    border-bottom-color: #c2e1f5;
-    border-width: 36px;
-    margin-left: -36px;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    border-bottom-color: rgba(0, 0, 0, .8);
   }
+  .arrow_box:after {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    border-top-color: rgba(0, 0, 0, .8);
+  }
+  .logo {
+    margin: 0px;
+  }*/
+
+  #bubble {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+  }
+
+  .arrow_box {
+    display: inline-block;
+    position: relative;
+    max-width: 60%;
+  }
+
+  .arrow_box .before {
+    width: 0px;
+    height: 0px;
+    position: relative;
+    left: 25px;
+    border: solid transparent;
+    border-width: 8px;
+    border-bottom-color: rgba(0, 0, 0, .8);
+  }
+
+  .arrow_box p.message {
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+    border-radius: 2px;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 6px;
+    margin: 0px;
+  }
+
+  .arrow_box .after {
+    width: 0px;
+    height: 0px;
+    position: relative;
+    left: 25px;
+    border: solid transparent;
+    border-width: 8px;
+    border-top-color: rgba(0, 0, 0, .8);
+  }
+
     </style>
   </head>
   <body>
     <br>
     <br>
-    <div class="preview">
+    <section class="preview">
       <div class="arrow_box">
-        <h1 class="logo">css arrow please!</h1>
+        <p class="logo">css arfdsafrow please!</p>
       </div>
-    </div>
+    </section>
+    <section id="bubble">
+      <div class="arrow_box">
+        <div class="before"></div>
+        <p class="message">This is a bubble.</p>
+        <div class="after"></div>
+      </div>
+    </section>
     <br>
   </body>
 </html>
