@@ -45,6 +45,12 @@
         ele.addEventListener("keyup", allEvents, false);
         ele.addEventListener("scroll", allEvents, false);
         ele.addEventListener("resize", allEvents, false);
+
+        ele.addEventListener("touchstart", allEvents, false);
+        ele.addEventListener("touchend", allEvents, false);
+        ele.addEventListener("touchcancel", allEvents, false);
+        ele.addEventListener("touchleave", allEvents, false);
+        ele.addEventListener("touchmove", allEvents, false);
       }
       window.onload = function() {
         var myDiv = document.getElementById("myDiv");
