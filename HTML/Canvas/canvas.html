@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+  <style type="text/css">
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+  <script type="application/javascript">
+    function draw() {
+      var baseline = 0;
+      var canvas = document.getElementById('canvas');
+      if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+        drawRect();
+        baseline = 100;
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(0, baseline);
+        ctx.lineTo(300, baseline);
+        ctx.stroke();
+        drawTriangle(baseline);
+        baseline = 200;
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(0, baseline);
+        ctx.lineTo(300, baseline);
+        ctx.stroke();
+        drawFace(baseline);
+        baseline = 300;
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(0, baseline);
+        ctx.lineTo(300, baseline);
+        ctx.stroke();
+        drawArcs(baseline);
+      }
+    }
+
+    function drawRect() {
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "rgb(200,0,0)";
+        ctx.fillRect (10, 10, 50, 50);
+        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+        ctx.fillRect (30, 30, 50, 50);
+      }
+    }
+
+    function drawTriangle(baseline) {
+      var canvas = document.getElementById('canvas');
+      if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.moveTo(75, baseline + 50);
+        ctx.lineTo(100, baseline + 75);
+        ctx.lineTo(100, baseline + 25);
+        ctx.fill();
+      }
+    }
+
+    function drawFace(baseline) {
+      var canvas = document.getElementById('canvas');
+      if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+        ctx.strokeStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(75, baseline + 35, 50, 0, Math.PI * 2, true); // Outer circle
+        ctx.moveTo(110, baseline + 35);
+        ctx.arc(75, baseline + 35, 35, 0, Math.PI, false);  // Mouth (clockwise)
+        ctx.moveTo(65, baseline + 25);
+        ctx.arc(60, baseline + 25, 5, 0, Math.PI * 2, true);  // Left eye
+        ctx.moveTo(95, baseline + 25);
+        ctx.arc(90, baseline + 25, 5, 0, Math.PI * 2,true);  // Right eye
+        ctx.stroke();
+      }
+    }
+
+    function drawArcs(baseline) {
+      var canvas = document.getElementById('canvas');
+      if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+
+        for(var i = 0; i < 4; i++){
+          for(var j = 0; j < 3; j++){
+            ctx.beginPath();
+            var x = 25 + j * 50; // x coordinate
+            var y = baseline + 25 + i * 50; // y coordinate
+            var radius = 20; // Arc radius
+            var startAngle = 0; // Starting point on circle
+            var endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
+            var anticlockwise = i % 2 == 0 ? false : true; // clockwise or anticlockwise
+            ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+            if (i>1){
+              ctx.fill();
+            } else {
+              ctx.stroke();
+            }
+          }
+        }
+      }
+    }
+  </script>
+ </head>
+ <body onload="draw();">
+   <canvas id="canvas" width="300px" height="500px"></canvas>
+ </body>
+</html>
