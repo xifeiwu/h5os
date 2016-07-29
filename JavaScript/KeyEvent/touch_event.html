@@ -7,20 +7,20 @@
     <title>HTML Model</title>
     <style type="text/css">
 body {
-  padding: 50px;
-  font-family: sans-serif;
-}
-
-#box {
-  width: 100px;
-  height: 100px;
-  background-color: red;
+  margin: 0px;
+  padding: 0px;
 }
     </style>
 
     <script>
 
 window.addEventListener('load', function() {
+  var canvas = document.getElementById('canvas');
+  // var clientWidth = new Number(document.body.clientWidth);
+  // var halfHeight = new Number(document.body.clientHeight / 2);
+  canvas.width = document.body.clientWidth;//clientWidth.toString();
+  canvas.height = document.body.clientHeight;
+
   startup();
 })
 function startup() {
@@ -182,10 +182,7 @@ function findPos(obj) {
     </script>
   </head>
   <body>
-    <br>
-    <br>
-    <br>
-<canvas id="canvas" width="400" height="400" style="border:solid black 1px;">
+<canvas id="canvas" style="border:solid black 1px;">
   You really badly need to use a different browser.
 </canvas>
 <br>
