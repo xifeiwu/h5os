@@ -16,15 +16,18 @@ body {
 
 window.addEventListener('load', function() {
   var canvas = document.getElementById('canvas');
-  // var clientWidth = new Number(document.body.clientWidth);
-  // var halfHeight = new Number(document.body.clientHeight / 2);
-  canvas.width = document.body.clientWidth;//clientWidth.toString();
-  canvas.height = document.body.clientHeight;
+  canvas.width = document.body.scrollWidth - 2;
+  canvas.height = document.body.scrollHeight / 2;
+  var log = document.getElementById('log');
+  log.style.height = (document.body.scrollHeight - canvas.height - 2) + 'px';
+  log.addEventListener('click', function() {
+    this.innerHTML = '';
+  })
 
   startup();
 })
 function startup() {
-  var el = window;//document.body;
+  var el = document.getElementById('canvas');
   el.addEventListener("touchstart", handleStart, false);
   el.addEventListener("touchend", handleEnd, false);
   el.addEventListener("touchcancel", handleCancel, false);
@@ -35,54 +38,51 @@ function startup() {
 var ongoingTouches = new Array;
 
 function handleStart(evt) {
+  evt.preventDefault();
   log("touchstart.");
-  console.log("touchstart event:");
-  console.log(evt);
   var el = document.getElementsByTagName("canvas")[0];
   var ctx = el.getContext("2d");
   var touches = evt.changedTouches;
   var offset = findPos(el);
   for (var i = 0; i < touches.length; i++) {
     if (touches[i].clientX - offset.x > 0 && touches[i].clientX - offset.x < parseFloat(el.width) && touches[i].clientY - offset.y > 0 && touches[i].clientY - offset.y < parseFloat(el.height)) {
-      evt.preventDefault();
       log("touchstart:" + i + "...");
+      evt.preventDefault();
       ongoingTouches.push(copyTouch(touches[i]));
       var color = colorForTouch(touches[i]);
       ctx.beginPath();
-      ctx.arc(touches[i].clientX - offset.x, touches[i].clientY - offset.y, 4, 0, 2 * Math.PI, false); // a circle at the start
+      // a circle at the start
+      ctx.arc(touches[i].clientX - offset.x, touches[i].clientY - offset.y, 4, 0, 2 * Math.PI, false);
       ctx.fillStyle = color;
       ctx.fill();
-      log("touchstart:" + i + ".");
     }
   }
 }
 
 function handleMove(evt) {
-
+  evt.preventDefault();
+  log('touchesMove', evt);
   var el = document.getElementsByTagName("canvas")[0];
   var ctx = el.getContext("2d");
   var touches = evt.changedTouches;
   var offset = findPos(el);
-
   for (var i = 0; i < touches.length; i++) {
     if (touches[i].clientX - offset.x > 0 && touches[i].clientX - offset.x < parseFloat(el.width) && touches[i].clientY - offset.y > 0 && touches[i].clientY - offset.y < parseFloat(el.height)) {
       evt.preventDefault();
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
-
       if (idx >= 0) {
         log("continuing touch " + idx);
         ctx.beginPath();
-        log("ctx.moveTo(" + ongoingTouches[idx].clientX + ", " + ongoingTouches[idx].clientY + ");");
+        // log("ctx.moveTo(" + ongoingTouches[idx].clientX + ", " + ongoingTouches[idx].clientY + ");");
         ctx.moveTo(ongoingTouches[idx].clientX - offset.x, ongoingTouches[idx].clientY - offset.y);
-        log("ctx.lineTo(" + touches[i].clientX + ", " + touches[i].clientY + ");");
+        // log("ctx.lineTo(" + touches[i].clientX + ", " + touches[i].clientY + ");");
         ctx.lineTo(touches[i].clientX - offset.x, touches[i].clientY - offset.y);
         ctx.lineWidth = 4;
         ctx.strokeStyle = color;
         ctx.stroke();
-
-        ongoingTouches.splice(idx, 1, copyTouch(touches[i])); // swap in the new touch record
-        log(".");
+        // swap in the new touch record
+        ongoingTouches.splice(idx, 1, copyTouch(touches[i]));
       } else {
         log("can't figure out which touch to continue");
       }
@@ -102,7 +102,6 @@ function handleEnd(evt) {
       evt.preventDefault();
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
-
       if (idx >= 0) {
         ctx.lineWidth = 4;
         ctx.fillStyle = color;
@@ -128,14 +127,12 @@ function handleCancel(evt) {
 }
 
 function colorForTouch(touch) {
-  var r = touch.identifier % 16;
-  var g = Math.floor(touch.identifier / 3) % 16;
-  var b = Math.floor(touch.identifier / 7) % 16;
-  r = r.toString(16); // make it a hex digit
-  g = g.toString(16); // make it a hex digit
-  b = b.toString(16); // make it a hex digit
-  var color = "#" + r + g + b;
-  log("color for touch with identifier " + touch.identifier + " = " + color);
+  var identifier = parseInt(Math.random() * Math.pow(2, 24));
+  var r = identifier & 0xff;
+  var g = identifier >> 8 & 0xff;
+  var b = identifier >> 16 & 0xff;
+  var color = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+  log(color);
   return color;
 }
 
@@ -150,7 +147,6 @@ function copyTouch(touch) {
 function ongoingTouchIndexById(idToFind) {
   for (var i = 0; i < ongoingTouches.length; i++) {
     var id = ongoingTouches[i].identifier;
-
     if (id == idToFind) {
       return i;
     }
@@ -158,21 +154,25 @@ function ongoingTouchIndexById(idToFind) {
   return -1; // not found
 }
 
-function log(msg) {
+function log(msg, obj) {
+  console.log(msg);
+  if (obj) {
+    console.log(obj);
+  }
   var p = document.getElementById('log');
-  p.innerHTML = msg + "\n" + p.innerHTML;
+  p.appendChild(document.createTextNode(msg));
+  p.appendChild(document.createElement('br'));
+  // keep log scroll to end.
+  p.scrollTop = p.scrollHeight;
 }
 
 function findPos(obj) {
-  var curleft = 0,
-    curtop = 0;
-
+  var curleft = 0, curtop = 0;
   if (obj.offsetParent) {
     do {
       curleft += obj.offsetLeft;
       curtop += obj.offsetTop;
     } while (obj = obj.offsetParent);
-
     return {
       x: curleft - document.body.scrollLeft,
       y: curtop - document.body.scrollTop
@@ -180,13 +180,20 @@ function findPos(obj) {
   }
 }
     </script>
+    <style type="text/css">
+      p#log {
+        border: 1px solid #7FDF55;
+        margin: 0px;
+        overflow: scroll;
+        font-size: 12px;
+      }
+    </style>
   </head>
   <body>
-<canvas id="canvas" style="border:solid black 1px;">
+<canvas id="canvas">
   You really badly need to use a different browser.
 </canvas>
-<br>
-<br> Log: <pre id="log" style="border: 1px solid #ccc;"></pre>
+<p id="log"></p>
 
   </body>
 </html>
