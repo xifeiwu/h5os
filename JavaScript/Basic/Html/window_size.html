@@ -6,7 +6,7 @@
     <!-- <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" /> -->
     <title>HTML Model</title>
     <script>
-    window.addEventListener('load', () => {
+    window.addEventListener('load', function() {
       console.log('window has been loaded.');
       function getLi(value) {
         var li = document.createElement('li');
@@ -29,7 +29,7 @@
       values.push("屏幕可用工作区高度："+ window.screen.availHeight);
       values.push("屏幕可用工作区宽度："+ window.screen.availWidth);
       var log = document.querySelector('ul.log');
-      values.forEach((value) => {
+      values.forEach(function(value) {
         log.appendChild(getLi(value));
       });
     })
@@ -38,6 +38,8 @@
   body {
     margin: 0px;
     padding: 0px;
+    width: 100%;
+    height: 100%;
   }
   ul {
     padding: 0px;
