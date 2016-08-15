@@ -7,6 +7,17 @@
     <title>HTML Model</title>
     <script>
     </script>
+<script>
+(function(){
+  var w = window, doc = w.document, docEl=doc.documentElement,ua=navigator.userAgent;
+  // var dpr=ua.match(/iphone/gi)&&!ua.match(/OS 9_3/)?w.devicePixelRatio:1;
+  var dpr=ua.match(/iphone/gi)?w.devicePixelRatio:1;
+  if(dpr>2) dpr=2; var scale=1/dpr; w.dpr = dpr;
+  docEl.setAttribute('data-dpr', dpr);
+  docEl.style.fontSize=50*dpr+'px';
+  doc.write('<meta name="viewport" content="initial-scale=' + scale + ', maximum-scale=' + scale +', minimum-scale=' + scale + ', width=device-width, user-scalable=no" />')
+})()
+</script>
     <style type="text/css">
     .demo1 {
       width: 200px;
