@@ -4,25 +4,57 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
+    <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0px;
+    }
+    .listener {
+      height: 50%;
+      box-sizing: border-box;
+      border: 1px solid green;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+    .listener .center_area {
+      width: 50%;
+      height: 50%;
+      background-color: gray;
+    }
+    .logger {
+      height: 50%;
+      margin: 0px;
+    }
+    </style>
     <script>
       console.log("in the inner javascript.");
+      var logger = null;
       function getClick(event){
         // console.log(this.id);
         // console.log(this.value);
         // console.log(this.type);
         // console.log(event.target);
-        console.log(event.target.tagName);
+        showMsg(event.target.tagName);
+      }
+      function showMsg(msg) {
+        console.log(msg);
+        var li = document.createElement('li');
+        li.innerText = msg;
+        logger.appendChild(li);
       }
       function allEvents(event){
         switch(event.type){
           case "keydown":
           case "keypress":
           case "keyup":
-            console.log(event.target.tagName + "#" + event.type + ": " + event.keyCode + " - " + event.key + "(" + event.charCode + ")");
+            showMsg(event.target.tagName + "#" + event.type + ": " + event.keyCode + " - " + event.key + "(" + event.charCode + ")");
             // console.log("target: " + event.target);
             break;
           default:
-            console.log(event.target.tagName + "#" + event.type + "(" + event.button + "): " + event.clientX + " * " + event.clientY);
+            showMsg(event.target.tagName + "#" + event.type + "(" + event.button + "): " + event.clientX + " * " + event.clientY);
             // console.log("target: " + event.target);
             break;
         }
@@ -53,28 +85,19 @@
         ele.addEventListener("touchmove", allEvents, false);
       }
       window.onload = function() {
-        var myDiv = document.getElementById("myDiv");
-        var myBtn = document.getElementById("myBtn");
-        // btn.onclick = getClick;
-        myBtn.addEventListener("click", getClick, false);
-        bindEvents(window);//document.body
-
-        // window.addEventListener("click", getClick, false);
+        var listener = document.querySelector('.listener');
+        var centerArea = listener.querySelector('.center_area');
+        logger = document.querySelector('.logger');
+        // centerArea.onclick = getClick;
+        centerArea.addEventListener("click", getClick, false);
+        bindEvents(centerArea);
       }
     </script>
-    <style>
-      #myDiv {
-        border: solid 1px red;
-      }
-    </style>
   </head>
   <body>
-    <br>
-    <br>
-    <br>
-    <div id="myDiv">
-      <input id="myBtn" type="button" value="Click me"/>
-      <input id="myInput" type="input" value="Click me" />
+    <div class="listener">
+      <div class="center_area"></div>
     </div>
+    <ul class="logger"></li>
   </body>
 </html>
