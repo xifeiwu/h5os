@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <script type="text/javascript" src="jquery-3.1.0.js"></script>
+    <style>
+    .room {
+      height: 300px;
+    }
+    .lightbulb, .switch, .clapper {
+      height: 25%;
+      box-sizing: border-box;
+      border: 1px solid green;
+    }
+    #master_switch {
+      height: 100px;
+      border: 1px solid blue;
+    }
+    .lightbulb.on {
+      background-color: red;
+    }
+    .lightbulb.off {
+      background-color: white;
+    }
+    </style>
+    <title>HTML Model</title>
+    <script>
+    function originEvent() {
+      $( ".switch, .clapper" ).click(function() {
+        var light = $( this ).closest( ".room" ).find( ".lightbulb" );
+        if ( light.is( ".on" ) ) {
+            light.removeClass( "on" ).addClass( "off" );
+        } else {
+            light.removeClass( "off" ).addClass( "on" );
+        }
+      });
+    }
+
+    function customEvent1() {
+      $( ".lightbulb" ).on( "light:toggle", function( event ) {
+      var light = $( this );
+        if ( light.is( ".on" ) ) {
+            light.removeClass( "on" ).addClass( "off" );
+        } else {
+            light.removeClass( "off" ).addClass( "on" );
+        }
+      });
+      $( ".switch, .clapper" ).click(function() {
+          var room = $( this ).closest( ".room" );
+          room.find( ".lightbulb" ).trigger( "light:toggle" );
+      });
+    }
+
+    function customEvent2() {
+      $( ".lightbulb" ).on( "light:toggle", function( event ) {
+        console.log(event);
+        var light = $( this );
+        if ( light.is( ".on" ) ) {
+          light.trigger( "light:off" );
+        } else {
+          light.trigger( "light:on" );
+        }
+      }).on( "light:on", function( event ) {
+        $( this ).removeClass( "off" ).addClass( "on" );
+      }).on( "light:off", function( event ) {
+        $( this ).removeClass( "on" ).addClass( "off" );
+      });
+      $( ".switch, .clapper" ).click(function() {
+        var room = $( this ).closest( ".room" );
+        room.find( ".lightbulb" ).trigger( "light:toggle" );
+      });
+      $( "#master_switch" ).click(function() {
+        var lightbulbs = $( ".lightbulb" );
+        // Check if any lightbulbs are on
+        // if ( lightbulbs.is( ".on" ) ) {
+        //   lightbulbs.trigger( "light:off" );
+        // } else {
+        //   lightbulbs.trigger( "light:on" );
+        // }
+        // another way for light change.
+        lightbulbs.trigger('light:toggle');
+        $('a.go-to-baidu').trigger('mousedown');
+      });
+    }
+
+    function bindEvent() {
+      $('a.go-to-baidu').on('click mouseover mousedown', function(evt) {
+        console.log(evt);
+        evt.preventDefault();
+      });
+      $('button.custom-event').on('click.my', function(evt) {
+        console.log('click.my');
+        console.log(evt);
+      })
+    }
+
+    window.addEventListener('load', function() {
+      bindEvent();
+      // originEvent();
+      // customEvent1();
+      customEvent2();
+    });
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+  <div>
+    <a class="go-to-baidu" href="http://www.baidu.com" target="_blank">Go to Baidu.</a>
+    <button class="custom-event">custom event</button>
+  </div>
+    <br>
+  <div class="room" id="kitchen">
+    <div class="lightbulb on"></div>
+    <div class="switch"></div>
+    <div class="switch"></div>
+    <div class="clapper"></div>
+  </div>
+  <div class="room" id="bedroom">
+    <div class="lightbulb on"></div>
+    <div class="switch"></div>
+    <div class="switch"></div>
+    <div class="clapper"></div>
+  </div>
+  <div id="master_switch"></div>
+  </body>
+</html>

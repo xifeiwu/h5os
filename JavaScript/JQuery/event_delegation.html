@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script type="text/javascript" src="jquery-3.1.0.js"></script>
+    <script>
+    window.addEventListener('load', function() {
+      document.onclick = function(event){
+        //IE doesn't pass in the event object
+        event = event || window.event;
+        //IE uses srcElement as the target
+        var target = event.target || event.srcElement;    
+        switch(target.id){
+          case "help-btn":
+            console.log('openHelp()');
+            break;
+          case "save-btn":
+            console.log('saveDocument()');
+            break;
+          case "undo-btn":
+            console.log('undoChanges()');
+            break;
+        }
+      }
+    });
+    </script>
+    <style>
+    button {
+      padding: 5px 10px;
+      border: 1px solid black;
+      border-radius: 4px;
+      background-color: white;
+    }
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <button id="help-btn">HELP</button>
+    <button id="save-btn">SAVE</button>
+    <button id="undo-btn">UNDO</button>
+    <br>
+  </body>
+</html>
