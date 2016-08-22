@@ -27,6 +27,7 @@
     .logger {
       height: 50%;
       margin: 0px;
+      overflow-y: scroll;
     }
     </style>
     <script>
@@ -44,6 +45,8 @@
         var li = document.createElement('li');
         li.innerText = msg;
         logger.appendChild(li);
+        // keep log scroll to end.
+        logger.scrollTop = logger.scrollHeight;
       }
       function allEvents(event){
         switch(event.type){
