@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    </script>
+    <style>
+    /**
+     * demo for the relation among padding margin height
+     * 1. padding is included in height, while margin is not
+     * 2. the margin-top of first element is not included in body height.
+     */
+    body {
+      margin: 0px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+    .container {
+      box-sizing: border-box;
+      margin: 30px 0px;
+      padding: 20px 0px;
+      width: 100%;
+      border: 1px solid red;
+    }
+    .container ul {
+      list-style: none;
+      padding: 0px;
+    }
+    .footer {
+      background-color: #f2f2f2;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      padding: 5px;
+      margin-bottom: 30px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <ul>
+        <li>离不开你</li>
+        <li>离不开你</li>
+      </ul>
+      <div class="footer">This is footer</div>
+    </div>
+    <br>
+  </body>
+</html>
