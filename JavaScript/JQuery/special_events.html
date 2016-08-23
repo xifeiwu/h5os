@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script type="text/javascript" src="jquery-3.1.0.js"></script>
+    <script>
+    (function($){
+      // A private property.
+      var some_var;
+      // A public property.
+      $.myeventOptions = {};
+      // Special event definition.
+      $.event.special.myevent = {
+        setup: function( data, namespaces ) {
+          console.log('setup');
+          // Event code.
+          init( this, true );
+        },
+        teardown: function( namespaces ) {
+          console.log('teardown');
+          // Event code.
+          init( this, false );
+        },
+        add: function( handleObj ) {
+          console.log('add');
+          // Event code.
+          // Save a reference to the bound event handler.
+          var old_handler = handleObj.handler;
+          handleObj.handler = function( event ) {
+            // Modify event object here!
+            // Call the originally-bound event handler and return its result.
+            return old_handler.apply( this, arguments );
+          };
+        }
+      };
+      // A private method.
+      function init( elem, state ) {
+        // Do something to `elem` based on `state`
+      };
+    })(jQuery);
+
+    function triggerSpecialEvent() {
+      var logger = $('.logger');
+      logger.on('myevent', function(evt) {
+        console.log('in myevent');
+      })
+      $('.trigger-special-event').on('click', function() {
+        logger.trigger('myevent');
+      })
+    }
+
+// demo for multiple click.
+jQuery.event.special.multiclick = {
+  delegateType: "click",
+  bindType: "click",
+  handle: function( event ) {
+    console.log(event);
+    var handleObj = event.handleObj;
+    // the type of event.target is Node element.
+    var targetData = jQuery.data( event.target );
+    // console.log('targetData: ' + JSON.stringify(targetData));
+    var ret = null;
+    // If a multiple of the click count, run the handler
+    targetData.clicks = ( targetData.clicks || 0 ) + 1;
+    if ( targetData.clicks % event.data.clicks === 0 ) {
+      event.type = handleObj.origType;
+      ret = handleObj.handler.apply( this, arguments );
+      event.type = handleObj.type;
+      return ret;
+    }
+  }
+};
+function triggerMultiClick() {
+  $( ".multiclick" ).on( "multiclick", {
+      clicks: 3
+  }, function( event ) {
+      alert( "clicked 3 times" );
+  });
+}
+
+    window.addEventListener('load', function() {
+      triggerSpecialEvent();
+      triggerMultiClick();
+    })
+    </script>
+    <style>
+    button {
+      padding: 5px 10px;
+      border: 1px solid black;
+      border-radius: 4px;
+      background-color: white;
+    }
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <button class="trigger-special-event">trigger-special-event</button>
+    <p class="logger"></p>
+    <br>
+    <button class="multiclick">Multiple Click</button>
+  </body>
+</html>
