@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script type="text/javascript" src="jquery-3.1.0.js"></script>
+    <script>
+    function getFooterOffset() {
+      var footer = $('.footer');
+      var offset = footer.offset();
+      console.log(offset);
+    }
+    window.addEventListener('load', function() {
+      getFooterOffset();
+    })
+    </script>
+    <style>
+    html {
+      height: 100%;
+    }
+    body {
+      height: auto;
+      min-height: 100%;
+      margin: 0px;
+    }
+    .footer {
+      height: 40px;
+      font-size: 16px;
+      line-height: 40px;
+      background-color: red;
+      color: white;
+      text-align: center;
+      margin-top: 60px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="footer">申请合作</div>
+  </body>
+</html>
