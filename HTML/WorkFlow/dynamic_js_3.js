@@ -1,0 +1,1 @@
+alert('dynamic_js_3');
