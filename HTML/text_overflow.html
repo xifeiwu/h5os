@@ -8,16 +8,35 @@
     <script>
     </script>
     <style type="text/css">
-      .overflow {
-        display: block;
-        font-size: 14px;
-        line-height: 20px;
-        height: 40px;
-        width: 300px;
-        border: 1px solid black;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    .container {
+      display: block;
+      font-size: 14px;
+      line-height: 20px;
+      height: 20px;
+      width: 300px;
+      border: 1px solid black;
+    }
+    .overflow {
+      word-break: break-all;
+      word-wrap: break-word;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .container2 {
+      width: 300px;
+    }
+    .container2 p {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0px;
+    }
+    .container2 p.overflow {
+      max-width: calc(100% - 20px);
+    }
+    .container2 p.right {
+      width: 20px;
+    }
       /* END Martin Wolf CodePen Standard */
 h2 {
   display: block;
@@ -57,7 +76,8 @@ h2 {
   </head>
   <body>
     <br>
-    <p class="overflow">This is a demo for overflow of more than one line. is it work ok? This is a demo for overflow of more than one line, is it work ok?</p>
+    <p class="container overflow">This is a demo for overflow of more than one line. is it work ok? This is a demo for overflow of more than one line, is it work ok?<span>√</span></p>
+    <div class="container2"><p class="overflow">This is a demo for overflow of more than one line. is it work ok?</p><p class="right">√</p></div>
     <br>
     <h2>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.</h2>
     <br>
