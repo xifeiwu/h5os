@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script type="text/javascript" src="load_flow.js" defer></script>
+    <script>
+    function addListenerForImg() {
+      var imgs = document.getElementsByTagName('img');
+      Array.prototype.slice.call(imgs).forEach(function(img) {
+        img.addEventListener('error', function() {
+          console.log('load error');
+        });
+        img.addEventListener('success', function() {
+          console.log('load success');
+        });
+        img.addEventListener('load', function() {
+          console.log('load success');
+        });
+        console.log(img);
+      })
+    }
+
+    window.addEventListener('load', function() {
+      console.log('window has loaded');
+    })
+    document.addEventListener('ready', function() {
+      console.log('document is ready');
+    })
+    </script>
+  </head>
+  <body>
+    <br>
+    <br>
+    <p>The picture of ilta.png</p>
+    <img src="../CSS/Pictures/ilta.png">
+    <script type="text/javascript">
+      addListenerForImg();
+    </script>
+    <br>
+  </body>
+</html>
