@@ -18,12 +18,33 @@
       });
       document.getElementsByTagName('head')[0].appendChild(script);
     }
+    function loadScriptByXHR(file, cb) {
+      function appendScript(text) {
+        var script = document.createElement ("script");
+        script.type = "text/javascript";
+        script.text = text;
+        document.body.appendChild(script);
+      }
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', file, true);
+      xhr.onreadystatechange = function() {
+        console.log(xhr.readyState);
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+            console.log('responseText: ' + xhr.responseText);
+            appendScript(xhr.responseText);
+          }
+        }
+      }
+      xhr.send(null);
+    }
     window.addEventListener('load', function() {
-      loadScript('dynamic_js_1.js', function() {
-        loadScript('dynamic_js_2.js', function() {
-          loadScript('dynamic_js_3.js', function() {})
-        })
-      });
+      // loadScript('dynamic_js_1.js', function() {
+      //   loadScript('dynamic_js_2.js', function() {
+      //     loadScript('dynamic_js_3.js', function() {})
+      //   })
+      // });
+      loadScriptByXHR('dynamic_js_1.js');
     })
     </script>
   </head>
