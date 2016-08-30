@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script type="text/javascript" src="jquery-3.1.0.js"></script>
+    <script>
+    window.addEventListener('load', function() {
+      // 用例1
+      var obj1 = function() {
+        this.txt = "helloWorld1";
+        $(document).click(this.fn);
+      };
+      var obj2 = function() {
+        this.txt = "helloWorld2";
+        $(document).click($.proxy(this.fn, this));
+      };
+      obj1.prototype.fn = obj2.prototype.fn = function() {
+        console.log(this.txt);
+      };
+      var a = new obj1();  // undefined
+      var b = new obj2();  // helloWorld
+      // 用例2
+      var dialog = {
+        msg: 'helloWorld',
+        show: function () {
+          console.log(this);
+          console.log(this.msg);
+        }
+      }
+
+      $(document).click(dialog.show); 
+      $(document).click(function(evt) {
+        dialog.show();
+      }); 
+      // #document
+      // undefined
+      // $(document).click($.proxy(dialog, "show"));  
+      // Object {msg: "helloWorld", show: function}
+      // helloWorld
+    });
+
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
