@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+      var buttons = document.querySelector('ul.buttons');
+      buttons.addEventListener('click', function(evt) {
+        var target = evt.target;
+        if (target.tagName === 'LI') {
+          var siblings = target.parentElement.querySelectorAll('li');
+          Array.prototype.slice.call(siblings).forEach(function(sibling) {
+            sibling.classList.remove('active');
+          })
+          target.classList.add('active');
+        }
+        evt.stopPropagation();
+      }, true);
+
+      // demo for event stopPropagation.
+      // buttons.addEventListener('mousedown', function(evt) {
+      //   console.log(evt.type);
+      //   console.log(evt.target);
+      //   evt.stopPropagation();
+      // }, true);
+      // var button = document.querySelector('ul.buttons li');
+      // button.addEventListener('mousedown', function(evt) {
+      //   console.log('in button. ' + evt.type);
+      //   console.log(evt.target);
+      // });
+    });
+    </script>
+    <style>
+    ul {
+      margin: 0px;
+      padding: 0px;
+      display: flex;
+      list-style-type: none;
+      border: 1px solid red;
+      border-radius: 5px;
+      line-height: 30px;
+    }
+    ul.buttons li {
+      flex-grow: 1;
+      text-align: center;
+    }
+    ul.buttons li:not(:last-child) {
+      border-right: 1px solid red;
+    }
+    ul.buttons li.active {
+      color: white;
+      background-color: red;
+    }
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <ul class="buttons">
+      <li>日票房</li>
+      <li>周票房</li>
+      <li>月票房</li>
+      <li>年票房</li>
+    </ul>
+    <br>
+  </body>
+</html>
