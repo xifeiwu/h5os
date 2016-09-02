@@ -8,45 +8,100 @@
     <script>
     </script>
     <style>
-    div > span {
+    /*
+      > only the son element is selected
+    */
+    .child-selector > .child {
       color: red;
     }
     abbr[title="attribute"] {
       cursor: help;
       border-bottom: 1px dotted red;
     }
+
+    /*
+     +  is sibling selector
+    */
+    .nearby-sibling-selector {
+      margin-top: 20px;
+      padding-top: 5px;
+      border-top: 1px solid red;
+    }
+    .nearby-sibling-selector .first + .child {
+      color: green;
+    }
+
+    .sibling-selector {
+      margin-top: 20px;
+      padding-top: 5px;
+      border-top: 1px solid red;
+    }
+    .sibling-selector .first ~ .child {
+      color: green;
+    }
+
     blockquote {
       padding: 10px 20px;
       margin: 0 0 20px;
       font-size: 17.5px;
       border-left: 5px solid #eee;
     }
+
 .list-inline {
-    padding-left: 0;
-    margin-left: -5px;
-    list-style: none;
+  padding-left: 0px;
+  margin-left: 0px;
+  list-style: none;
 }
 .list-inline li {
   display: inline-block;
   padding: 0px 5px;
 }
+
+.list-inline-classic {
+  display: flex;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px auto;
+  width: 80%;
+  border: 1px solid red;
+}
+.list-inline-classic li {
+  flex-grow: 1;
+  text-align: center;
+}
     </style>
   </head>
   <body>
-    <br>
-    <br>
-    <div>
-      <p>
-        <span>亲人</span>
-      </p>
-      <span class="mspan">独家</span><abbr title="attribute">记忆</abbr>
-      <span>离不开你</span>
-    </div>
-    <br>
+    <ul class="child-selector">
+      <li>思念<p class="child">亲人</p></li>
+      <li class="child">独家<abbr title="attribute">记忆</abbr></li>
+      <li class="child">离不开你</li>
+    </ul>
+
+    <ul class="nearby-sibling-selector">
+      <li class="first">单身情歌</li>
+      <li class="child">你的样子</p></li>
+      <li class="child">独家<abbr title="attribute">记忆</abbr></li>
+      <li class="child">离不开你</li>
+    </ul>
+
+    <ul class="sibling-selector">
+      <li class="first">单身情歌</li>
+      <li class="child">你的样子</p></li>
+      <li class="child">独家<abbr title="attribute">记忆</abbr></li>
+      <li class="child">离不开你</li>
+    </ul>
+
 <blockquote cite="http://developer.mozilla.org">
 <p>This is a quotation taken from the Mozilla Developer Center.</p>
 </blockquote>
+
 <ul class="list-inline">
+  <li>Lorem ipsum</li>
+  <li>Phasellus iaculis</li>
+  <li>Nulla volutpat</li>
+</ul>
+<ul class="list-inline-classic">
   <li>Lorem ipsum</li>
   <li>Phasellus iaculis</li>
   <li>Nulla volutpat</li>
