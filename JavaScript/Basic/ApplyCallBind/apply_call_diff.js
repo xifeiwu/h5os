@@ -1,18 +1,16 @@
-function alert() {
-  // console.log(arguments);
-  console.log('The length of arguments: ' + arguments.length);
-  var length = arguments.length;
-  var i=0;
-  for (; i < length; i++) {
-    console.log(arguments[i]);
-  }
+// demo for call and apply.
+function Me() {
+  console.log(arguments);
 }
-function a(xx, yy) {    
-    alert(xx, yy);  
-    alert(arguments);
+Me.call(this, [1, 2, 3]);
+Me.apply(this, [1, 2, 3]);
+
+// demo for call
+var target = [1, 2, 3];
+function Plugin(option) {
+  return this.forEach(function(value) {
+    console.log(option);
+    console.log(value);
+  })
 }
-a.apply(null, [5, 55]);
-a.call(null, [5, 55]);
-console.log('=============================');
-a.apply(null, 100);
-a.call(null, 100);
+Plugin.call(target, 'show');
