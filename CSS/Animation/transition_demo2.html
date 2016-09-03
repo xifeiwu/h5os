@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+      var btn = document.querySelector('.active-element2');
+      btn.addEventListener('click', function() {
+        var target = document.querySelector(this.dataset.target);
+        var classList = target.classList;
+        if (classList.contains('active')) {
+          classList.remove('active');
+        } else {
+          classList.add('active');
+        }
+      });
+    });
+    </script>
+    <style type="text/css">
+    /*
+    * Why the effects are different when transition is placed in .element and .element:hover
+    */
+.element {
+  height: 100px;
+  border: 1px solid red;
+  /*transition: height 2s linear, background-color 5s ease;*/
+}
+.element:hover {
+  height: 200px;
+  background-color: green;
+  transition: height 2s linear, background-color 5s ease;
+}
+
+button {
+  padding-top: 5px 10px;
+  background-color: white;
+  border: 1px solid green;
+  z-index: 100;
+}
+.element2 {
+  z-index: 0;
+  height: 200px;
+  opacity: 0.0;
+  border: 1px solid red;
+  transform: scale(0.95) translate3d(30px,0,0);
+  transition: transform 2000ms ease, opacity 2000ms ease;
+}
+.element2.active {
+  opacity: 1.0;
+  transform: scale(1.0) translate3d(0,0,0);
+}
+.element2.inactive {
+  opacity: 0.0;
+  transform: scale(1) translate3d(0,0,0);
+}
+
+.element3 {
+  height: 200px;
+  background-color: #000;
+  background-image: linear-gradient(rgba(255, 0, 255, 0.4), #FAFAFA);
+  transition: background-color 400ms ease;
+}
+.element3:hover {
+  background-color: #DDD;
+}
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <br>
+    <div class="element"></div>
+    <div class="element2"></div>
+    <button class="active-element2" data-target=".element2">Active Element2</button>
+    <div class="element3"></div>
+  </body>
+</html>
