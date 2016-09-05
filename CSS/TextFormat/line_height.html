@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+    });
+    </script>
+    <style>
+      .content {
+        font-size: 16px;
+        line-height: 32px;
+      }
+      .important {
+        font-size: 30px;
+        font-weight: bold;
+        vertical-align: middle;
+        border: 1px solid red;
+        margin: 5px 10px;
+        width: 200px;
+        display: block;
+        text-align: center;
+      }
+
+      /* test if padding is included in background*/
+      .dropdown-menu {
+        max-width: 400px;
+        margin: 0px auto;
+      }
+      .dropdown-menu .divider {
+        height: 1px;
+        margin: 9px 0;
+        overflow: hidden;
+        background-clip: content-box;
+        background-color: #e5e5e5;
+        padding: 3px 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <p class="content">This is the <span class="important">content</span> of paragraph.</p>
+    <br>
+    <div class="dropdown-menu">
+      <p>this is first.</p>
+      <p>this is second.</p>
+      <p class="divider"></p>
+      <p>this is third.</p>
+      <p>this is fourth.</p>
+    </div>
+  </body>
+</html>
