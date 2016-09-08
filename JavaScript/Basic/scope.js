@@ -32,6 +32,11 @@ function myTest(){
   }
 } 
 myTest();
+// demo2
+ff(66);
+function ff() {
+  console.log(arguments[0]);
+} // output: 66
 
 // the use of closure and IIFE
 var funcs = []; 

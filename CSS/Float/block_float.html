@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+      // the float element is on normal element.
+      document.querySelectorAll('.block').forEach(function(block) {
+        block.addEventListener('click', function(evt) {
+          console.log(evt.target);
+          evt.preventDefault();
+        })
+      })
+    });
+    </script>
+    <style>
+    /**
+     * If the element is float, the adjancent margin will no be merged.
+     */
+    div {
+      height: 100px;
+      width: 50%;
+      margin: 5px auto;
+      border: 1px solid red;
+      font-size: 20px;
+      line-height: 100px;
+      text-align: center;
+    }
+    .middle {
+      float: left;
+    }
+    .footer {
+      /*clear: both;*/
+    }
+    </style>
+  </head>
+  <body>
+    <div class="block">Head</div>
+    <div class="block middle">Middle</div>
+    <div class="block footer">Footer</div>
+    <br>
+    <br>
+  </body>
+</html>
