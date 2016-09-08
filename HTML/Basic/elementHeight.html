@@ -33,15 +33,19 @@ p {
 }
     </style>
     <script type="text/javascript">
-function checkReading () {
-  if (checkReading.read) {
-    return; 
-  }
-  checkReading.read = this.scrollHeight - this.scrollTop === this.clientHeight;
-  console.log('scrollTop: ' + this.scrollTop);
-  document.registration.accept.disabled = document.getElementById("nextstep").disabled = !checkReading.read;
-  checkReading.noticeBox.innerHTML = checkReading.read ? "Thank you." : "Please, scroll and read the following text.";
-}
+    var statusBoard = null;
+    function checkReading () {
+      console.log('scrollTop: ' + this.scrollTop);
+      var scrollToEnd = this.scrollHeight - this.scrollTop === this.clientHeight;
+      if (scrollToEnd) {
+        document.registration.accept.disabled = true;
+      }
+      if (statusBoard) {
+        statusBoard.innerHTML = scrollToEnd ?
+                                "Thank you." :
+                                "Please, scroll and read the following text.";
+      }
+    }
 
 /**
  * height: content height
@@ -60,16 +64,18 @@ window.addEventListener('load', function () {
   console.log('clientHeight:' + oToBeRead.clientHeight);
   console.log('offsetHeight:' + oToBeRead.offsetHeight);
   console.log('scrollHeight:' + oToBeRead.scrollHeight);
-  checkReading.noticeBox = document.createElement("span");
   document.registration.accept.checked = true;
-  checkReading.noticeBox.id = "notice";
-  oToBeRead.parentNode.insertBefore(checkReading.noticeBox, oToBeRead);
   oToBeRead.onscroll = checkReading;
-  checkReading.call(oToBeRead);
+
+  statusBoard = document.querySelector('.status');
+
 });
     </script>
   </head>
   <body>
+    <!-- form is a special element as it can be get directly by document.name -->
+    <form name="getbyname" style="height: 50px; border: 1px solid blue"></form>
+    <p class="status"></p>
 <form name="registration" class="example">
     <textarea id="rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at laoreet magna. 
 Aliquam erat volutpat. Praesent molestie, dolor ut eleifend aliquam, mi ligula ultrices sapien, quis cursus 
