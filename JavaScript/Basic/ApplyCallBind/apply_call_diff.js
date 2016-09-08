@@ -1,9 +1,11 @@
 // demo for call and apply.
-function Me() {
-  console.log(arguments);
+function Me(x, y, z) {
+  console.log('x: ' + x);
+  console.log('y: ' + y);
+  console.log('z: ' + z);
 }
-Me.call(this, [1, 2, 3]);
-Me.apply(this, [1, 2, 3]);
+Me.call(null, [1, 2, 3]);
+Me.apply(null, [1, 2, 3]);
 
 // demo for call
 var target = [1, 2, 3];
