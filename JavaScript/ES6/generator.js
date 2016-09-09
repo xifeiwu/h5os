@@ -57,3 +57,52 @@ function run(generatorFunction) {
   generatorItr.next();
 }
 run(myDelayedMessages);
+
+
+// iterate object by generator
+var obj = {
+  a: 1,
+  b: 2,
+  c: 3
+}
+function* entries(obj) {
+  for (let key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+}
+for (let [key, value] of entries(obj)) {
+  console.log(key, "->", value);
+}
+// a -> 1
+// b -> 2
+// c -> 3
+
+var screenStatus = null;
+function showLoadingScreen() {
+  screenStatus = "on";
+  console.log(screenStatus);
+}
+function hideLoadingScreen() {
+  screenStatus = "off";
+  console.log(screenStatus);
+}
+function* loadUI() {
+  showLoadingScreen();
+  var nextStep = yield 'has loaded.';
+  switch(nextStep) {
+    case 'on':
+      showLoadingScreen();
+      break;
+    case 'off':
+      hideLoadingScreen();
+      break;
+    default:
+      console.log('no selected.');
+      break;
+  }
+}
+var loader = loadUI();
+// 加载UI
+loader.next();
+// 卸载UI
+loader.next();

@@ -38,3 +38,10 @@ v = it.next().value;
 console.log(v);            // -> 输出：inner
 v = it.next().value;
 console.log(v);            // -> 输出：end
+
+
+function* Generator() {
+  console.log('Hello' + (yield 123))
+}
+var iter = Generator();
+iter.next();
