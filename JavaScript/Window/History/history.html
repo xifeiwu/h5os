@@ -7,7 +7,7 @@
     <script>
     window.addEventListener('load', () => {
       // window.location.href = "http://www.baidu.com";
-      // history.pushState({name: 'pushState Page2'}, 'goToPage2', 'page2.html');
+      history.pushState({name: 'pushState Page2'}, 'goToPage2', 'page2.html');
     });
     window.addEventListener('popstate', (evt) => {
       console.log('popstate event in history.html');
