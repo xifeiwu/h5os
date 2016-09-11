@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    /**
+     * something learn from this demo
+     * 1. parent node can not append a same node as its child.
+     * 2. childNodes is not a Array. After created, childArray has no relation with childNode.
+     * 3. According to DOM1, element can be get by id directly.
+     * 4. the node returned from cloneNode has no relation with origin Node.
+     */
+    window.addEventListener('load', function() {
+      container = document.getElementById('container');
+      childNodes = container.childNodes;
+      childArray = Array.prototype.slice.call(childNodes);
+      
+      // node first will be inserted as lastChild
+      // container.appendChild(first);
+      
+      // element first2 has no relation with first.
+      var first2 = first.cloneNode();
+      first2.appendChild(document.createTextNode('first2'));
+      container.appendChild(first2);
+
+      container.appendChild(fourth);
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <br>
+    <ul id="container">
+      <li id="first">item1</li>
+      <li class="second">item2</li>
+      <li class="third">item3</li>
+    </ul>
+    <li id="fourth">item4</li>
+
+    <div id="container"></div>
+    <br>
+    <br>
+  </body>
+</html>

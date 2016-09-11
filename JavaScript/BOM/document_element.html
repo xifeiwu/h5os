@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<!-- This is the first comment-->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    function getDocumentProp(prop) {
+      console.log(prop + ' ->');
+      console.log(document[prop]);
+    }
+    function queryFunction() {
+      container.getElementsByTagName('li');
+      // this function can only be used by document.
+      document.getElementsByName('second');
+    }
+    window.addEventListener('load', function() {
+      getDocumentProp('documentElement');
+      getDocumentProp('doctype');
+      getDocumentProp('childNodes');
+      getDocumentProp('title');
+      getDocumentProp('URL');
+      getDocumentProp('anchors');
+      getDocumentProp('forms');
+      getDocumentProp('links');
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <a href="http://www.baidu.com">BAIDU</a>
+    <form>
+      <label>
+        姓名：<input type="text"></input>
+      </label>
+    </form>
+    <br>
+    <ul id="container">
+      <li id="first">item1</li>
+      <li name="second">item2</li>
+      <li class="third">item3</li>
+    </ul>
+    <br>
+    <br>
+  </body>
+</html>

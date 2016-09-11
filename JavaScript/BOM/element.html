@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    function showHTMLElementProp() {
+      // compare to Text, HTMLElement has nodeType, childNodes and some attributes. 
+      childNodes = container.childNodes;
+      for (var node of childNodes) {
+        console.log(node.tagName);
+        console.log(node.nodeName);
+      }
+    }
+
+    function setAttrsByFunc() {
+      myDiv.setAttribute('class', 'bd');
+      myDiv.setAttribute('title', 'div text');
+      myDiv.setAttribute('lang', 'en');
+      myDiv.setAttribute('dir', 'ltr');
+      myDiv.setAttribute('my_name', 'xifei');
+    }
+
+    function setAttrsByProp() {
+      myDiv.className = 'bd';
+      myDiv.lang = 'en';
+      myDiv.dir = 'ltr';
+      myDiv.my_name = 'xifei';
+    }
+
+    function getAttrsByProp() {
+      //Without using getAttribute function;, the following attributes can be get directly.
+      console.log(myDiv.id);
+      console.log(myDiv.className);
+      console.log(myDiv.lang);
+      console.log(myDiv.dir);
+      console.log(myDiv.my_name);
+    }
+
+    function getAttrsByFunc() {
+      //Without using getAttribute function;, the following attributes can be get directly.
+      console.log(myDiv.getAttribute('id'));
+      console.log(myDiv.getAttribute('className'));
+      console.log(myDiv.getAttribute('lang'));
+      console.log(myDiv.getAttribute('dir'));
+      console.log(myDiv.getAttribute('my_name'));
+    }
+
+    window.addEventListener('load', function() {
+      showHTMLElementProp();
+      // some properties will not shown in DOM when using setAttrsByProp,
+      // but it still can be get.
+      // the set and get function should following the same way.
+      // setAttrsByProp();
+      // getAttrsByProp();
+      // setAttrsByFunc();
+      // getAttrsByFunc();
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <br>
+    <ul id="container">
+      <li id="first">item1</li>
+      <li name="second">item2</li>
+      <li class="third">item3</li>
+    </ul>
+    <br>
+    <br>
+    <div id="myDiv">This is DIV.</div>
+    <!-- <div id="myDiv" class="bd" title="div text" lang="en" dir="ltr">This is DIV.</div> -->
+  </body>
+</html>
