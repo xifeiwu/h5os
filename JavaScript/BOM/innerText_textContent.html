@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+      console.log('innerHTML');
+      console.log(content.innerHTML);
+      console.log('innerText');
+      console.log(content.innerText);
+      console.log('textContent');
+      console.log(content.textContent);
+      // There are still some different between innerText and textContent.
+      // content.innerText = content.innerText;
+      content.textContent = content.textContent;
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <br>
+    <div id="content">
+      <p>This is a <strong>paragraph</strong> with a list following it.</p>
+      <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ul>
+    </div>
+    <br>
+    <br>
+  </body>
+</html>
