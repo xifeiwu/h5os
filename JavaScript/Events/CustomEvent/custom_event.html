@@ -5,16 +5,40 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>HTML Model</title>
     <script>
-      function test_custom_event() {
+      function test_event() {
         var evt = document.createEvent('Event');
-        evt.initEvent('customEvent', true, true);
+        evt.initEvent('myEvent', true, true, {
+          time: new Date(),
+          tag: 'custom-event',
+          detail: 'this is detail.'
+        });
         var obj = document.getElementById('testBox');
-        obj.addEventListener('customEvent', function() {
+        obj.addEventListener('myEvent', function(evt) {
           console.log("custom event is inspired.");
+          console.log(evt);
+          console.log(evt.detail);
         });
         // can be called via dispatchEvent.
         obj.dispatchEvent(evt);
       }
+
+      function test_custom_event() {
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent('myEvent', true, true, {
+          time: new Date(),
+          tag: 'custom-event',
+          detail: 'this is detail.'
+        });
+        var obj = document.getElementById('testBox');
+        obj.addEventListener('myEvent', function(evt) {
+          console.log("custom event is inspired.");
+          console.log(evt);
+          console.log(evt.detail);
+        });
+        // can be called via dispatchEvent.
+        obj.dispatchEvent(evt);
+      }
+
       function test_handle_event() {
         var testBox = document.getElementById('testBox');
         var obj = {
@@ -31,7 +55,8 @@
         // testBox.addEventListener('click', click_cb, false);
       }
       window.onload = function() {
-        test_handle_event();
+        test_custom_event();
+        // test_handle_event();
       }
     </script>
   </head>
