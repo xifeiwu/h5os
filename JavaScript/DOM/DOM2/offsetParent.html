@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    function showOffset() {
+
+    }
+    window.addEventListener('load', function() {
+      container = document.querySelector('.container');
+      outer = document.querySelector('.outer');
+      inner = document.querySelector('.inner');
+      // the value of offsetParent can be affected by css position property.
+      console.log(outer.offsetParent);
+      console.log(outer.offsetTop);
+      console.log(outer.offsetLeft);
+      console.log(inner.offsetParent);
+      console.log(inner.offsetTop);
+      console.log(inner.offsetLeft);
+    });
+    </script>
+    <style>
+    .container {
+      width: 80%;
+      height: 500px;
+      margin: 10px auto;
+      border: 1px solid red;
+      position: relative;
+    }
+    .outer {
+      margin: 10px auto;
+      width: 80%;
+      height: 50%;
+      border: 1px solid green;
+      position: relative;
+    }
+    .inner {
+      margin: 10px auto;
+      width: 80%;
+      height: 50%;
+      border: 1px solid blue;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="outer">
+        <div class="inner">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
