@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+      function showMsg(evt) {
+        console.log('->' + evt.type);
+        console.log('keyCode: ' + evt.keyCode);
+        console.log('key: ' + evt.key);
+        console.log('charCode: ' + evt.charCode);
+      }
+      var container = document.querySelector('.container');
+      container.addEventListener('keydown', function(evt) {
+        showMsg(evt);
+      });
+      container.addEventListener('keypress', function(evt) {
+        showMsg(evt);
+      });
+      container.addEventListener('keyup', function(evt) {
+        showMsg(evt);
+      });
+    });
+    </script>
+    <style>
+    .container {
+      width: 100px;
+      height: 300px;
+      border: 1px solid gray;
+      border-radius: 10px;
+    }
+    </style>
+  </head>
+  <body>
+    <textarea class="container"></textarea>
+  </body>
+</html>
