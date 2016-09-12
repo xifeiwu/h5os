@@ -6,20 +6,37 @@
     <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
     <title>HTML Model</title>
     <script>
-    function showOffset() {
+    function getClientPos(node) {
+      var top = 0, left = 0;
+      var parent = node;
+      var computedStyle = null;
+      var borderWidth;
+      while (parent.offsetParent != null) {
+        top += parent.offsetTop;
+        left += parent.offsetLeft;
+        parent = parent.offsetParent;
+        computedStyle = window.getComputedStyle(parent);
+        borderWidth = parseInt(computedStyle.borderWidth);
+        top += borderWidth;
+        left += borderWidth;
+      }
+      console.log(top + ' * ' + left);
+      var offset = node.getBoundingClientRect();
+      console.log(offset);
+    }
+
+    function showOffset(node) {
+      // the value of offsetParent can be affected by css position property.
+      console.log(node.offsetParent);
+      console.log(node.offsetTop);
+      console.log(node.offsetLeft);
 
     }
     window.addEventListener('load', function() {
       container = document.querySelector('.container');
       outer = document.querySelector('.outer');
       inner = document.querySelector('.inner');
-      // the value of offsetParent can be affected by css position property.
-      console.log(outer.offsetParent);
-      console.log(outer.offsetTop);
-      console.log(outer.offsetLeft);
-      console.log(inner.offsetParent);
-      console.log(inner.offsetTop);
-      console.log(inner.offsetLeft);
+      getClientPos(inner);
     });
     </script>
     <style>
