@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+    });
+    </script>
+  </head>
+  <body>
+<style>
+    .title {
+        font-size: 25px;
+        margin: 15px 0px;
+    }
+    .content {
+        font-size: 16px;
+        line-height: 20px;
+        padding-left: 32px;
+    }
+    .content .important{
+        font-weight: bold;
+    }
+    footer {
+        margin: 20px 0px;
+        color: #777;
+        font-size: 12px;
+        line-height: 16px;
+    }
+</style>
+<div class="title">Hi, %s:</div>
+<div class="content">
+    <div><span class="important">%s</span>共产生<span class="important">%s</span>条错误日志，详情见附件。</div>
+    <div>有问题请回复此邮件。</a></div>
+</div>
+<footer>
+    <div>------</div>
+    <div>发自服务器 10.19.16.210</div>
+    <div>%s</div>
+</footer>
+  </body>
+</html>
