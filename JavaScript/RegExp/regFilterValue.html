@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    function reg1() {
+      valueGetter = document.querySelector('.reg1');
+      valueGetter.addEventListener('input', function(evt) {
+        var value = evt.target.value;
+        var match = /^\d{0,11}\d$/.test(evt.target.value);
+        console.log(match)
+        var match = evt.target.value.match(/^\d{0,11}\d$/);
+        console.log(match)
+      });
+    }
+    function reg2() {
+      valueGetter = document.querySelector('.reg2');
+      valueGetter.addEventListener('input', function(evt) {
+        var value = evt.target.value;
+        var match = /^\d{4}$/.test(evt.target.value);
+        console.log(match)
+        var match = evt.target.value.match(/\d{4}/);
+        console.log(match)
+      });
+    }
+
+    window.addEventListener('load', function() {
+      reg2();
+    });
+    </script>
+    <style>
+    input[type="text"] {
+      height: 20px;
+      border: 1px solid red;
+      border-radius: 5px;
+    }
+    </style>
+  </head>
+  <body>
+    <br>
+    <br>
+    <br>
+    <div>
+      <label></label>
+      <input class="reg1" type="text" \> 
+      <input class="reg2" type="text" \> 
+    </div>
+  </body>
+</html>
