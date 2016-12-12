@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+  </head>
+  <body>
+    <style>
+      .title {
+        font-size: 20px
+      }
+      .content {
+        font-size: 16px
+        line-height: 24px;
+        padding: 10px;
+        max-width: 500px;
+      }
+      .content p {
+        margin: 5px;
+        font-size: 14px;
+        line-height: 20px;
+      }
+      .content .to-detail:visited {
+        color: black;
+      }
+      .content .to-detail:visited + span.detail{
+        display: inline;
+        color: gray;
+      }
+      .content p.detail {
+        color: gray
+      }
+      .content .hidden {
+        display: none
+      }
+      .signature {
+        margin-top: 5px;
+      }
+      .signature .name {
+        margin: 0px;
+        font-weight: normal;
+        color: black;
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .signature .job, .signature .phone, .signature .address{
+        margin: 0px;
+        color: #777;
+        font-size: 12px;
+        line-height: 16px;
+      }
+    </style>
+    <div class="title">工作总结-2Scrum</div>
+    <div class="content">
+      <p>从入职到现在已经有一个多月，参加了两次迭代，渐渐熟悉了开发节奏，相关的技术也在渐渐上路。</p>
+      <p>进入一个新的环境总是需要有一段适应期，进入公司也是这样：要适应新公司的开发模式，要熟悉业务逻辑，要学习巩固用到的新技术。</p>
+      <p>第一次接触敏捷开发的模式。需求评审、IPM、估点、retro都是头一次听说，开始会感觉会议太多，但现在想想每个阶段都是很有意义必不可少的，需求评审是一个学习了解新增功能的过程，IPM可以对这个迭代的开发计划进行构思规划，retro的总结回顾能及时发现并解决问题。</p>
+      <p>团队的短小精悍也是比较令人印象深刻，也许这是敏捷开发带来的吧。个人感觉有计划的backup还是有必要的，避免owner请假影响项目开发进度。Backup是个挺有挑战性的，特别是任务比较急的情况，未必能解决相应的问题。<a href="" class="to-detail">曾经backup过一个Android中WebView界面滑动的问题，花了不少精力，也没有解决问题。</a>
+      <span class="detail hidden">首先定位到要修改页面的代码，找到触摸或手势事件的逻辑，网上搜索有没有相关问题的答案，需要调用那个接口，寻找需要修改哪部分逻辑，回到代码后，发现代码还是比较抽象的，相同的逻辑抽象到了一个对象或父类中，会担心修改后会影响其它逻辑。另外，每次调试后的中间数据输入也都是个比较耗时的事情，需要打包装到设备上。这是作为一个backup需要面对和解决的问题。作为owner挑战就会小一些，熟悉代码可以快速定位。对于特殊情况，可以特殊处理，不使用公用类或父类方法。对于一些常用逻辑，可以写脚本，比如打包、装机，减少手动操作。</span>感觉Backup应该是一个长期的规划。</p>
+      <p>这段时间完成了Java后台的一些逻辑和前端两个页面，完善了BI日志解析和前端展示，也写了一些数据库逻辑，需要深入学习的东西也挺多。这段时间比较忙，进步也很快，希望能尽快做一个合格的全栈，和会牛一起快速成长。</p>
+      <p>[应焕生的建议，对最近的工作进行了简单的总结]</p>
+    </div>
+    <div class="signature">
+      <p class="name">吴西飞</p>
+      <p class="job">普惠金融信息技术中心-会牛项目组</p>
+      <p class="address">地址：北京东城区银河SOHO D2座17层</p>
+      <p class="phone">手机：15712872803</p>
+    </div>
+    <br>
+    <br>
+  </body>
+</html>
