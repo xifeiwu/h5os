@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+    });
+    </script>
+    <style>
+    .sidebar {
+      position: absolute;
+      display: flex;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      width: 551px;
+      background: linear-gradient(136deg, white, black); 
+    }
+    .sidebar .sidebar-left {
+      flex-grow: 1;
+      height: 100%;
+    }
+    .sidebar .sidebar-right {
+      flex-grow: 2;
+      height: 100%;
+    }
+    .sidebar .sidebar-drag {
+      width: 2px;
+      height: 100%;
+    }
+    </style>
+  </head>
+  <body>
+
+  <div class="sidebar">
+    <div class="sidebar-left">sidebar-left</div>
+    <div class="sidebar-right">sidebar-right</div>
+    <div class="sidebar-drag"></div>
+  </div>
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
