@@ -1,0 +1,87 @@
+h1.title {
+  text-align: center;
+}
+h2.tip {
+  text-align: center;
+  font-size: 16px;
+}
+.highcharts-point-up {
+    fill: red !important;
+    stroke: red !important;
+}
+.highcharts-point-down {
+    fill: green !important;
+    stroke: green !important;
+}
+
+.content {
+  margin-bottom: 20px;
+}
+
+.row {
+  border: 1px solid gray;
+  margin: 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.row.no-data {
+  display: none;
+}
+.row.similar {
+  border-color: red;
+  opacity: 0.3;
+}
+.row .stock {
+  margin-right: 5px;
+  text-align: center;
+}
+.row .origin {
+  display: inline-block;
+}
+.row .similar {
+  display: inline-block;
+}
+.row .is-similar label{
+  display: block;
+  font-size: 12px;
+}
+.bottom {
+  align-items: center;
+}
+.submit {
+  display: block;
+  padding: 8px 20px;
+  border: 1px solid gray;
+  background-color: white;
+  border-radius: 4px;
+  margin: 0px auto;
+  font-size: 18px
+}
+.submit:active {
+  background-color: gray;
+}
+
+.toast.hidden {
+  display: none;
+}
+.toast {
+  position: fixed;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px;
+  border-radius: 5px;
+  max-width: 60%;
+  border: 1px solid #666;
+  background-color: #555;
+  color: white;
+  text-align:center;
+  opacity: .3;
+  transition: opacity 1.5s ease-out;
+}
+
+.toast.active {
+  display: block;
+  opacity: 1;
+}
