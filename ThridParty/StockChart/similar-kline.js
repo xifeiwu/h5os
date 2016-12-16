@@ -1,34 +1,81 @@
 SVGRenderer = function(container, exchangeData) {
   this.container = container;
-  this.container.style.width = this.container.clientWidth + 'px';
-  this.container.style.height = '100px';
+  // this.container.clientWidth + 
+  this.container.style.width = '500px';
+  this.container.style.height = '200px';
 
   this.ma5 = exchangeData['ma5'];
   this.ma10 = exchangeData['ma10'];
   this.ma20 = exchangeData['ma20'];
   this.ohlc = exchangeData['ohlc'];
-  var maxValue = 0, minValue = 100;
-  console.log(this.ohlc);
-  this.ohlc.forEach(function(item) {
-    if (maxValue < item['thigh']) {
-      maxValue = item['thigh'];
-    }
-    if (minValue > item['tlow']) {
-      minValue = item['tlow'];
-    }
+  var boxWrapper = this.createElement('svg');
+  this.attr(boxWrapper, {
+    version: '1.1',
+    width: '500px',
+    height: '200px',
+    viewBox: '100px 0 500px 200px'
   });
-  console.log('maxValue: ' + maxValue);
-  console.log('minValue: ' + minValue);
+
+  var gma = this.g('ma');
+  this.attr(gma, {
+    width: '500px'
+  })
+  var ma5 = this.text('MA5:54');
+  var ma10 = this.text('MA10:54');
+  var ma20 = this.text('MA20:54');
+  this.attr(ma5, {
+    x: '25%',
+    y: '12',
+    'font-size': 10,
+    'text-anchor': "middle",
+    fill: 'blue',
+  });
+  this.attr(ma10, {
+    x: '50%',
+    y: '12',
+    'font-size': 10,
+    'text-anchor': "middle",
+    fill: 'yellow',
+  });
+  this.attr(ma20, {
+    x: '75%',
+    y: '12',
+    'font-size': 10,
+    'text-anchor': "middle",
+    fill: 'red',
+  });
+  var c1 = this.circle(200, 50, 50);
+  this.attr(c1, {
+    fill: 'red',
+    stroke: 'red'
+  })
+  gma.appendChild(ma5);
+  gma.appendChild(ma10);
+  gma.appendChild(ma20);
+
+  var footer = this.text('想把握未来30天的走势吗？快去下面解锁联系历史相似K线吧。');
+  this.attr(footer, {
+    x: "50%",
+    y: "80%",
+    'font-size': "10",
+    fill: "red",
+    'text-anchor': "middle"
+  })
+
+  boxWrapper.appendChild(gma);
+  boxWrapper.appendChild(c1);
+  boxWrapper.appendChild(footer);
+  this.container.appendChild(boxWrapper);
 }
 
 SVGRenderer.prototype = {
-
   /**
    * Create a wrapper for an SVG element
    * @param {Object} nodeName
    */
   createElement: function(nodeName) {
-    var wrapper = document.createElement(nodeName);
+    var SVG_NS = 'http://www.w3.org/2000/svg'
+    var wrapper = document.createElementNS(SVG_NS, nodeName);
     return wrapper;
   },
 
@@ -102,9 +149,12 @@ SVGRenderer.prototype = {
    */
   g: function(name) {
     var elem = this.createElement('g');
-    return name ? elem.attr({
+    if (name) {
+      this.attr(elem, {
         'class': 'group-' + name
-    }) : elem;
+      });
+    }
+    return elem;
   },
 
   /**
@@ -122,6 +172,24 @@ SVGRenderer.prototype = {
     }
     return this.createElement('path').attr(attribs);
   },
+
+  /**
+   * Draw and return an SVG circle
+   * @param {Number} x The x position
+   * @param {Number} y The y position
+   * @param {Number} r The radius
+   */
+  circle: function(x, y, r) {
+    var attribs = this.isObject(x) ? x : {
+        x: x,
+        y: y,
+        r: r
+      },
+      wrapper = this.createElement('circle');
+    this.attr(wrapper, attribs);
+    return wrapper;
+  },
+
 
   /**
    * Draw and return a rectangle
@@ -144,6 +212,20 @@ SVGRenderer.prototype = {
     return wrapper.attr(attribs);
   },
 
+  /**
+   * Add text to the SVG object
+   * @param {String} str
+   * @param {Number} x Left position
+   * @param {Number} y Top position
+   * @param {Boolean} useHTML Use HTML to render the text
+   */
+  text: function(str, x, y) {
+    var wrapper = this.createElement('text');
+    wrapper.textContent = str;
+    return wrapper;
+  },
+
+
   symbols: {
     'circle': function(x, y, w, h) {
       var cpw = 0.166 * w;
@@ -165,8 +247,129 @@ SVGRenderer.prototype = {
         'L', x + w / 2, low
       ];
     },
+  },
+
+
+  formatData: function(exData) {
+    formatData()
+
   }
 }
+
+
+function formatStockExinfo(stockInfo) {
+  var isSameDay = function (date1, date2) {
+    if (date1.getFullYear() == date2.getFullYear() && date1.getMonth() == date2.getMonth()
+        && date1.getDate() == date2.getDate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var stockDailyInfos = stockInfo['stockDailyInfoDTOs'];
+  // var stockDailyInfos = stockDailyInfos.sort(function(a, b) {
+  //     return a.tradeDate - b.tradeDate;
+  // });
+  // split the stockDailyInfos set into ohlc and volume
+  var ohlc = [],
+      ma5 = [],
+      ma10 = [],
+      ma20 = [],
+      recordCnt = stockDailyInfos.length;
+
+  var tradeDate, tradeDateStr, milliSeconds = null;
+  var maxValue = 0, minValue = 100;
+  var tMa5 = 0, tMa10 = 0, tMa20 = 0;
+  var today = new Date();
+  for (i = 0; i < recordCnt; i += 1) {
+    tradeDateStr = stockDailyInfos[i]['tradeDate'].toString();
+    tradeDate = new Date(tradeDateStr.slice(0, 4), parseInt(tradeDateStr.slice(4, 6)) - 1, tradeDateStr.slice(6, 8));
+    milliSeconds = tradeDate.getTime();
+
+    if (isSameDay(today, tradeDate)) {
+      tMa5 = stockDailyInfos[i]['ma5'];
+      tMa10 = stockDailyInfos[i]['ma10'];
+      tMa20 = stockDailyInfos[i]['ma20'];
+    }
+
+    if (maxValue < parseFloat(stockDailyInfos[i]['thigh'])) {
+      maxValue = parseFloat(stockDailyInfos[i]['thigh']);
+    }
+    if (minValue > parseFloat(stockDailyInfos[i]['tlow'])) {
+      minValue = parseFloat(stockDailyInfos[i]['tlow']);
+    }
+
+    ohlc.push({
+      'date': tradeDate, // the date
+      'topen': parseFloat(stockDailyInfos[i]['topen']), // open
+      'thigh': parseFloat(stockDailyInfos[i]['thigh']), // high
+      'tlow': parseFloat(stockDailyInfos[i]['tlow']), // low
+      'tclose': parseFloat(stockDailyInfos[i]['tclose']) // close
+    });
+    ma5.push([
+      tradeDate,
+      parseFloat(stockDailyInfos[i]['ma5'])
+    ]);
+    ma10.push([
+      tradeDate,
+      parseFloat(stockDailyInfos[i]['ma10'])
+    ]);
+    ma20.push([
+      tradeDate,
+      parseFloat(stockDailyInfos[i]['ma20'])
+    ]);
+  }
+  return {
+    'ohlc': ohlc,
+    'ma5': ma5,
+    'ma10': ma10,
+    'ma20': ma20,
+    'maxValue': maxValue,
+    'minValue': minValue,
+    'tMa5': tMa5,
+    'tMa10': tMa10,
+    'tMa20': tMa20,
+  }
+}
+
+function formatData(responseData) {
+  console.log(responseData);
+  if (responseData['code'] != 1 || responseData['msg'] != 'OK') {
+    return false
+  }
+  var content = responseData['content'];
+
+  var originStock = null;
+  var similarStock = null;
+  var similarStockList = null;
+  if ('originalStockTrainBaseDTO' in content) {
+    originStock = content['originalStockTrainBaseDTO'];
+  }
+  if ('similarStockTrainBaseDTO' in content) {
+    similarStock = content['similarStockTrainBaseDTO'];
+  }
+  if ('similarStockDTOs' in content) {
+    similarStockList = content['similarStockDTOs'];
+  }
+  // TODO: delete later
+  if (originStock) {
+    originStock['stockDailyInfoDTOs'] = stockData[0]['stockDailyInfoDTOs'];
+  }
+
+  if (originStock) {
+    originStock['formatedExInfo'] = formatStockExinfo(originStock);
+  }
+  if (similarStock) {
+    similarStock['formatedExInfo'] = formatStockExinfo(similarStock);
+  }
+  return {
+    'originStock': originStock,
+    'similarStock': similarStock,
+    'similarStockList': similarStockList,
+  } 
+}
+
 function StockExchangeDraw(element, exchangeData) {
   var container = document.querySelector('.kline-day');
   kline = new SVGRenderer(container, exchangeData);
@@ -174,219 +377,182 @@ function StockExchangeDraw(element, exchangeData) {
 StockExchangeDraw.prototype = {
 }
 
-function formatData(originData) {
-  var stockDailyInfos = originData['stockDailyInfoDTOs'];
-  var stockName = originData['stockName'];
-  var stockDailyInfos = stockDailyInfos.sort(function(a, b) {
-      return a.tradeDate - b.tradeDate;
-  })
-  // split the stockDailyInfos set into ohlc and volume
-  var ohlc = [],
-      ma5 = [],
-      ma10 = [],
-      ma20 = [],
-      volume = [],
-      recordCnt = stockDailyInfos.length;
-
-  var tradeDate, milliSeconds = null;
-  for (i = 0; i < recordCnt; i += 1) {
-    tradeDate = stockDailyInfos[i]['tradeDate'].toString();
-    milliSeconds = new Date(tradeDate.slice(0, 4), parseInt(tradeDate.slice(4, 6)) - 1, tradeDate.slice(6, 8)).getTime();
-    // ohlc.push([
-    //   milliSeconds, // the date
-    //   parseFloat(stockDailyInfos[i]['topen']), // open
-    //   parseFloat(stockDailyInfos[i]['thigh']), // high
-    //   parseFloat(stockDailyInfos[i]['tlow']), // low
-    //   parseFloat(stockDailyInfos[i]['tclose']) // close
-    // ]);
-    ohlc.push({
-      'date': milliSeconds, // the date
-      'topen': parseFloat(stockDailyInfos[i]['topen']), // open
-      'thigh': parseFloat(stockDailyInfos[i]['thigh']), // high
-      'tlow': parseFloat(stockDailyInfos[i]['tlow']), // low
-      'tclose': parseFloat(stockDailyInfos[i]['tclose']) // close
-    });
-    ma5.push([
-      milliSeconds,
-      parseFloat(stockDailyInfos[i]['ma5'])
-    ]);
-    ma10.push([
-      milliSeconds,
-      parseFloat(stockDailyInfos[i]['ma10'])
-    ]);
-    ma20.push([
-      milliSeconds,
-      parseFloat(stockDailyInfos[i]['ma20'])
-    ]);
-    volume.push([
-      milliSeconds, // the date
-      parseInt(stockDailyInfos[i]['vol']) // the volume
-    ]);
-  }
-  return {
-    'stock': stockName,
-    'ohlc': ohlc,
-    'ma5': ma5,
-    'ma10': ma10,
-    'ma20': ma20,
-    'volume': volume,
-  }
-}
-
-function drawStockChart(formatedData) {
-  // set the allowed units for data grouping
-  var groupingUnits = [[
-      'week',                         // unit name
-      [1]                             // allowed multiples
-    ], [
-      'month',
-      [1]
-    ]
-  ];
-  var $container = $('.stock-kline');
-  $container.css('width', document.body.clientWidth + 'px');
-  $container.highcharts('StockChart', {
-    rangeSelector: {
-      enabled: false,
-    },
-    credits: {
-      enabled: false
-    },
-    navigator: {
-      enabled: false
-    },
-    scrollbar: {
-      enabled: false
-    },
-
-    title: {
-      text: formatedData['stockName']
-    },
-
-    plotOptions: {
-      line: {
-        color: '#00FF00'
-      },
-      candlestick: {
-      }
-    },
-    xAxis: {
-      title: {
-        text: '日期'
-      },
-      type: "datetime",//时间轴要加上这个type，默认是linear
-      // maxPadding: 0.05,
-      // minPadding: 0.05,
-      // range: 40 * 24 * 3600 * 1000, // six months
-      //tickInterval : 24 * 3600 * 1000 * 2,//两天画一个x刻度
-      //或者150px画一个x刻度，如果跟上面那个一起设置了，则以最大的间隔为准
-      tickPixelInterval: 100,
-      tickPosition: 'inside',
-      tickWidth: 1,//刻度的宽度
-      tickLength: 5,
-      lineColor: '#990000',//自定义刻度颜色
-      lineWidth: 1,//自定义x轴宽度
-      gridLineWidth: 1,//默认是0，即在图上没有纵轴间隔线
-      //自定义x刻度上显示的时间格式，根据间隔大小，以下面预设的小时/分钟/日的格式来显示
-      dateTimeLabelFormats: {
-        second: '%H:%M:%S',
-        minute: '%e. %b %H:%M',
-        hour: '%b/%e %H:%M',
-        day: '%m-%d',
-        week: '%m-%d',
-        month: '%b %y',
-        year: '%Y'
-      }
-    },
-
-    yAxis: [{
-      labels: {
-        align: 'right',
-        x: -3
-      },
-      title: {
-        text: 'OHLC'
-      },
-      height: '60%',
-      // tickPixelInterval: 50,
-      tickPosition: 'outside',
-      lineWidth: 1
-    },{
-      labels: {
-          align: 'right',
-          x: -3
-      },
-      title: {
-          text: '成交量'
-      },
-      top: '65%',
-      height: '30%',
-      offset: 0,
-      lineWidth: 2
-    }],
-
-    series: [
-      {
-        type: 'candlestick',
-        name: 'AAPL',
-        data: formatedData['ohlc'],
-        // pointPadding: 0,
-        pointWidth: 6,
-        // pointInterval: 1,
-        groupPadding: 0.1,
-        dataGrouping: {
-          units: groupingUnits
-        }
-      },
-      {
-        type: 'line',
-        name: 'ma5',
-        data: formatedData['ma5'],
-        lineWidth: 1, 
-        colors: ['#ff0000'],
-        dataGrouping: {
-          units: groupingUnits
-        }
-      },
-      {
-        type: 'line',
-        name: 'ma10',
-        data: formatedData['ma10'],
-        lineWidth: 1, 
-        colors: ['#00ff00'],
-        dataGrouping: {
-          units: groupingUnits
-        }
-      },
-      {
-        type: 'line',
-        name: 'ma20',
-        data: formatedData['ma20'],
-        lineWidth: 1, 
-        colors: ['#0000ff'],
-        dataGrouping: {
-          units: groupingUnits
-        }
-      },
-      {
-        type: 'column',
-        name: 'Volume',
-        data: formatedData['volume'],
-        yAxis: 1,
-        dataGrouping: {
-          units: groupingUnits
-        }
-      }
-    ],
-  });
-}
-
 window.addEventListener('load', function() {
-  var drawStockExchange = StockExchangeDraw(null, formatData(stockData[0]));
+  var stockInfo = formatData(responseData);
+  console.log(stockInfo['originStock']['formatedExInfo']);
+  var drawStockExchange = StockExchangeDraw(null, stockInfo['originStock']['formatedExInfo']);
+  // stockData[0]
   // console.log(stockData);
-  // drawStockChart();
-  console.log(formatData(stockData[0]))
 });
+
+var responseData = {
+  "code": 1,
+  "content": {
+    "originalStockTrainBaseDTO": {
+      "code": "0009021",
+      "name": "会牛",
+      "score": 0,
+      "secode": "2010000009",
+      "stockDailyInfoDTOs": [{
+        "ma10": 6.6052,
+        "ma20": 6.6052,
+        "ma5": 6.6052,
+        "tclose": 6.6052,
+        "thigh": 6.6365,
+        "tlow": 6.5551,
+        "topen": 6.6365,
+        "tradeDate": "20161216",
+        "tradeType": 2
+      }, {
+        "ma10": 6.5206,
+        "ma20": 6.5206,
+        "ma5": 6.5206,
+        "tclose": 6.436,
+        "thigh": 6.5613,
+        "tlow": 6.3608,
+        "topen": 6.5613,
+        "tradeDate": "20161217",
+        "tradeType": 0
+      }, {
+        "ma10": 6.436,
+        "ma20": 6.436,
+        "ma5": 6.436,
+        "tclose": 6.2668,
+        "thigh": 6.4485,
+        "tlow": 6.2041,
+        "topen": 6.4234,
+        "tradeDate": "20161218",
+        "tradeType": 0
+      }, {
+        "ma10": 6.4062,
+        "ma20": 6.4062,
+        "ma5": 6.4062,
+        "tclose": 6.3169,
+        "thigh": 6.367,
+        "tlow": 6.2542,
+        "topen": 6.2542,
+        "tradeDate": "20161219",
+        "tradeType": 0
+      }, {
+        "ma10": 6.3808,
+        "ma20": 6.3808,
+        "ma5": 6.3808,
+        "tclose": 6.2793,
+        "thigh": 6.3984,
+        "tlow": 6.2668,
+        "topen": 6.3294,
+        "tradeDate": "20161220",
+        "tradeType": 0
+      }, {
+        "ma10": 6.3556,
+        "ma20": 6.3556,
+        "ma5": 6.3056,
+        "tclose": 6.2292,
+        "thigh": 6.3232,
+        "tlow": 6.154,
+        "topen": 6.2793,
+        "tradeDate": "20161221",
+        "tradeType": 0
+      }, {
+        "ma10": 6.3187,
+        "ma20": 6.3187,
+        "ma5": 6.238,
+        "tclose": 6.0976,
+        "thigh": 6.2354,
+        "tlow": 6.0537,
+        "topen": 6.179,
+        "tradeDate": "20161222",
+        "tradeType": 0
+      }]
+    },
+    "similarStockDTOs": [{
+      "score": 0.805752,
+      "secode": "2010001036",
+      "startDate": "19970704",
+      "trained": true
+    }],
+    "similarStockTrainBaseDTO": {
+      "code": "6001551",
+      "name": "相似会牛",
+      "score": 0.805752,
+      "secode": "2010001036",
+      "stockDailyInfoDTOs": [{
+        "ma10": 6.3187,
+        "ma20": 6.3187,
+        "ma5": 6.238,
+        "tclose": 6.0976,
+        "thigh": 6.2354,
+        "tlow": 6.0537,
+        "topen": 6.179,
+        "tradeDate": "19970710",
+        "tradeType": 0
+      }, {
+        "ma10": 6.3556,
+        "ma20": 6.3556,
+        "ma5": 6.3056,
+        "tclose": 6.2292,
+        "thigh": 6.3232,
+        "tlow": 6.154,
+        "topen": 6.2793,
+        "tradeDate": "19970709",
+        "tradeType": 0
+      }, {
+        "ma10": 6.3808,
+        "ma20": 6.3808,
+        "ma5": 6.3808,
+        "tclose": 6.2793,
+        "thigh": 6.3984,
+        "tlow": 6.2668,
+        "topen": 6.3294,
+        "tradeDate": "19970708",
+        "tradeType": 0
+      }, {
+        "ma10": 6.4062,
+        "ma20": 6.4062,
+        "ma5": 6.4062,
+        "tclose": 6.3169,
+        "thigh": 6.367,
+        "tlow": 6.2542,
+        "topen": 6.2542,
+        "tradeDate": "19970707",
+        "tradeType": 0
+      }, {
+        "ma10": 6.436,
+        "ma20": 6.436,
+        "ma5": 6.436,
+        "tclose": 6.2668,
+        "thigh": 6.4485,
+        "tlow": 6.2041,
+        "topen": 6.4234,
+        "tradeDate": "19970706",
+        "tradeType": 0
+      }, {
+        "ma10": 6.5206,
+        "ma20": 6.5206,
+        "ma5": 6.5206,
+        "tclose": 6.436,
+        "thigh": 6.5613,
+        "tlow": 6.3608,
+        "topen": 6.5613,
+        "tradeDate": "19970705",
+        "tradeType": 0
+      }, {
+        "ma10": 6.6052,
+        "ma20": 6.6052,
+        "ma5": 6.6052,
+        "tclose": 6.6052,
+        "thigh": 6.6365,
+        "tlow": 6.5551,
+        "topen": 6.6365,
+        "tradeDate": "19970704",
+        "tradeType": 0
+      }]
+    }
+  },
+  "msg": "OK",
+  "t": 1481866824124
+}
+
 
 var stockData = [{
   "likes": 0,
