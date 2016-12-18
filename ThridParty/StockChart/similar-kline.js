@@ -1,229 +1,6 @@
-SVGRenderer = function(container, exchangeData) {
-  this.container = container;
-  // this.container.style.width = '500px';
-  // this.container.style.height = '300px';
-
-  this.options = {};
-
-  var containerW = container.clientWidth;
-  var containerH = containerW * 1 / 2;
-  this.options.containerW = containerW;
-  this.options.containerH = containerH;
-  this.options.titleHeight = 16;
-
-  var boxWrapper = this.createElement('svg');
-  this.attr(boxWrapper, {
-    version: '1.1',
-    width: this.options.containerW,
-    height: this.options.containerH,
-    viewBox: '0 0 ' + this.options.containerW + ' ' + this.options.containerH
-  });
-
-  // get tick interval and tick position
-  var maxGridValueY = 0;
-  var minGridValueY = 0;
-  var tickInterval = 1;
-  var tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
-  while (tickPositions.length > 5) {
-    tickInterval = tickInterval + 1;
-    tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
-  }
-  // this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
-  this.options.maxGridValueY = tickPositions[tickPositions.length - 1];
-  // this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
-  this.options.minGridValueY = tickPositions[0];
-  this.options.tickPositions = tickPositions;
-  this.options.tickInterval = tickInterval;
-  console.log(tickPositions);
-
-
-  var seriesGroupPadding = 5;
-  var seriesGroupWidth = this.options.containerW - seriesGroupPadding * 2;
-  var seriesGroupHeight = containerH - this.options.titleHeight * 2;
-  this.options.seriesGroupWidth = seriesGroupWidth;
-  this.options.seriesGroupHeight = seriesGroupHeight;
-  var gSeriesGroup = this.g('series', {
-    transform: 'translate(' + seriesGroupPadding + ', 16)'
-  });
-  
-  gSeriesGroup.appendChild(this.drawGrid(exchangeData, this.options));
-  // draw Candle and kline
-  gSeriesGroup.appendChild(this.drawCandle(exchangeData, this.options, seriesGroupWidth, seriesGroupHeight));
-
-  boxWrapper.appendChild(this.drawTop(exchangeData));
-  boxWrapper.appendChild(gSeriesGroup);
-  // boxWrapper.appendChild(c1);
-  // boxWrapper.appendChild(footer);
-  this.container.appendChild(boxWrapper);
+SVGRenderer = function() {
 }
-
 SVGRenderer.prototype = {
-  drawTop: function(exchangeData) {
-    var gTitle = this.g('top');
-    var tma5 = this.text('MA5: ' + exchangeData['tma5'], {
-      x: '20%',
-      y: '12',
-      class: 'ma5'
-    });
-    var tma10 = this.text('MA10: ' + exchangeData['tma10'], {
-      x: '50%',
-      y: '12',
-      class: 'ma10'
-    });
-    var tma20 = this.text('MA20: ' + exchangeData['tma20'], {
-      x: '80%',
-      y: '12',
-      class: 'ma20'
-    });
-    gTitle.appendChild(tma5);
-    gTitle.appendChild(tma10);
-    gTitle.appendChild(tma20);
-    return gTitle;
-  },
-
-  drawGrid: function(exchangeData, options) {
-    var seriesGroupWidth = options['seriesGroupWidth'];
-    var seriesGroupHeight = options['seriesGroupHeight'];
-    var tickPositions = options['tickPositions'];
-    // add xAxis grid
-    var gGrid = this.g('grid');
-    var fullborder = this.rect(0, 0, seriesGroupWidth, seriesGroupHeight, {
-      class: 'plot-border',
-      stroke: '#ddd',
-      fill: 'none',
-      'stroke-width': 0.5,
-    });
-    gGrid.appendChild(fullborder);
-
-    var ylinesCnt = tickPositions.length;
-    var yInterval = seriesGroupHeight / (ylinesCnt - 1);
-    var i = 0, x, y;
-    var yLine, yValue;
-    for (i = 0; i < ylinesCnt; i++) {
-      if (i == ylinesCnt) {
-        continue;
-      }
-      // y = seriesGroupHeight - yInterval / 2 - i * yInterval;
-      y = seriesGroupHeight - i * yInterval;
-      yLine = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
-      this.attr(yLine, {
-        stroke: '#ddd',
-        fill: 'none',
-        'stroke-width': 0.5,
-      });
-      var text = this.text(tickPositions[i], {
-        x: '1',
-        y: y - 1,
-        'font-size': 10,
-        'text-anchor': 'start',
-        fill: '#666',
-      });
-      gGrid.appendChild(yLine);
-      gGrid.appendChild(text);
-    }
-
-    // add date in bottom
-    var dateCnt = exchangeData['ohlc'].length;
-    var firstDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][0]['date'], 'yyyy-MM-dd'), {
-      x: '0%',
-      y: seriesGroupHeight + 12,
-      'font-size': 10,
-      'text-anchor': 'start',
-      fill: '#666',
-    });
-    gGrid.appendChild(firstDay);
-    var curDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][29]['date'], 'yyyy-MM-dd'), {
-      x: seriesGroupWidth / 2,
-      y: seriesGroupHeight + 12,
-      'font-size': 10,
-      'text-anchor': 'middle',
-      fill: '#666',
-    });
-    gGrid.appendChild(curDay);
-    xLine = this.path(this.symbols.line(seriesGroupWidth / 2, 0, seriesGroupWidth / 2, seriesGroupHeight));
-    this.attr(xLine, {
-      stroke: '#ddd',
-      fill: 'none',
-      'stroke-width': 0.5,
-    });
-    gGrid.appendChild(xLine);
-    return gGrid;
-  },
-
-  drawCandle: function(exchangeData, options, gWidth, gHeight) {
-    var candleGrid = this.g('candle');
-
-    var minGridY = this.options['minGridValueY'];
-    var maxGridY = this.options['maxGridValueY'];
-    var getPosY = function (value) {
-      return (maxGridY - value) / gridYSpan * gHeight;
-    };
-    var ohlc = exchangeData['ohlc'];
-    var ma5 = exchangeData['ma5'];
-    var ma10 = exchangeData['ma10'];
-    var ma20 = exchangeData['ma20'];
-    var dateCnt = ohlc.length;
-    var unitW = gWidth / 60;
-    var candleW = unitW - 2;
-    var dateGrid, candle, candleStyle;
-    var dateX, x, y, w, h, topenY, tcloseY, thighY, tlowY;
-    var gridYSpan = maxGridY - minGridY;
-    var tohlc, tma5, tma10, tma20;
-    var pMA5 = [], pMA10 = [], pMA20 = [];
-    for (i = 0; i < dateCnt; i++) {
-      tohlc = ohlc[i];
-      tma5 = ma5[i];
-      tma10 = ma10[i];
-      tma20 = ma20[i];
-      dateX = unitW * i;// + unitW / 2
-      topenY = getPosY(tohlc['topen']);
-      tcloseY = getPosY(tohlc['tclose']);
-      thighY = getPosY(tohlc['thigh']);
-      tlowY = getPosY(tohlc['tlow']);
-      x = dateX - candleW / 2;
-      if (topenY > tcloseY) {
-        y = tcloseY;
-        candleStyle = 'point-up';
-      } else {
-        y = topenY;
-        candleStyle = 'point-down';
-      }
-      w = candleW;
-      h = Math.abs(topenY - tcloseY);
-
-      pMA5.push([dateX, getPosY(tma5[1])]);
-      pMA10.push([dateX, getPosY(tma10[1])]);
-      pMA20.push([dateX, getPosY(tma20[1])]);
-
-      candle = this.path(this.symbols.candle(x, y, w, h, thighY, tlowY));
-      this.attr(candle, {
-        class: candleStyle,
-      })
-
-      dateGrid = this.path(this.symbols.line(dateX, 0, dateX, gHeight));
-      this.attr(dateGrid, {
-        stroke: '#ddd'
-      });
-      // candleGrid.appendChild(dateGrid);
-      candleGrid.appendChild(candle);
-    }
-    var MA5 = this.path(this.symbols.kline(pMA5));
-    this.attr(MA5, {
-      class: 'ma5'
-    });
-    var MA10 = this.path(this.symbols.kline(pMA10));
-    this.attr(MA10, {
-      class: 'ma10'
-    });
-    var MA20 = this.path(this.symbols.kline(pMA20));
-    this.attr(MA20, {
-      class: 'ma20'
-    });
-    candleGrid.appendChild(MA5);
-    candleGrid.appendChild(MA10);
-    candleGrid.appendChild(MA20);
-    return candleGrid;
-  },
 
   /**
    * Create a wrapper for an SVG element
@@ -324,28 +101,22 @@ SVGRenderer.prototype = {
       roundedMin = this.correctFloat(Math.floor(min / tickInterval) * tickInterval),
       roundedMax = this.correctFloat(Math.ceil(max / tickInterval) * tickInterval),
       tickPositions = [];
-
     // For single points, add a tick regardless of the relative position (#2662)
     if (min === max && isNumber(min)) {
       return [min];
     }
-
     // Populate the intermediate values
     pos = roundedMin;
     while (pos <= roundedMax) {
-
       // Place the tick on the rounded value
       tickPositions.push(pos);
-
       // Always add the raw tickInterval, not the corrected one.
       pos = this.correctFloat(pos + tickInterval);
-
       // If the interval is not big enough in the current min - max range to actually increase
       // the loop variable, we need to break out to prevent endless loop. Issue #619
       if (pos === lastPos) {
         break;
       }
-
       // Record the last value
       lastPos = pos;
     }
@@ -515,6 +286,230 @@ SVGRenderer.prototype = {
       return kArr;
     },
   },
+};
+
+DrawStock = function(container, exchangeData) {
+  SVGRenderer.call(this);
+  this.container = container;
+  this.options = {};
+
+  var containerW = container.clientWidth;
+  var containerH = containerW * 1 / 2;
+  this.options.containerW = containerW;
+  this.options.containerH = containerH;
+  this.options.titleHeight = 16;
+
+  var boxWrapper = this.createElement('svg');
+  this.attr(boxWrapper, {
+    version: '1.1',
+    width: this.options.containerW,
+    height: this.options.containerH,
+    viewBox: '0 0 ' + this.options.containerW + ' ' + this.options.containerH
+  });
+
+  // get tick interval and tick position
+  var maxGridValueY = 0;
+  var minGridValueY = 0;
+  var tickInterval = 1;
+  var tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+  while (tickPositions.length > 5) {
+    tickInterval = tickInterval + 1;
+    tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+  }
+  // this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
+  this.options.maxGridValueY = tickPositions[tickPositions.length - 1];
+  // this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
+  this.options.minGridValueY = tickPositions[0];
+  this.options.tickPositions = tickPositions;
+  this.options.tickInterval = tickInterval;
+  console.log(tickPositions);
+
+  var seriesGroupPadding = 3;
+  var seriesGroupWidth = this.options.containerW - seriesGroupPadding * 2;
+  var seriesGroupHeight = containerH - this.options.titleHeight * 2;
+  this.options.seriesGroupWidth = seriesGroupWidth;
+  this.options.seriesGroupHeight = seriesGroupHeight;
+  var gSeriesGroup = this.g('series', {
+    transform: 'translate(' + seriesGroupPadding + ', 16)'
+  });
+  
+  gSeriesGroup.appendChild(this.drawGrid(exchangeData, this.options));
+  // draw Candle and kline
+  gSeriesGroup.appendChild(this.drawCandle(exchangeData, this.options, seriesGroupWidth, seriesGroupHeight));
+
+  boxWrapper.appendChild(this.drawTop(exchangeData));
+  boxWrapper.appendChild(gSeriesGroup);
+  this.container.appendChild(boxWrapper);
+}
+
+DrawStock.prototype = {
+  __proto__: SVGRenderer.prototype,
+  drawTop: function(exchangeData) {
+    var gTitle = this.g('top');
+    var tma5 = this.text('MA5: ' + exchangeData['tma5'], {
+      x: '20%',
+      y: '12',
+      class: 'ma5'
+    });
+    var tma10 = this.text('MA10: ' + exchangeData['tma10'], {
+      x: '50%',
+      y: '12',
+      class: 'ma10'
+    });
+    var tma20 = this.text('MA20: ' + exchangeData['tma20'], {
+      x: '80%',
+      y: '12',
+      class: 'ma20'
+    });
+    gTitle.appendChild(tma5);
+    gTitle.appendChild(tma10);
+    gTitle.appendChild(tma20);
+    return gTitle;
+  },
+
+  drawGrid: function(exchangeData, options) {
+    var seriesGroupWidth = options['seriesGroupWidth'];
+    var seriesGroupHeight = options['seriesGroupHeight'];
+    var tickPositions = options['tickPositions'];
+    // add xAxis grid
+    var gGrid = this.g('grid');
+    var fullborder = this.rect(0, 0, seriesGroupWidth, seriesGroupHeight, {
+      class: 'plot-border',
+      stroke: '#ddd',
+      fill: 'none',
+      'stroke-width': 0.5,
+    });
+    gGrid.appendChild(fullborder);
+
+    var ylinesCnt = tickPositions.length;
+    var yInterval = seriesGroupHeight / (ylinesCnt - 1);
+    var i = 0, x, y;
+    var yLine, yValue;
+    for (i = 0; i < ylinesCnt; i++) {
+      if (i == ylinesCnt) {
+        continue;
+      }
+      // y = seriesGroupHeight - yInterval / 2 - i * yInterval;
+      y = seriesGroupHeight - i * yInterval;
+      yLine = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
+      this.attr(yLine, {
+        stroke: '#ddd',
+        fill: 'none',
+        'stroke-width': 0.5,
+      });
+      var text = this.text(tickPositions[i], {
+        x: '1',
+        y: y - 1,
+        'font-size': 10,
+        'text-anchor': 'start',
+        fill: '#666',
+      });
+      gGrid.appendChild(yLine);
+      gGrid.appendChild(text);
+    }
+
+    // add date in bottom
+    var dateCnt = exchangeData['ohlc'].length;
+    var firstDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][0]['date'], 'yyyy-MM-dd'), {
+      x: '0%',
+      y: seriesGroupHeight + 12,
+      'font-size': 10,
+      'text-anchor': 'start',
+      fill: '#666',
+    });
+    gGrid.appendChild(firstDay);
+    var curDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][29]['date'], 'yyyy-MM-dd'), {
+      x: seriesGroupWidth / 2,
+      y: seriesGroupHeight + 12,
+      'font-size': 10,
+      'text-anchor': 'middle',
+      fill: '#666',
+    });
+    gGrid.appendChild(curDay);
+    xLine = this.path(this.symbols.line(seriesGroupWidth / 2, 0, seriesGroupWidth / 2, seriesGroupHeight));
+    this.attr(xLine, {
+      stroke: '#ddd',
+      fill: 'none',
+      'stroke-width': 0.5,
+    });
+    gGrid.appendChild(xLine);
+    return gGrid;
+  },
+
+  drawCandle: function(exchangeData, options, gWidth, gHeight) {
+    var candleGrid = this.g('candle');
+
+    var minGridY = this.options['minGridValueY'];
+    var maxGridY = this.options['maxGridValueY'];
+    var getPosY = function (value) {
+      return (maxGridY - value) / gridYSpan * gHeight;
+    };
+    var ohlc = exchangeData['ohlc'];
+    var ma5 = exchangeData['ma5'];
+    var ma10 = exchangeData['ma10'];
+    var ma20 = exchangeData['ma20'];
+    var dateCnt = ohlc.length;
+    var unitW = gWidth / 60;
+    var candleW = unitW - 2;
+    var dateGrid, candle, candleStyle;
+    var dateX, x, y, w, h, topenY, tcloseY, thighY, tlowY;
+    var gridYSpan = maxGridY - minGridY;
+    var tohlc, tma5, tma10, tma20;
+    var pMA5 = [], pMA10 = [], pMA20 = [];
+    for (i = 0; i < dateCnt; i++) {
+      tohlc = ohlc[i];
+      tma5 = ma5[i];
+      tma10 = ma10[i];
+      tma20 = ma20[i];
+      dateX = unitW * i;// + unitW / 2
+      topenY = getPosY(tohlc['topen']);
+      tcloseY = getPosY(tohlc['tclose']);
+      thighY = getPosY(tohlc['thigh']);
+      tlowY = getPosY(tohlc['tlow']);
+      x = dateX - candleW / 2;
+      if (topenY > tcloseY) {
+        y = tcloseY;
+        candleStyle = 'point-up';
+      } else {
+        y = topenY;
+        candleStyle = 'point-down';
+      }
+      w = candleW;
+      h = Math.abs(topenY - tcloseY);
+
+      pMA5.push([dateX, getPosY(tma5[1])]);
+      pMA10.push([dateX, getPosY(tma10[1])]);
+      pMA20.push([dateX, getPosY(tma20[1])]);
+
+      candle = this.path(this.symbols.candle(x, y, w, h, thighY, tlowY));
+      this.attr(candle, {
+        class: candleStyle,
+      })
+
+      dateGrid = this.path(this.symbols.line(dateX, 0, dateX, gHeight));
+      this.attr(dateGrid, {
+        stroke: '#ddd'
+      });
+      // candleGrid.appendChild(dateGrid);
+      candleGrid.appendChild(candle);
+    }
+    var MA5 = this.path(this.symbols.kline(pMA5));
+    this.attr(MA5, {
+      class: 'ma5'
+    });
+    var MA10 = this.path(this.symbols.kline(pMA10));
+    this.attr(MA10, {
+      class: 'ma10'
+    });
+    var MA20 = this.path(this.symbols.kline(pMA20));
+    this.attr(MA20, {
+      class: 'ma20'
+    });
+    candleGrid.appendChild(MA5);
+    candleGrid.appendChild(MA10);
+    candleGrid.appendChild(MA20);
+    return candleGrid;
+  },
 }
 
 
@@ -636,9 +631,8 @@ window.addEventListener('load', function() {
 
   var container = document.querySelector('.kline-day');
   // container.style.width = document.body.clientWidth + 'px';
-  kline = new SVGRenderer(container, stockInfo['originStock']['formatedExInfo']);
-  // stockData[0]
-  // console.log(stockData);
+  kline = new DrawStock(container, stockInfo['originStock']['formatedExInfo']);
+  
 });
 
 var responseData = {
