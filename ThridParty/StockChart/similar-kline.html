@@ -10,10 +10,6 @@
     <script type="text/javascript" src="similar-kline.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="similar-kline.css"> -->
     <style>
-    .kline-daym{
-      margin: 0px 10px;
-    }
-
     .point-down {
       fill: green;
       stroke: green;
@@ -22,14 +18,33 @@
       fill: red;
       stroke: red;
     }
-    .ma5 {
+    .group-top {
+      font-size: 10px;
+      /*font-weight: normal;*/
+    }
+    .group-top .ma5 {
+      text-anchor: middle;
+      fill: blue;
+    }
+    .group-top .ma10 {
+      text-anchor: middle;
+      fill: yellow;
+    }
+    .group-top .ma20 {
+      text-anchor: middle;
+      fill: red;
+    }
+    .group-series .ma5 {
       stroke: blue;
     }
-    .ma10 {
+    .group-series .ma10 {
       stroke: yellow;
     }
-    .ma20 {
+    .group-series .ma20 {
       stroke: red;
+    }
+    .group-grid {
+      
     }
     </style>
   </head>

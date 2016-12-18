@@ -1,85 +1,23 @@
 SVGRenderer = function(container, exchangeData) {
   this.container = container;
-  // this.container.clientWidth + 
-  this.container.style.width = '500px';
-  this.container.style.height = '200px';
+  // this.container.style.width = '500px';
+  // this.container.style.height = '300px';
 
-  this.ma5 = exchangeData['ma5'];
-  this.ma10 = exchangeData['ma10'];
-  this.ma20 = exchangeData['ma20'];
-  this.ohlc = exchangeData['ohlc'];
+  this.options = {};
+
+  var containerW = container.clientWidth;
+  var containerH = containerW * 3 / 5;
+  this.options.containerW = containerW;
+  this.options.containerH = containerH;
+  this.options.titleHeight = 16;
+
   var boxWrapper = this.createElement('svg');
   this.attr(boxWrapper, {
     version: '1.1',
-    width: '500px',
-    height: '300px',
-    viewBox: '0 0 500 300'
+    width: this.options.containerW,
+    height: this.options.containerH,
+    viewBox: '0 0 ' + this.options.containerW + ' ' + this.options.containerH
   });
-
-  var titleHeight = 12;
-  var gTitle = this.g('title');
-  this.attr(gTitle, {
-  })
-  var tma5 = this.text('MA5:54');
-  var tma10 = this.text('MA10:54');
-  var tma20 = this.text('MA20:54');
-  this.attr(tma5, {
-    x: '25%',
-    y: '12',
-    'font-size': 10,
-    'text-anchor': "middle",
-    fill: 'blue',
-  });
-  this.attr(tma10, {
-    x: '50%',
-    y: '12',
-    'font-size': 10,
-    'text-anchor': "middle",
-    fill: 'yellow',
-  });
-  this.attr(tma20, {
-    x: '75%',
-    y: '12',
-    'font-size': 10,
-    'text-anchor': "middle",
-    fill: 'red',
-  });
-  gTitle.appendChild(tma5);
-  gTitle.appendChild(tma10);
-  gTitle.appendChild(tma20);
-
-  // var footer = this.text('想把握未来30天的走势吗？快去下面解锁联系历史相似K线吧。');
-  // this.attr(footer, {
-  //   x: "50%",
-  //   y: "80%",
-  //   'font-size': "10",
-  //   fill: "red",
-  //   'text-anchor': "middle"
-  // })
-
-  // var step = 5;
-  // var valueDiff = exchangeData.maxValue - exchangeData.minValue;
-  // if (valueDiff < step) {
-  //   step = Math.ceil()
-  // }
-  // var valueInter = 
-  // while (step > 5) {
-  //   step = step / 2;
-  // }
-
-  var seriesGroupWidth = 480;
-  var seriesGroupHeight = 200;
-  var gSeriesGroup = this.g('series-group');
-  this.attr(gSeriesGroup, {
-    transform: 'translate(10, 14)'
-  });
-  var fullborder = this.rect(0, 0, 480, 200, 0, 3);
-  this.attr(fullborder, {
-    class: 'plot-border',
-    stroke: '#ddd',
-    fill: 'none'
-  })
-  gSeriesGroup.appendChild(fullborder);
 
   // get tick interval and tick position
   var maxGridValueY = 0;
@@ -90,61 +28,27 @@ SVGRenderer = function(container, exchangeData) {
     tickInterval = tickInterval + 1;
     tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
   }
-  maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
-  minGridValueY = tickPositions[0] - tickInterval / 2;
+  this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
+  this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
+  this.options.tickPositions = tickPositions;
+  this.options.tickInterval = tickInterval;
   console.log(tickPositions);
 
-  // add xAxis grid
-  var gGrid = this.g('grid');
-  this.attr(gGrid, {
-  });
-  var ylines = tickPositions.length;
-  var yInterval = seriesGroupHeight / ylines;
-  var i = 0, x, y;
-  for (i = 0; i < ylines; i++) {
-    y = seriesGroupHeight - yInterval / 2 - i * yInterval;
-    var path = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
-    this.attr(path, {
-      stroke: '#ddd'
-    });
-    var text = this.text(tickPositions[i]);
-    this.attr(text, {
-      x: '1',
-      y: y - 1,
-      'font-size': 10,
-      'text-anchor': 'start',
-      fill: '#666',
-    });
-    gGrid.appendChild(path);
-    gGrid.appendChild(text);
-  }
-  gSeriesGroup.appendChild(gGrid);
 
-  // add date in bottom
-  var dateCnt = exchangeData['ohlc'].length;
-  var firstDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][0]['date'], 'yyyy-MM-dd'));
-  this.attr(firstDay, {
-    x: '0%',
-    y: seriesGroupHeight + 12,
-    'font-size': 10,
-    'text-anchor': 'start',
-    fill: '#666',
+  var seriesGroupPadding = 5;
+  var seriesGroupWidth = this.options.containerW - seriesGroupPadding * 2;
+  var seriesGroupHeight = containerH - this.options.titleHeight * 2;
+  this.options.seriesGroupWidth = seriesGroupWidth;
+  this.options.seriesGroupHeight = seriesGroupHeight;
+  var gSeriesGroup = this.g('series', {
+    transform: 'translate(' + seriesGroupPadding + ', 16)'
   });
-  gSeriesGroup.appendChild(firstDay);
-  var curDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][29]['date'], 'yyyy-MM-dd'));
-  this.attr(curDay, {
-    x: '50%',
-    y: seriesGroupHeight + 12,
-    'font-size': 10,
-    'text-anchor': 'middle',
-    fill: '#666',
-  });
-  gSeriesGroup.appendChild(curDay);
-
+  
+  gSeriesGroup.appendChild(this.drawGrid(exchangeData, this.options));
   // draw Candle and kline
-  this.drawCandle(exchangeData, minGridValueY, maxGridValueY, seriesGroupWidth, seriesGroupHeight, gSeriesGroup);
+  gSeriesGroup.appendChild(this.drawCandle(exchangeData, this.options, seriesGroupWidth, seriesGroupHeight));
 
-  boxWrapper.appendChild(gTitle);
+  boxWrapper.appendChild(this.drawTop(exchangeData));
   boxWrapper.appendChild(gSeriesGroup);
   // boxWrapper.appendChild(c1);
   // boxWrapper.appendChild(footer);
@@ -152,7 +56,95 @@ SVGRenderer = function(container, exchangeData) {
 }
 
 SVGRenderer.prototype = {
-  drawCandle: function(exchangeData, minGridY, maxGridY, gWidth, gHeight, group) {
+  drawTop: function(exchangeData) {
+    var gTitle = this.g('top');
+    var tma5 = this.text('MA5: ' + exchangeData['tma5'], {
+      x: '25%',
+      y: '12',
+      class: 'ma5'
+    });
+    var tma10 = this.text('MA10: ' + exchangeData['tma10'], {
+      x: '50%',
+      y: '12',
+      class: 'ma10'
+    });
+    var tma20 = this.text('MA20: ' + exchangeData['tma20'], {
+      x: '75%',
+      y: '12',
+      class: 'ma20'
+    });
+    gTitle.appendChild(tma5);
+    gTitle.appendChild(tma10);
+    gTitle.appendChild(tma20);
+    return gTitle;
+  },
+
+  drawGrid: function(exchangeData, options) {
+    var seriesGroupWidth = options['seriesGroupWidth'];
+    var seriesGroupHeight = options['seriesGroupHeight'];
+    var tickPositions = options['tickPositions'];
+    // add xAxis grid
+    var gGrid = this.g('grid');
+    var fullborder = this.rect(0, 0, seriesGroupWidth, seriesGroupHeight, {
+      class: 'plot-border',
+      stroke: '#ddd',
+      fill: 'none',
+      'stroke-width': 1,
+    });
+    gGrid.appendChild(fullborder);
+
+    var ylinesCnt = tickPositions.length;
+    var yInterval = seriesGroupHeight / ylinesCnt;
+    var i = 0, x, y;
+    var yLine, yValue;
+    for (i = 0; i < ylinesCnt; i++) {
+      y = seriesGroupHeight - yInterval / 2 - i * yInterval;
+      yLine = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
+      this.attr(yLine, {
+        stroke: '#ddd'
+      });
+      var text = this.text(tickPositions[i], {
+        x: '1',
+        y: y - 1,
+        'font-size': 10,
+        'text-anchor': 'start',
+        fill: '#666',
+      });
+      gGrid.appendChild(yLine);
+      gGrid.appendChild(text);
+    }
+
+    // add date in bottom
+    var dateCnt = exchangeData['ohlc'].length;
+    var firstDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][0]['date'], 'yyyy-MM-dd'), {
+      x: '0%',
+      y: seriesGroupHeight + 12,
+      'font-size': 10,
+      'text-anchor': 'start',
+      fill: '#666',
+    });
+    gGrid.appendChild(firstDay);
+    var curDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][29]['date'], 'yyyy-MM-dd'), {
+      x: seriesGroupWidth / 2,
+      y: seriesGroupHeight + 12,
+      'font-size': 10,
+      'text-anchor': 'middle',
+      fill: '#666',
+    });
+    gGrid.appendChild(curDay);
+    xLine = this.path(this.symbols.line(seriesGroupWidth / 2, 0, seriesGroupWidth / 2, seriesGroupHeight));
+    this.attr(xLine, {
+      stroke: '#ddd'
+    });
+    gGrid.appendChild(xLine);
+    return gGrid;
+  },
+
+  drawCandle: function(exchangeData, options, gWidth, gHeight) {
+    var candleGrid = this.g('candle');
+
+    var minGridY = this.options['minGridValueY'];
+    var maxGridY = this.options['maxGridValueY'];
     var getPosY = function (value) {
       return (maxGridY - value) / gridYSpan * gHeight;
     };
@@ -173,7 +165,7 @@ SVGRenderer.prototype = {
       tma5 = ma5[i];
       tma10 = ma10[i];
       tma20 = ma20[i];
-      dateX = unitW * i + unitW / 2;
+      dateX = unitW * i;// + unitW / 2
       topenY = getPosY(tohlc['topen']);
       tcloseY = getPosY(tohlc['tclose']);
       thighY = getPosY(tohlc['thigh']);
@@ -202,8 +194,8 @@ SVGRenderer.prototype = {
       this.attr(dateGrid, {
         stroke: '#ddd'
       });
-      // group.appendChild(dateGrid);
-      group.appendChild(candle);
+      // candleGrid.appendChild(dateGrid);
+      candleGrid.appendChild(candle);
     }
     var MA5 = this.path(this.symbols.kline(pMA5));
     this.attr(MA5, {
@@ -217,9 +209,10 @@ SVGRenderer.prototype = {
     this.attr(MA20, {
       class: 'ma20'
     });
-    group.appendChild(MA5);
-    group.appendChild(MA10);
-    group.appendChild(MA20);
+    candleGrid.appendChild(MA5);
+    candleGrid.appendChild(MA10);
+    candleGrid.appendChild(MA20);
+    return candleGrid;
   },
 
   /**
@@ -230,6 +223,12 @@ SVGRenderer.prototype = {
     var SVG_NS = 'http://www.w3.org/2000/svg'
     var wrapper = document.createElementNS(SVG_NS, nodeName);
     return wrapper;
+  },
+
+  mixin: function(obj1, obj2) {
+    for (var key in obj2) {
+      obj1[key] = obj2[key];
+    }
   },
 
   /**
@@ -378,12 +377,15 @@ SVGRenderer.prototype = {
    * @param {String} name The group will be given a class name of 'highcharts-{name}'.
    *   This can be used for styling and scripting.
    */
-  g: function(name) {
+  g: function(name, props) {
     var elem = this.createElement('g');
     if (name) {
       this.attr(elem, {
         'class': 'group-' + name
       });
+    }
+    if (this.isObject(props)) {
+      this.attr(elem, props);
     }
     return elem;
   },
@@ -430,33 +432,32 @@ SVGRenderer.prototype = {
    * @param {Number} y Top position
    * @param {Number} width
    * @param {Number} height
-   * @param {Number} r Border corner radius
    * @param {Number} strokeWidth A stroke width can be supplied to allow crisp drawing
    */
-  rect: function(x, y, width, height, r, strokeWidth) {
-    r = this.isObject(x) ? x.r : r;
+  rect: function(x, y, width, height, props) {
     var wrapper = this.createElement('rect'),
       attribs = this.isObject(x) ? x : x === undefined ? {} : {
         x: x,
         y: y,
         width: Math.max(width, 0),
         height: Math.max(height, 0),
-        strokeWidth: strokeWidth
       };
+    this.mixin(attribs, props);
     this.attr(wrapper, attribs);
     return wrapper;
   },
 
   /**
    * Add text to the SVG object
-   * @param {String} str
-   * @param {Number} x Left position
-   * @param {Number} y Top position
-   * @param {Boolean} useHTML Use HTML to render the text
+   * @param {String} the content of text
+   * @param {Object} the props of text, such as x, y
    */
-  text: function(str, x, y) {
+  text: function(str, props) {
     var wrapper = this.createElement('text');
     wrapper.textContent = str;
+    if (this.isObject(props)) {
+      this.attr(wrapper, props);
+    }
     return wrapper;
   },
 
@@ -530,18 +531,17 @@ function formatStockExinfo(stockInfo) {
 
   var tradeDate, tradeDateStr, milliSeconds = null;
   var maxValue = 0, minValue = 100;
-  var tMa5 = 0, tMa10 = 0, tMa20 = 0;
+  var tma5 = 0, tma10 = 0, tma20 = 0;
   var today = new Date();
+  if (stockDailyInfos.length >= 30) {
+    tma5 = stockDailyInfos[29]['ma5'];
+    tma10 = stockDailyInfos[29]['ma10'];
+    tma20 = stockDailyInfos[29]['ma20'];
+  }
   for (i = 0; i < recordCnt; i += 1) {
     tradeDateStr = stockDailyInfos[i]['tradeDate'].toString();
     tradeDate = new Date(tradeDateStr.slice(0, 4), parseInt(tradeDateStr.slice(4, 6)) - 1, tradeDateStr.slice(6, 8));
     milliSeconds = tradeDate.getTime();
-
-    if (isSameDay(today, tradeDate)) {
-      tMa5 = stockDailyInfos[i]['ma5'];
-      tMa10 = stockDailyInfos[i]['ma10'];
-      tMa20 = stockDailyInfos[i]['ma20'];
-    }
 
     if (maxValue < parseFloat(stockDailyInfos[i]['thigh'])) {
       maxValue = parseFloat(stockDailyInfos[i]['thigh']);
@@ -577,9 +577,9 @@ function formatStockExinfo(stockInfo) {
     'ma20': ma20,
     'maxValue': maxValue,
     'minValue': minValue,
-    'tMa5': tMa5,
-    'tMa10': tMa10,
-    'tMa20': tMa20,
+    'tma5': tma5,
+    'tma10': tma10,
+    'tma20': tma20,
   }
 }
 
@@ -608,10 +608,10 @@ function formatData(responseData) {
   }
 
   if (originStock) {
-    originStock['formatedExInfo'] = formatStockExinfo(originStock);
+    originStock['formatedExInfo'] = formatStockExinfo(originStock, 'origin');
   }
   if (similarStock) {
-    similarStock['formatedExInfo'] = formatStockExinfo(similarStock);
+    similarStock['formatedExInfo'] = formatStockExinfo(similarStock, 'similar');
   }
   return {
     'originStock': originStock,
@@ -622,6 +622,7 @@ function formatData(responseData) {
 
 function StockExchangeDraw(element, exchangeData) {
   var container = document.querySelector('.kline-day');
+  container.style.width = document.body.clientWidth + 'px';
   kline = new SVGRenderer(container, exchangeData);
 }
 StockExchangeDraw.prototype = {
