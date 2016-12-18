@@ -626,13 +626,26 @@ function formatData(responseData) {
 }
 
 window.addEventListener('load', function() {
-  var stockInfo = formatData(responseData);
-  console.log(stockInfo['originStock']['formatedExInfo']);
-
-  var container = document.querySelector('.kline-day');
+  var similarStockTrainingInfo = formatData(responseData);
+  var originStock = similarStockTrainingInfo['originStock'];
+  var similarStock = similarStockTrainingInfo['similarStock'];
+  var similarStockList = similarStockTrainingInfo['similarStockList'];
+  // console.log(originStock['formatedExInfo']);
+  var originArea = document.querySelector('.origin');
+  originArea.querySelector('.title').textContent = originStock.name + '近30天日K走势';
+  var originStockDraw = originArea.querySelector('.origin .stock-draw');
   // container.style.width = document.body.clientWidth + 'px';
-  kline = new DrawStock(container, stockInfo['originStock']['formatedExInfo']);
-  
+  new DrawStock(originStockDraw, originStock['formatedExInfo']);
+
+  var similarArea = document.querySelector('.similar');
+  similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarStockList[0].score * 100 + '%';
+
+  var chooseArea = document.querySelector('.choose');
+  for (var i = 0; i < 9; i++) {
+    var item = document.createElement('div');
+    item.classList.add('item');
+    chooseArea.appendChild(item);
+  }
 });
 
 var responseData = {

@@ -10,6 +10,11 @@
     <script type="text/javascript" src="similar-kline.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="similar-kline.css"> -->
     <style>
+    body {
+      background-color: #eee;
+      margin: 0px;
+      padding: 0px;
+    }
     .point-down {
       fill: green;
       stroke: green;
@@ -44,13 +49,75 @@
       stroke: red;
     }
     .group-grid {
-      
     }
+    .origin {
+      background-color: white;
+    }
+    .origin .desc {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+    }
+    .origin .desc .title {
+    }
+    .origin .desc .custom-stock {
+      color: blue;
+    }
+
+    .similar {
+      background-color: white;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .similar .tip {
+      line-height: 40px;
+      border-bottom: 1px solid gray;
+    }
+
+    .choose {
+      width: 100%;
+      height: 120px;
+      overflow-y: scroll;
+      white-space: nowrap;
+    }
+    .choose .item {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+      margin-right: 20px;
+    }
+/*    .origin .desc .custom-stock span {
+      display: inline-block;
+      padding: 4px 0px 0px 4px;
+      font-size: 18px;
+      line-height: 18px;
+      width: 18px;
+      height: 18px;
+      border: 1px solid blue;
+      border-radius: 50%;
+    }*/
     </style>
   </head>
   <body>
     <br>
-    <div class="kline-day"></div>
+    <div class="origin">
+      <div class="desc">
+        <div class="title"></div>
+        <div class="custom-stock"><span>+</span>+自选</div>
+      </div>
+      <div class="stock-draw"></div>
+    </div>
+    
+    <div class="similar">
+      <div class="tip">以下为历史K线走势相似的匹配结果</div>
+      <div class="desc">
+        <div class="title"></div>
+      </div>
+      <div class="stock-draw"></div>
+    </div>
+
+    <div class="choose"></div>
     <br>
     <br>
   </body>
