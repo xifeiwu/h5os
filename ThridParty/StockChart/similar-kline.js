@@ -12,59 +12,132 @@ SVGRenderer = function(container, exchangeData) {
   this.attr(boxWrapper, {
     version: '1.1',
     width: '500px',
-    height: '200px',
-    viewBox: '100px 0 500px 200px'
+    height: '300px',
+    viewBox: '0 0 500 300'
   });
 
-  var gma = this.g('ma');
-  this.attr(gma, {
-    width: '500px'
+  var titleHeight = 12;
+  var gTitle = this.g('title');
+  this.attr(gTitle, {
   })
-  var ma5 = this.text('MA5:54');
-  var ma10 = this.text('MA10:54');
-  var ma20 = this.text('MA20:54');
-  this.attr(ma5, {
+  var tma5 = this.text('MA5:54');
+  var tma10 = this.text('MA10:54');
+  var tma20 = this.text('MA20:54');
+  this.attr(tma5, {
     x: '25%',
     y: '12',
     'font-size': 10,
     'text-anchor': "middle",
     fill: 'blue',
   });
-  this.attr(ma10, {
+  this.attr(tma10, {
     x: '50%',
     y: '12',
     'font-size': 10,
     'text-anchor': "middle",
     fill: 'yellow',
   });
-  this.attr(ma20, {
+  this.attr(tma20, {
     x: '75%',
     y: '12',
     'font-size': 10,
     'text-anchor': "middle",
     fill: 'red',
   });
-  var c1 = this.circle(200, 50, 50);
-  this.attr(c1, {
-    fill: 'red',
-    stroke: 'red'
-  })
-  gma.appendChild(ma5);
-  gma.appendChild(ma10);
-  gma.appendChild(ma20);
+  gTitle.appendChild(tma5);
+  gTitle.appendChild(tma10);
+  gTitle.appendChild(tma20);
 
-  var footer = this.text('想把握未来30天的走势吗？快去下面解锁联系历史相似K线吧。');
-  this.attr(footer, {
-    x: "50%",
-    y: "80%",
-    'font-size': "10",
-    fill: "red",
-    'text-anchor': "middle"
-  })
+  // var footer = this.text('想把握未来30天的走势吗？快去下面解锁联系历史相似K线吧。');
+  // this.attr(footer, {
+  //   x: "50%",
+  //   y: "80%",
+  //   'font-size': "10",
+  //   fill: "red",
+  //   'text-anchor': "middle"
+  // })
 
-  boxWrapper.appendChild(gma);
-  boxWrapper.appendChild(c1);
-  boxWrapper.appendChild(footer);
+  // var step = 5;
+  // var valueDiff = exchangeData.maxValue - exchangeData.minValue;
+  // if (valueDiff < step) {
+  //   step = Math.ceil()
+  // }
+  // var valueInter = 
+  // while (step > 5) {
+  //   step = step / 2;
+  // }
+
+  var seriesGroupWidth = 480;
+  var seriesGroupHeight = 200;
+  var gSeriesGroup = this.g('series-group');
+  this.attr(gSeriesGroup, {
+    transform: 'translate(10, 14)'
+  });
+  var fullborder = this.rect(0, 0, 480, 200, 0, 3);
+  this.attr(fullborder, {
+    class: 'plot-border',
+    stroke: '#ddd',
+    fill: 'none'
+  })
+  gSeriesGroup.appendChild(fullborder);
+
+
+
+  var gGrid = this.g('grid');
+  this.attr(gGrid, {
+  });
+  var tickInterval = 1;
+  var tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+  while (tickPositions.length > 5) {
+    tickInterval = tickInterval + 1;
+    tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+  }
+  console.log(tickPositions);
+  var ylines = tickPositions.length;
+  var yInterval = seriesGroupHeight / ylines;
+  var i = 0, x, y;
+  for (i = 0; i < ylines; i++) {
+    if (i == 0) {
+      continue;
+    }
+    y = seriesGroupHeight - i * yInterval;
+    var path = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
+    this.attr(path, {
+      stroke: '#ddd'
+    });
+    var text = this.text(tickPositions[i]);
+    this.attr(text, {
+      x: '1',
+      y: y - 1,
+      'font-size': 10,
+      'text-anchor': 'start',
+      fill: '#666',
+    });
+    gGrid.appendChild(path);
+    gGrid.appendChild(text);
+  }
+
+  // console.log(this.symbols.line(0, 20, seriesGroupWidth, 20).join(' '));
+  gSeriesGroup.appendChild(gGrid);
+
+  var dateCnt = exchangeData['ohlc'].length;
+  var firstDay = exchangeData['ohlc'][0]['date'];
+  console.log();
+  var date = this.text(this.toLocaleFormat(firstDay, 'yyyy-MM-dd'));
+  this.attr(date, {
+    x: '1',
+    y: seriesGroupHeight + 12,
+    'font-size': 10,
+    'text-anchor': 'start',
+    fill: '#666',
+  });
+  gSeriesGroup.appendChild(date);
+
+
+  boxWrapper.appendChild(gTitle);
+  boxWrapper.appendChild(gSeriesGroup);
+  // boxWrapper.appendChild(c1);
+  // boxWrapper.appendChild(footer);
   this.container.appendChild(boxWrapper);
 }
 
@@ -104,12 +177,90 @@ SVGRenderer.prototype = {
     return obj && typeof obj === 'object';
   },
 
+  isNumber: function(n) {
+    return typeof n === 'number' && !isNaN(n);
+  },
+
+  correctFloat: function(num, prec) {
+    return parseFloat(
+      num.toPrecision(prec || 14)
+    );
+  },
+
   /**
    * Returns true if the object is not null or undefined.
    * @param {Object} obj
    */
   defined: function(obj) {
     return obj !== undefined && obj !== null;
+  },
+
+  /**
+   * Fix JS round off float errors
+   * @param {Number} num
+   */
+  correctFloat: function(num, prec) {
+    return parseFloat(
+      num.toPrecision(prec || 14)
+    );
+  },
+
+  toLocaleFormat: function(date, fmt) {
+    var o = {
+      'M+': date.getMonth() + 1, //月份
+      'd+': date.getDate(), //日
+      'h+': date.getHours(), //小时
+      'm+': date.getMinutes(), //分
+      's+': date.getSeconds(), //秒
+      'q+': Math.floor((date.getMonth() + 3) / 3), //季度
+      'S': date.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+      if (new RegExp("(" + k + ")").test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+      }
+    }
+    return fmt;
+  },
+
+  /**
+   * Set the tick positions of a linear axis to round values like whole tens or every five.
+   */
+  getLinearTickPositions: function(tickInterval, min, max) {
+    var pos,
+      lastPos,
+      roundedMin = this.correctFloat(Math.floor(min / tickInterval) * tickInterval),
+      roundedMax = this.correctFloat(Math.ceil(max / tickInterval) * tickInterval),
+      tickPositions = [];
+
+    // For single points, add a tick regardless of the relative position (#2662)
+    if (min === max && isNumber(min)) {
+      return [min];
+    }
+
+    // Populate the intermediate values
+    pos = roundedMin;
+    while (pos <= roundedMax) {
+
+      // Place the tick on the rounded value
+      tickPositions.push(pos);
+
+      // Always add the raw tickInterval, not the corrected one.
+      pos = this.correctFloat(pos + tickInterval);
+
+      // If the interval is not big enough in the current min - max range to actually increase
+      // the loop variable, we need to break out to prevent endless loop. Issue #619
+      if (pos === lastPos) {
+        break;
+      }
+
+      // Record the last value
+      lastPos = pos;
+    }
+    return tickPositions;
   },
 
   /**
@@ -162,15 +313,17 @@ SVGRenderer.prototype = {
    * @param {Array} path An SVG path in array form
    */
   path: function(path) {
+    var elem = this.createElement('path');
     var attribs = {
       fill: 'none'
     };
-    if (this.isArray(path)) {
+    if (this.isString(path)) {
       attribs.d = path;
-    } else if (this.isObject(path)) { // attributes
-      extend(attribs, path);
+    } else if (this.isArray(path)) {
+      attribs.d = path.join(' ');
     }
-    return this.createElement('path').attr(attribs);
+    this.attr(elem, attribs);
+    return elem;
   },
 
   /**
@@ -181,8 +334,8 @@ SVGRenderer.prototype = {
    */
   circle: function(x, y, r) {
     var attribs = this.isObject(x) ? x : {
-        x: x,
-        y: y,
+        cx: x,
+        cy: y,
         r: r
       },
       wrapper = this.createElement('circle');
@@ -207,9 +360,11 @@ SVGRenderer.prototype = {
         x: x,
         y: y,
         width: Math.max(width, 0),
-        height: Math.max(height, 0)
+        height: Math.max(height, 0),
+        strokeWidth: strokeWidth
       };
-    return wrapper.attr(attribs);
+    this.attr(wrapper, attribs);
+    return wrapper;
   },
 
   /**
@@ -227,6 +382,12 @@ SVGRenderer.prototype = {
 
 
   symbols: {
+    'line': function(x1, y1, x2, y2) {
+      return [
+        'M', x1, y1,
+        'L', x2, y2
+      ];
+    },
     'circle': function(x, y, w, h) {
       var cpw = 0.166 * w;
       return [
@@ -248,12 +409,6 @@ SVGRenderer.prototype = {
       ];
     },
   },
-
-
-  formatData: function(exData) {
-    formatData()
-
-  }
 }
 
 
