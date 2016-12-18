@@ -91,7 +91,7 @@ SVGRenderer.prototype = {
       class: 'plot-border',
       stroke: '#ddd',
       fill: 'none',
-      'stroke-width': 1,
+      'stroke-width': 0.5,
     });
     gGrid.appendChild(fullborder);
 
@@ -109,7 +109,7 @@ SVGRenderer.prototype = {
       this.attr(yLine, {
         stroke: '#ddd',
         fill: 'none',
-        'stroke-width': 1,
+        'stroke-width': 0.5,
       });
       var text = this.text(tickPositions[i], {
         x: '1',
@@ -142,7 +142,9 @@ SVGRenderer.prototype = {
     gGrid.appendChild(curDay);
     xLine = this.path(this.symbols.line(seriesGroupWidth / 2, 0, seriesGroupWidth / 2, seriesGroupHeight));
     this.attr(xLine, {
-      stroke: '#ddd'
+      stroke: '#ddd',
+      fill: 'none',
+      'stroke-width': 0.5,
     });
     gGrid.appendChild(xLine);
     return gGrid;
