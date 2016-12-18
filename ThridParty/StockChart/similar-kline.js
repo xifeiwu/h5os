@@ -6,7 +6,7 @@ SVGRenderer = function(container, exchangeData) {
   this.options = {};
 
   var containerW = container.clientWidth;
-  var containerH = containerW * 3 / 5;
+  var containerH = containerW * 1 / 2;
   this.options.containerW = containerW;
   this.options.containerH = containerH;
   this.options.titleHeight = 16;
@@ -28,8 +28,10 @@ SVGRenderer = function(container, exchangeData) {
     tickInterval = tickInterval + 1;
     tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
   }
-  this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
-  this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
+  // this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
+  this.options.maxGridValueY = tickPositions[tickPositions.length - 1];
+  // this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
+  this.options.minGridValueY = tickPositions[0];
   this.options.tickPositions = tickPositions;
   this.options.tickInterval = tickInterval;
   console.log(tickPositions);
@@ -59,7 +61,7 @@ SVGRenderer.prototype = {
   drawTop: function(exchangeData) {
     var gTitle = this.g('top');
     var tma5 = this.text('MA5: ' + exchangeData['tma5'], {
-      x: '25%',
+      x: '20%',
       y: '12',
       class: 'ma5'
     });
@@ -69,7 +71,7 @@ SVGRenderer.prototype = {
       class: 'ma10'
     });
     var tma20 = this.text('MA20: ' + exchangeData['tma20'], {
-      x: '75%',
+      x: '80%',
       y: '12',
       class: 'ma20'
     });
@@ -94,14 +96,20 @@ SVGRenderer.prototype = {
     gGrid.appendChild(fullborder);
 
     var ylinesCnt = tickPositions.length;
-    var yInterval = seriesGroupHeight / ylinesCnt;
+    var yInterval = seriesGroupHeight / (ylinesCnt - 1);
     var i = 0, x, y;
     var yLine, yValue;
     for (i = 0; i < ylinesCnt; i++) {
-      y = seriesGroupHeight - yInterval / 2 - i * yInterval;
+      if (i == ylinesCnt) {
+        continue;
+      }
+      // y = seriesGroupHeight - yInterval / 2 - i * yInterval;
+      y = seriesGroupHeight - i * yInterval;
       yLine = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
       this.attr(yLine, {
-        stroke: '#ddd'
+        stroke: '#ddd',
+        fill: 'none',
+        'stroke-width': 1,
       });
       var text = this.text(tickPositions[i], {
         x: '1',
@@ -620,18 +628,13 @@ function formatData(responseData) {
   } 
 }
 
-function StockExchangeDraw(element, exchangeData) {
-  var container = document.querySelector('.kline-day');
-  container.style.width = document.body.clientWidth + 'px';
-  kline = new SVGRenderer(container, exchangeData);
-}
-StockExchangeDraw.prototype = {
-}
-
 window.addEventListener('load', function() {
   var stockInfo = formatData(responseData);
   console.log(stockInfo['originStock']['formatedExInfo']);
-  var drawStockExchange = StockExchangeDraw(null, stockInfo['originStock']['formatedExInfo']);
+
+  var container = document.querySelector('.kline-day');
+  // container.style.width = document.body.clientWidth + 'px';
+  kline = new SVGRenderer(container, stockInfo['originStock']['formatedExInfo']);
   // stockData[0]
   // console.log(stockData);
 });
