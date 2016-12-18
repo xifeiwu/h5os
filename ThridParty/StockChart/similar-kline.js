@@ -81,26 +81,28 @@ SVGRenderer = function(container, exchangeData) {
   })
   gSeriesGroup.appendChild(fullborder);
 
-
-
-  var gGrid = this.g('grid');
-  this.attr(gGrid, {
-  });
+  // get tick interval and tick position
+  var maxGridValueY = 0;
+  var minGridValueY = 0;
   var tickInterval = 1;
   var tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
   while (tickPositions.length > 5) {
     tickInterval = tickInterval + 1;
     tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
   }
+  maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
+  minGridValueY = tickPositions[0] - tickInterval / 2;
   console.log(tickPositions);
+
+  // add xAxis grid
+  var gGrid = this.g('grid');
+  this.attr(gGrid, {
+  });
   var ylines = tickPositions.length;
   var yInterval = seriesGroupHeight / ylines;
   var i = 0, x, y;
   for (i = 0; i < ylines; i++) {
-    if (i == 0) {
-      continue;
-    }
-    y = seriesGroupHeight - i * yInterval;
+    y = seriesGroupHeight - yInterval / 2 - i * yInterval;
     var path = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
     this.attr(path, {
       stroke: '#ddd'
@@ -116,23 +118,31 @@ SVGRenderer = function(container, exchangeData) {
     gGrid.appendChild(path);
     gGrid.appendChild(text);
   }
-
-  // console.log(this.symbols.line(0, 20, seriesGroupWidth, 20).join(' '));
   gSeriesGroup.appendChild(gGrid);
 
+  // add date in bottom
   var dateCnt = exchangeData['ohlc'].length;
-  var firstDay = exchangeData['ohlc'][0]['date'];
-  console.log();
-  var date = this.text(this.toLocaleFormat(firstDay, 'yyyy-MM-dd'));
-  this.attr(date, {
-    x: '1',
+  var firstDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][0]['date'], 'yyyy-MM-dd'));
+  this.attr(firstDay, {
+    x: '0%',
     y: seriesGroupHeight + 12,
     'font-size': 10,
     'text-anchor': 'start',
     fill: '#666',
   });
-  gSeriesGroup.appendChild(date);
+  gSeriesGroup.appendChild(firstDay);
+  var curDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][29]['date'], 'yyyy-MM-dd'));
+  this.attr(curDay, {
+    x: '50%',
+    y: seriesGroupHeight + 12,
+    'font-size': 10,
+    'text-anchor': 'middle',
+    fill: '#666',
+  });
+  gSeriesGroup.appendChild(curDay);
 
+  // draw Candle and kline
+  this.drawCandle(exchangeData, minGridValueY, maxGridValueY, seriesGroupWidth, seriesGroupHeight, gSeriesGroup);
 
   boxWrapper.appendChild(gTitle);
   boxWrapper.appendChild(gSeriesGroup);
@@ -142,6 +152,76 @@ SVGRenderer = function(container, exchangeData) {
 }
 
 SVGRenderer.prototype = {
+  drawCandle: function(exchangeData, minGridY, maxGridY, gWidth, gHeight, group) {
+    var getPosY = function (value) {
+      return (maxGridY - value) / gridYSpan * gHeight;
+    };
+    var ohlc = exchangeData['ohlc'];
+    var ma5 = exchangeData['ma5'];
+    var ma10 = exchangeData['ma10'];
+    var ma20 = exchangeData['ma20'];
+    var dateCnt = ohlc.length;
+    var unitW = gWidth / 60;
+    var candleW = unitW - 2;
+    var dateGrid, candle, candleStyle;
+    var dateX, x, y, w, h, topenY, tcloseY, thighY, tlowY;
+    var gridYSpan = maxGridY - minGridY;
+    var tohlc, tma5, tma10, tma20;
+    var pMA5 = [], pMA10 = [], pMA20 = [];
+    for (i = 0; i < dateCnt; i++) {
+      tohlc = ohlc[i];
+      tma5 = ma5[i];
+      tma10 = ma10[i];
+      tma20 = ma20[i];
+      dateX = unitW * i + unitW / 2;
+      topenY = getPosY(tohlc['topen']);
+      tcloseY = getPosY(tohlc['tclose']);
+      thighY = getPosY(tohlc['thigh']);
+      tlowY = getPosY(tohlc['tlow']);
+      x = dateX - candleW / 2;
+      if (topenY > tcloseY) {
+        y = tcloseY;
+        candleStyle = 'point-up';
+      } else {
+        y = topenY;
+        candleStyle = 'point-down';
+      }
+      w = candleW;
+      h = Math.abs(topenY - tcloseY);
+
+      pMA5.push([dateX, getPosY(tma5[1])]);
+      pMA10.push([dateX, getPosY(tma10[1])]);
+      pMA20.push([dateX, getPosY(tma20[1])]);
+
+      candle = this.path(this.symbols.candle(x, y, w, h, thighY, tlowY));
+      this.attr(candle, {
+        class: candleStyle,
+      })
+
+      dateGrid = this.path(this.symbols.line(dateX, 0, dateX, gHeight));
+      this.attr(dateGrid, {
+        stroke: '#ddd'
+      });
+      // group.appendChild(dateGrid);
+      group.appendChild(candle);
+    }
+    var MA5 = this.path(this.symbols.kline(pMA5));
+    this.attr(MA5, {
+      class: 'ma5'
+    });
+    var MA10 = this.path(this.symbols.kline(pMA10));
+    this.attr(MA10, {
+      class: 'ma10'
+    });
+    var MA20 = this.path(this.symbols.kline(pMA20));
+    this.attr(MA20, {
+      class: 'ma20'
+    });
+    group.appendChild(MA5);
+    group.appendChild(MA10);
+    group.appendChild(MA20);
+  },
+
   /**
    * Create a wrapper for an SVG element
    * @param {Object} nodeName
@@ -397,7 +477,7 @@ SVGRenderer.prototype = {
         'Z'
       ];
     },
-    'candle': function (x, y, w, h, high, low) {
+    'candle': function(x, y, w, h, high, low) {
       return [
         'M',  x, y,
         'L', x + w, y,
@@ -407,6 +487,21 @@ SVGRenderer.prototype = {
         'M', x + w / 2, high,
         'L', x + w / 2, low
       ];
+    },
+    'kline': function(arr) {
+      var kArr = [];
+      for (var i = 0; i < arr.length; i++) {
+        if (!Array.isArray(arr[i])) {
+          continue;
+        }
+        if (i == 0) {
+          arr[i].unshift('M');
+        } else {
+          arr[i].unshift('L');
+        }
+        kArr = kArr.concat(arr[i]);
+      }
+      return kArr;
     },
   },
 }
