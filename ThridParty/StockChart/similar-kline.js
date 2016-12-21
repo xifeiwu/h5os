@@ -1,13 +1,13 @@
-SVGRenderer = function() {
+
+function SVGRenderer() {
 }
 SVGRenderer.prototype = {
-
   /**
    * Create a wrapper for an SVG element
    * @param {Object} nodeName
    */
   createElement: function(nodeName) {
-    var SVG_NS = 'http://www.w3.org/2000/svg'
+    var SVG_NS = 'http://www.w3.org/2000/svg';
     var wrapper = document.createElementNS(SVG_NS, nodeName);
     return wrapper;
   },
@@ -47,12 +47,6 @@ SVGRenderer.prototype = {
     return typeof n === 'number' && !isNaN(n);
   },
 
-  correctFloat: function(num, prec) {
-    return parseFloat(
-      num.toPrecision(prec || 14)
-    );
-  },
-
   /**
    * Returns true if the object is not null or undefined.
    * @param {Object} obj
@@ -85,8 +79,8 @@ SVGRenderer.prototype = {
       fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
     }
     for (var k in o) {
-      if (new RegExp("(" + k + ")").test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+      if (new RegExp('(' + k + ')').test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
       }
     }
     return fmt;
@@ -102,7 +96,7 @@ SVGRenderer.prototype = {
       roundedMax = this.correctFloat(Math.ceil(max / tickInterval) * tickInterval),
       tickPositions = [];
     // For single points, add a tick regardless of the relative position (#2662)
-    if (min === max && isNumber(min)) {
+    if (min === max && this.isNumber(min)) {
       return [min];
     }
     // Populate the intermediate values
@@ -175,7 +169,7 @@ SVGRenderer.prototype = {
    * Draw a path
    * @param {Array} path An SVG path in array form
    */
-  path: function(path) {
+  path: function(path, props) {
     var elem = this.createElement('path');
     var attribs = {
       fill: 'none'
@@ -184,6 +178,9 @@ SVGRenderer.prototype = {
       attribs.d = path;
     } else if (this.isArray(path)) {
       attribs.d = path.join(' ');
+    }
+    if (this.isObject(props)) {
+      this.mixin(attribs, props);
     }
     this.attr(elem, attribs);
     return elem;
@@ -195,17 +192,19 @@ SVGRenderer.prototype = {
    * @param {Number} y The y position
    * @param {Number} r The radius
    */
-  circle: function(x, y, r) {
+  circle: function(x, y, r, props) {
     var attribs = this.isObject(x) ? x : {
         cx: x,
         cy: y,
         r: r
       },
       wrapper = this.createElement('circle');
+    if (this.isObject(props)) {
+      this.mixin(attribs, props);
+    }
     this.attr(wrapper, attribs);
     return wrapper;
   },
-
 
   /**
    * Draw and return a rectangle
@@ -223,7 +222,9 @@ SVGRenderer.prototype = {
         width: Math.max(width, 0),
         height: Math.max(height, 0),
       };
-    this.mixin(attribs, props);
+    if (this.isObject(props)) {
+      this.mixin(attribs, props);
+    }
     this.attr(wrapper, attribs);
     return wrapper;
   },
@@ -270,18 +271,39 @@ SVGRenderer.prototype = {
         'L', x + w / 2, low
       ];
     },
-    'kline': function(arr) {
+    'kline': function(posArr) {
       var kArr = [];
-      for (var i = 0; i < arr.length; i++) {
-        if (!Array.isArray(arr[i])) {
+      for (var i = 0; i < posArr.length; i++) {
+        if (!Array.isArray(posArr[i])) {
           continue;
         }
-        if (i == 0) {
-          arr[i].unshift('M');
+        var arr = [];
+        if (i === 0) {
+          arr.push('M');
+          arr = arr.concat(posArr[i]);
         } else {
-          arr[i].unshift('L');
+          arr.push('L');
+          arr = arr.concat(posArr[i]);
         }
-        kArr = kArr.concat(arr[i]);
+        kArr = kArr.concat(arr);
+      }
+      return kArr;
+    },
+    'lines': function(posArr) {
+      var kArr = [];
+      for (var i = 0; i < posArr.length; i++) {
+        if (!Array.isArray(posArr[i])) {
+          continue;
+        }
+        var arr = [];
+        if (i === 0) {
+          arr.push('M');
+          arr = arr.concat(posArr[i]);
+        } else {
+          arr.push('L');
+          arr = arr.concat(posArr[i]);
+        }
+        kArr = kArr.concat(arr);
       }
       return kArr;
     },
@@ -290,6 +312,7 @@ SVGRenderer.prototype = {
 
 DrawStock = function(container, exchangeData) {
   SVGRenderer.call(this);
+  Object.setPrototypeOf(DrawStock.prototype, SVGRenderer.prototype);
   this.container = container;
   this.options = {};
 
@@ -343,7 +366,7 @@ DrawStock = function(container, exchangeData) {
 }
 
 DrawStock.prototype = {
-  __proto__: SVGRenderer.prototype,
+  // __proto__: SVGRenderer.prototype,
   drawTop: function(exchangeData) {
     var gTitle = this.g('top');
     var tma5 = this.text('MA5: ' + exchangeData['tma5'], {
@@ -625,20 +648,46 @@ function formatData(responseData) {
   } 
 }
 
+
+function getData() {
+  // var ajaxURL = 'http://172.16.36.140:8081/api/v1/sense/top';
+  var ajaxURL = 'http://mtest.iqianjin.com/benew-server/api/v1/similar/stock/kline/2010003597';
+  var accessToken = '9877151C8E791FE4B00F2230D38FFF4730FC8DD8DBF9E637FDEE4684E41B94D1D8DEACE130C657A75ABDD56CF250FC846FC118E5E04EB62BC628CC1059C59962966A0A26F8421078DA507C5401CABB3058B67BA28F0DA4E298BE7F2175BE8BC9F9AF3FCE97C18B3EF1FA317F9F8C1EDCA7A08BF9F5DD1DDAF8C47B52ECE4893A';
+  $.ajax({
+      url: ajaxURL,
+      type: 'GET',
+      dataType: "json",
+      beforeSend: function(request) {
+       request.setRequestHeader("accessToken", accessToken);
+       request.setRequestHeader('console', accessToken);
+      },
+      success: function (data) {
+        console.log(data);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+  });
+}
+
 window.addEventListener('load', function() {
+  getData();
   var similarStockTrainingInfo = formatData(responseData);
   var originStock = similarStockTrainingInfo['originStock'];
   var similarStock = similarStockTrainingInfo['similarStock'];
   var similarStockList = similarStockTrainingInfo['similarStockList'];
   // console.log(originStock['formatedExInfo']);
+  
   var originArea = document.querySelector('.origin');
-  originArea.querySelector('.title').textContent = originStock.name + '近30天日K走势';
-  var originStockDraw = originArea.querySelector('.origin .stock-draw');
-  // container.style.width = document.body.clientWidth + 'px';
+  originArea.querySelector('.title .desc').textContent = originStock.name + '近30天日K走势';
+  var originStockDraw = originArea.querySelector('.origin .stock-charts');
   new DrawStock(originStockDraw, originStock['formatedExInfo']);
 
   var similarArea = document.querySelector('.similar');
-  similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarStockList[0].score * 100 + '%';
+  var similarLevel = parseFloat(similarStockList[0].score * 100);
+  console.log(similarLevel);
+
+  similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarLevel.toFixed(2) + '%';
 
   var chooseArea = document.querySelector('.choose');
   for (var i = 0; i < 9; i++) {
@@ -815,7 +864,6 @@ var responseData = {
   "msg": "OK",
   "t": 1481866824124
 }
-
 
 var stockData = [{
   "likes": 0,
