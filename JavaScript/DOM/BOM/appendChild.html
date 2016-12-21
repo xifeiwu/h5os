@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no" />
+    <title>HTML Model</title>
+    <script>
+    window.addEventListener('load', function() {
+      function createElement(tag) {
+        var SVG_NS = 'http://www.w3.org/2000/svg';
+        return document.createElementNS(SVG_NS, tag);
+      }
+      function createLi(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg;
+        return item;
+      }
+      function attr(elem, prop ,value) {
+        if (typeof prop == 'object') {
+          for (var key in prop) {
+            elem.setAttribute(key, prop[key]);
+          }
+        } else {
+          elem.setAttribute(key, value);
+        }
+      }
+      var items = document.querySelector('ul.list');
+      // items.appendChild(createLi('item1'));
+      // items.appendChild(createLi('item2'));
+      // items.appendChild(createLi('item3'));
+      // items.appendChild(createLi('item4'));
+
+      var pics = document.querySelector('svg.pic');
+      attr(pics, {
+        version: '1.1',
+        width: '500px',
+        height: '200px',
+        viewBox: '0 0 500 200'
+      });
+      var gg = createElement('g');
+      attr(gg, {
+        'class': 'group',
+        width: '500px'
+      });
+      var ma5 = createElement('text');
+      ma5.textContent = 'fdsafdasfds';
+      attr(ma5, {
+        x: '0',
+        y: '10',
+        'font-size': 15,
+        'text-anchor': "middle",
+        fill: 'blue',
+      });
+      var ma10 = createElement('text');
+      ma10.textContent = 'fdsafdasfds';
+      attr(ma10, {
+        x: '30',
+        y: '10',
+        'font-size': 15,
+        'text-anchor': "middle",
+        fill: 'blue',
+      });
+      var ma20 = createElement('text');
+      ma20.textContent = 'fdsafdasfds';
+      attr(ma20, {
+        x: '50',
+        y: '10',
+        'font-size': 15,
+        'text-anchor': "middle",
+        fill: 'blue',
+      });
+      gg.appendChild(ma5);
+      gg.appendChild(ma10);
+      gg.appendChild(ma20);
+      pics.appendChild(gg);
+
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <div><svg class="pic"></svg></div>
+    <br>
+  </body>
+</html>
