@@ -30,4 +30,11 @@ word-break: break-all;
   height: 8.2rem;
   align-items: center;
   justify-content: center; 
-} 
+}
+
+6. extend parentNode when all child is float.
+.demo::after {
+  content: "";
+  display: block;
+  clear: both;
+}

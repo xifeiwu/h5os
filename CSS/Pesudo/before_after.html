@@ -4,27 +4,61 @@
   <meta charset="UTF-8">
   <title>Model</title>
   <style >
-span {
+  .demo::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+span.target {
   display: block;
   position: relative;
   border: 1px solid red;
   float: left;
   padding: 20px 5px 0px 5px;
 }
-span::before {
+span.target::before {
   position: absolute;
   top: 0px;
-  /*right: 50%;*/
   content: 'before';
   border: 1px solid green;
   width: 50px;
   height: 20px;
 }
+
+.custom-stock {
+  margin-top: 50px;
+  font-size: 15px;
+  color: #487deb;
+}
+.custom-stock::before {
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: 3px;
+  margin-right: 5px;
+  text-align: center;
+  font-size: 24px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.custom-stock.add::before {
+  content: "+";
+  border: 1px solid #487deb;
+}
+.custom-stock.remove::before {
+  content: "--";
+  border: 1px solid #c6c6da;
+}
   </style>
   </head>
   <body>
+    <div class="demo">
+      <span class="target">Content</span>
+    </div>
+
     <div>
-      <span>Content</span>
+      <div class="custom-stock add">加自选</div>
     </div>
   </body>
 </html>
