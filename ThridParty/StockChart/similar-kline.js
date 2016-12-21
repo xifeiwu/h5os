@@ -660,7 +660,7 @@ function formatData(responseData) {
 
 function getData() {
   // var ajaxURL = 'http://172.16.36.140:8081/api/v1/sense/top';
-  var ajaxURL = 'http://mtest.iqianjin.com/benew-server/api/v1/similar/stock/kline/2010003597';
+  var ajaxURL = 'http://mtest.iqianjin.com/benew-server/api/v1/similar/stock/kline/2010001032';
   var accessToken = '9877151C8E791FE4B00F2230D38FFF4730FC8DD8DBF9E637FDEE4684E41B94D1D8DEACE130C657A75ABDD56CF250FC846FC118E5E04EB62BC628CC1059C59962966A0A26F8421078DA507C5401CABB3058B67BA28F0DA4E298BE7F2175BE8BC9F9AF3FCE97C18B3EF1FA317F9F8C1EDCA7A08BF9F5DD1DDAF8C47B52ECE4893A';
   $.ajax({
       url: ajaxURL,
@@ -671,6 +671,7 @@ function getData() {
        request.setRequestHeader('console', accessToken);
       },
       success: function (data) {
+        console.log('data');
         console.log(data);
       },
       error: function(err) {
@@ -697,12 +698,16 @@ window.addEventListener('load', function() {
   console.log(similarLevel);
 
   similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarLevel.toFixed(2) + '%';
+  var similarStockDraw = similarArea.querySelector('.similar .stock-charts');
+  new DrawStock(similarStockDraw, originStock['formatedExInfo']);
 
-  var chooseArea = document.querySelector('.choose');
+  var chooseSimilarStock= document.querySelector('.choose-similar-stock');
+  var showSimilarStock = chooseSimilarStock.querySelector('.show-similar-stock');
+  
   for (var i = 0; i < 9; i++) {
     var item = document.createElement('div');
     item.classList.add('item');
-    chooseArea.appendChild(item);
+    showSimilarStock.appendChild(item);
   }
 });
 

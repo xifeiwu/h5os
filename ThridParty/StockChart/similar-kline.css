@@ -72,20 +72,6 @@ body {
   padding: 0px 15px;
 }
 
-.choose {
-  width: 100%;
-  height: 120px;
-  overflow-y: scroll;
-  white-space: nowrap;
-}
-.choose .item {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  background-color: blue;
-  margin-right: 20px;
-}
-
 .stock-charts {
   margin: 0px 15px;
   padding-bottom: 20px;
@@ -114,13 +100,52 @@ body {
   stroke: red;
 }
 .stock-charts .group-series .ma5 {
-  stroke: blue;
+  stroke: #457aee;
 }
 .stock-charts .group-series .ma10 {
-  stroke: yellow;
+  stroke: #ffc128;
 }
 .stock-charts .group-series .ma20 {
-  stroke: red;
+  stroke: #ff5871;
 }
-.stock-charts .group-grid {
+
+.choose-similar-stock {
+  position: relative;
+  background-color: #f9f9f9;
 }
+.choose-similar-stock .show-similar-stock {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  margin: 0px 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.choose-similar-stock .show-similar-stock .item {
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  background-color: blue;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+.choose-similar-stock .scroll-arrow {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 60px;
+}
+
+.footer {
+  padding-top: 12px;
+  color: #595959;
+  font-size: 12px;
+  line-height: 18px;
+}
+.footer div {
+  text-align: center;
+}
+/*::-webkit-scrollbar{
+  width: 0px;
+}*/
