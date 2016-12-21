@@ -416,19 +416,28 @@ DrawStock.prototype = {
       y = seriesGroupHeight - i * yInterval;
       yLine = this.path(this.symbols.line(0, y, seriesGroupWidth, y));
       this.attr(yLine, {
-        stroke: '#ddd',
+        stroke: '#d4d7dc',
         fill: 'none',
         'stroke-width': 0.5,
       });
-      var text = this.text(tickPositions[i], {
-        x: '1',
-        y: y - 1,
-        'font-size': 10,
-        'text-anchor': 'start',
-        fill: '#666',
-      });
       gGrid.appendChild(yLine);
-      gGrid.appendChild(text);
+      if (i === 0) {
+        gGrid.appendChild(this.text(tickPositions[i], {
+          x: '1',
+          y: y - 1,
+          'font-size': 10,
+          'text-anchor': 'start',
+          fill: '#666',
+        }));
+      } else {
+        gGrid.appendChild(this.text(tickPositions[i], {
+          x: '1',
+          y: y + 10,
+          'font-size': 10,
+          'text-anchor': 'start',
+          fill: '#666',
+        }));
+      }
     }
 
     // add date in bottom
