@@ -310,9 +310,17 @@ SVGRenderer.prototype = {
   },
 };
 
-DrawStock = function(container, exchangeData) {
+DrawStock = function(container, stockInfo) {
   SVGRenderer.call(this);
   Object.setPrototypeOf(DrawStock.prototype, SVGRenderer.prototype);
+  
+  var exchangeData = this.formatStockExinfo(stockInfo);
+  var dataValid = false;
+  if (exchangeData['ma5'].length > 0 && exchangeData['ohlc'].length > 0) {
+    dataValid = true;
+  }
+
+  console.log(dataValid);
   this.container = container;
   this.options = {};
   this.options.daysSpan = 60;
@@ -331,38 +339,48 @@ DrawStock = function(container, exchangeData) {
     viewBox: '0 0 ' + this.options.containerW + ' ' + this.options.containerH
   });
 
-  // get tick interval and tick position
-  var maxGridValueY = 0;
-  var minGridValueY = 0;
-  var tickInterval = 1;
-  var tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
-  while (tickPositions.length > 5) {
-    tickInterval = tickInterval + 1;
-    tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+  if (dataValid) {
+    // get tick interval and tick position
+    var maxGridValueY = 0;
+    var minGridValueY = 0;
+    var tickInterval = 1;
+    var tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+    while (tickPositions.length > 5) {
+      tickInterval = tickInterval + 1;
+      tickPositions = this.getLinearTickPositions(tickInterval, exchangeData.minValue, exchangeData.maxValue);
+    }
+    // this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
+    this.options.maxGridValueY = tickPositions[tickPositions.length - 1];
+    // this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
+    this.options.minGridValueY = tickPositions[0];
+    this.options.tickPositions = tickPositions;
+    this.options.tickInterval = tickInterval;
+    console.log(tickPositions);
+
+    var seriesGroupPadding = 3;
+    var seriesGroupWidth = this.options.containerW - seriesGroupPadding * 2;
+    var seriesGroupHeight = containerH - this.options.titleHeight * 2;
+    this.options.seriesGroupWidth = seriesGroupWidth;
+    this.options.seriesGroupHeight = seriesGroupHeight;
+    var gSeriesGroup = this.g('series', {
+      transform: 'translate(' + seriesGroupPadding + ', 16)'
+    });
+    
+    gSeriesGroup.appendChild(this.drawGrid(exchangeData, this.options));
+    // draw Candle and kline
+    gSeriesGroup.appendChild(this.drawCandle(exchangeData, this.options, seriesGroupWidth, seriesGroupHeight));
+
+    boxWrapper.appendChild(this.drawTop(exchangeData));
+    boxWrapper.appendChild(gSeriesGroup);
+  } else {
+    boxWrapper.appendChild(this.text('数据获取失败', {
+      x: containerW / 2,
+      y: containerH / 2,
+      'text-anchor': 'middle',
+      'font-size': 10,
+      fill: '#666',
+    }));
   }
-  // this.options.maxGridValueY = tickPositions[tickPositions.length - 1] + tickInterval / 2;
-  this.options.maxGridValueY = tickPositions[tickPositions.length - 1];
-  // this.options.minGridValueY = tickPositions[0] - tickInterval / 2;
-  this.options.minGridValueY = tickPositions[0];
-  this.options.tickPositions = tickPositions;
-  this.options.tickInterval = tickInterval;
-  console.log(tickPositions);
-
-  var seriesGroupPadding = 3;
-  var seriesGroupWidth = this.options.containerW - seriesGroupPadding * 2;
-  var seriesGroupHeight = containerH - this.options.titleHeight * 2;
-  this.options.seriesGroupWidth = seriesGroupWidth;
-  this.options.seriesGroupHeight = seriesGroupHeight;
-  var gSeriesGroup = this.g('series', {
-    transform: 'translate(' + seriesGroupPadding + ', 16)'
-  });
-  
-  gSeriesGroup.appendChild(this.drawGrid(exchangeData, this.options));
-  // draw Candle and kline
-  gSeriesGroup.appendChild(this.drawCandle(exchangeData, this.options, seriesGroupWidth, seriesGroupHeight));
-
-  boxWrapper.appendChild(this.drawTop(exchangeData));
-  boxWrapper.appendChild(gSeriesGroup);
   this.container.appendChild(boxWrapper);
 }
 
@@ -544,114 +562,111 @@ DrawStock.prototype = {
     candleGrid.appendChild(MA20);
     return candleGrid;
   },
+
+  formatStockExinfo: function(stockInfo) {
+    var isSameDay = function (date1, date2) {
+      if (date1.getFullYear() == date2.getFullYear() && date1.getMonth() == date2.getMonth()
+          && date1.getDate() == date2.getDate()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    var stockDailyInfos = stockInfo['stockDailyInfoDTOs'];
+    // var stockDailyInfos = stockDailyInfos.sort(function(a, b) {
+    //     return a.tradeDate - b.tradeDate;
+    // });
+    // split the stockDailyInfos set into ohlc and volume
+    var ohlc = [],
+        ma5 = [],
+        ma10 = [],
+        ma20 = [],
+        recordCnt = stockDailyInfos.length;
+
+    var tradeDate, tradeDateStr, milliSeconds = null;
+    var maxValue = 0, minValue = 100;
+    var tma5 = 0, tma10 = 0, tma20 = 0;
+    var today = new Date();
+    if (stockDailyInfos.length >= 30) {
+      tma5 = stockDailyInfos[29]['ma5'];
+      tma10 = stockDailyInfos[29]['ma10'];
+      tma20 = stockDailyInfos[29]['ma20'];
+    }
+    for (i = 0; i < recordCnt; i += 1) {
+      tradeDateStr = stockDailyInfos[i]['tradeDate'].toString();
+      tradeDate = new Date(tradeDateStr.slice(0, 4), parseInt(tradeDateStr.slice(4, 6)) - 1, tradeDateStr.slice(6, 8));
+      milliSeconds = tradeDate.getTime();
+
+      if (maxValue < parseFloat(stockDailyInfos[i]['thigh'])) {
+        maxValue = parseFloat(stockDailyInfos[i]['thigh']);
+      }
+      if (minValue > parseFloat(stockDailyInfos[i]['tlow'])) {
+        minValue = parseFloat(stockDailyInfos[i]['tlow']);
+      }
+
+      ohlc.push({
+        'date': tradeDate, // the date
+        'topen': parseFloat(stockDailyInfos[i]['topen']), // open
+        'thigh': parseFloat(stockDailyInfos[i]['thigh']), // high
+        'tlow': parseFloat(stockDailyInfos[i]['tlow']), // low
+        'tclose': parseFloat(stockDailyInfos[i]['tclose']) // close
+      });
+      ma5.push([
+        tradeDate,
+        parseFloat(stockDailyInfos[i]['ma5'])
+      ]);
+      ma10.push([
+        tradeDate,
+        parseFloat(stockDailyInfos[i]['ma10'])
+      ]);
+      ma20.push([
+        tradeDate,
+        parseFloat(stockDailyInfos[i]['ma20'])
+      ]);
+    }
+    return {
+      'ohlc': ohlc,
+      'ma5': ma5,
+      'ma10': ma10,
+      'ma20': ma20,
+      'maxValue': maxValue,
+      'minValue': minValue,
+      'tma5': tma5,
+      'tma10': tma10,
+      'tma20': tma20,
+    }
+  },
 }
 
-
-function formatStockExinfo(stockInfo) {
-  var isSameDay = function (date1, date2) {
-    if (date1.getFullYear() == date2.getFullYear() && date1.getMonth() == date2.getMonth()
-        && date1.getDate() == date2.getDate()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  var stockDailyInfos = stockInfo['stockDailyInfoDTOs'];
-  // var stockDailyInfos = stockDailyInfos.sort(function(a, b) {
-  //     return a.tradeDate - b.tradeDate;
-  // });
-  // split the stockDailyInfos set into ohlc and volume
-  var ohlc = [],
-      ma5 = [],
-      ma10 = [],
-      ma20 = [],
-      recordCnt = stockDailyInfos.length;
-
-  var tradeDate, tradeDateStr, milliSeconds = null;
-  var maxValue = 0, minValue = 100;
-  var tma5 = 0, tma10 = 0, tma20 = 0;
-  var today = new Date();
-  if (stockDailyInfos.length >= 30) {
-    tma5 = stockDailyInfos[29]['ma5'];
-    tma10 = stockDailyInfos[29]['ma10'];
-    tma20 = stockDailyInfos[29]['ma20'];
-  }
-  for (i = 0; i < recordCnt; i += 1) {
-    tradeDateStr = stockDailyInfos[i]['tradeDate'].toString();
-    tradeDate = new Date(tradeDateStr.slice(0, 4), parseInt(tradeDateStr.slice(4, 6)) - 1, tradeDateStr.slice(6, 8));
-    milliSeconds = tradeDate.getTime();
-
-    if (maxValue < parseFloat(stockDailyInfos[i]['thigh'])) {
-      maxValue = parseFloat(stockDailyInfos[i]['thigh']);
-    }
-    if (minValue > parseFloat(stockDailyInfos[i]['tlow'])) {
-      minValue = parseFloat(stockDailyInfos[i]['tlow']);
-    }
-
-    ohlc.push({
-      'date': tradeDate, // the date
-      'topen': parseFloat(stockDailyInfos[i]['topen']), // open
-      'thigh': parseFloat(stockDailyInfos[i]['thigh']), // high
-      'tlow': parseFloat(stockDailyInfos[i]['tlow']), // low
-      'tclose': parseFloat(stockDailyInfos[i]['tclose']) // close
-    });
-    ma5.push([
-      tradeDate,
-      parseFloat(stockDailyInfos[i]['ma5'])
-    ]);
-    ma10.push([
-      tradeDate,
-      parseFloat(stockDailyInfos[i]['ma10'])
-    ]);
-    ma20.push([
-      tradeDate,
-      parseFloat(stockDailyInfos[i]['ma20'])
-    ]);
-  }
-  return {
-    'ohlc': ohlc,
-    'ma5': ma5,
-    'ma10': ma10,
-    'ma20': ma20,
-    'maxValue': maxValue,
-    'minValue': minValue,
-    'tma5': tma5,
-    'tma10': tma10,
-    'tma20': tma20,
-  }
-}
 
 function formatResponseData(responseData) {
   console.log('formatResponseData');
   console.log(responseData);
-  if (responseData['code'] != 1 || responseData['msg'] != 'OK') {
-    return false
-  }
+
   var content = responseData['content'];
 
   var originStock = null;
   var similarStock = null;
   var similarStockList = null;
-  if ('originalStockTrainBaseDTO' in content) {
-    originStock = content['originalStockTrainBaseDTO'];
-  }
-  if ('similarStockTrainBaseDTO' in content) {
-    similarStock = content['similarStockTrainBaseDTO'];
-  }
-  if ('similarStockDTOs' in content) {
-    similarStockList = content['similarStockDTOs'];
-  }
-  // TODO: delete later
-  // if (originStock) {
-  //   originStock['stockDailyInfoDTOs'] = stockData[0]['stockDailyInfoDTOs'];
-  // }
 
-  if (originStock) {
-    originStock['formatedExInfo'] = formatStockExinfo(originStock, 'origin');
-  }
-  if (similarStock) {
-    similarStock['formatedExInfo'] = formatStockExinfo(similarStock, 'similar');
+  if (responseData['code'] == 1 && responseData['msg'] == 'OK') {
+    if ('originalStockTrainBaseDTO' in content) {
+      originStock = content['originalStockTrainBaseDTO'];
+    }
+    if ('similarStockTrainBaseDTO' in content) {
+      similarStock = content['similarStockTrainBaseDTO'];
+    }
+    if ('similarStockDTOs' in content) {
+      similarStockList = content['similarStockDTOs'];
+    }
+    // TODO: delete later
+    // if (originStock) {
+    //   originStock['stockDailyInfoDTOs'] = stockData[0]['stockDailyInfoDTOs'];
+    // }
+
+    // originStock['formatedExInfo'] = formatStockExinfo(originStock, 'origin');
+    // similarStock['formatedExInfo'] = formatStockExinfo(similarStock, 'similar');
   }
   return {
     'originStock': originStock,
@@ -660,9 +675,70 @@ function formatResponseData(responseData) {
   } 
 }
 
+function refreshUI(responseData) {
+  var similarStockTrainingInfo = formatResponseData(responseData);
+  console.log('similarStockTrainingInfo');
+  console.log(similarStockTrainingInfo);
+  var originStockData = similarStockTrainingInfo['originStock'];
+  var similarStockData = similarStockTrainingInfo['similarStock'];
+  var similarStockList = similarStockTrainingInfo['similarStockList'];
+  // console.log(originStock['formatedExInfo']);
+  
+  var originArea = document.querySelector('.origin');
+  if (originStockData != null) {
+    originArea.querySelector('.title .desc').textContent = originStockData.name + '近30天日K走势';
+  } else {
+    originArea.querySelector('.title .desc').textContent = '近30天日K走势';
+  }
+  var originStockDraw = originArea.querySelector('.origin .stock-charts');
+  new DrawStock(originStockDraw, originStockData);
+  var customStock = originArea.querySelector('.custom-stock');
+  customStock.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('custom-stock')) {
+      var classList = evt.target.classList;
+      if (classList.contains('add')) {
+        classList.remove('add');
+        classList.add('remove');
+      } else if (classList.contains('remove')) {
+        classList.remove('remove');
+        classList.add('add');
+      }
+    }
+  });
+
+  var similarArea = document.querySelector('.similar');
+  var similarLevel = parseFloat(similarStockList[0].score * 100);
+  similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarLevel.toFixed(2) + '%';
+  var similarStockDraw = similarArea.querySelector('.similar .stock-charts');
+  new DrawStock(similarStockDraw, similarStockData);
+
+  var similarStockCnt = 9;
+  var chooseSimilarStock= document.querySelector('.choose-similar-stock');
+  var showSimilarStock = chooseSimilarStock.querySelector('.show-similar-stock');
+  var similarStocks = showSimilarStock.querySelector('.similar-stocks');
+  // similarStocks.style.width = (similarStockCnt * 65 - 20) + 'px';
+  for (var i = 0; i < similarStockCnt; i++) {
+    var item = document.createElement('div');
+    item.innerHTML = '<div class="triangle"></div><div class="rank">' + (i + 1) + '</div>';
+    item.classList.add('item');
+    similarStocks.appendChild(item);
+  }
+  // showSimilarStock.dataset['width'] = similarStockCnt * 65;
+  similarStocks.addEventListener('click', function(evt) {
+    console.log(evt);
+    Array.prototype.slice.call(similarStocks.querySelectorAll('.item')).forEach(function(it) {
+      it.classList.remove('focus');
+    });
+    
+    if (evt.target.classList.contains('item')) {
+      evt.target.classList.add('focus');
+    }
+  });
+}
 
 function getData(cb) {
   // var ajaxURL = 'http://172.16.36.140:8081/api/v1/sense/top';
+  // 2010001032
   var ajaxURL = 'http://mtest.iqianjin.com/benew-server/api/v1/similar/stock/kline/2010003597';
   var accessToken = '9877151C8E791FE4B00F2230D38FFF4730FC8DD8DBF9E637FDEE4684E41B94D1D8DEACE130C657A75ABDD56CF250FC846FC118E5E04EB62BC628CC1059C59962966A0A26F8421078DA507C5401CABB3058B67BA28F0DA4E298BE7F2175BE8BC9F9AF3FCE97C18B3EF1FA317F9F8C1EDCA7A08BF9F5DD1DDAF8C47B52ECE4893A';
   $.ajax({
@@ -674,8 +750,8 @@ function getData(cb) {
        request.setRequestHeader('console', accessToken);
       },
       success: function (data) {
-        // console.log('ajax data');
-        // console.log(data);
+        console.log('ajax data');
+        console.log(data);
         cb(null, data);
       },
       error: function(err) {
@@ -685,46 +761,13 @@ function getData(cb) {
   });
 }
 
-function refreshUI(responseData) {
-  var similarStockTrainingInfo = formatResponseData(responseData);
-  console.log('similarStockTrainingInfo');
-  console.log(similarStockTrainingInfo);
-  var originStock = similarStockTrainingInfo['originStock'];
-  var similarStock = similarStockTrainingInfo['similarStock'];
-  var similarStockList = similarStockTrainingInfo['similarStockList'];
-  // console.log(originStock['formatedExInfo']);
-  
-  var originArea = document.querySelector('.origin');
-  originArea.querySelector('.title .desc').textContent = originStock.name + '近30天日K走势';
-  var originStockDraw = originArea.querySelector('.origin .stock-charts');
-  new DrawStock(originStockDraw, originStock['formatedExInfo']);
-
-  var similarArea = document.querySelector('.similar');
-  var similarLevel = parseFloat(similarStockList[0].score * 100);
-  console.log(similarLevel);
-
-  similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarLevel.toFixed(2) + '%';
-  var similarStockDraw = similarArea.querySelector('.similar .stock-charts');
-  new DrawStock(similarStockDraw, similarStock['formatedExInfo']);
-
-  var chooseSimilarStock= document.querySelector('.choose-similar-stock');
-  var showSimilarStock = chooseSimilarStock.querySelector('.show-similar-stock');
-  
-  for (var i = 0; i < 9; i++) {
-    var item = document.createElement('div');
-    item.innerHTML = '<div class="triangle"></div><div class="rank">' + (i + 1) + '</div>';
-    // item.textContent = i + 1;
-    item.classList.add('item');
-    showSimilarStock.appendChild(item);
-  }
-}
 window.addEventListener('load', function() {
   getData(function(err, data) {
     if (!err) {
       refreshUI(data);
     }
   });
-  // refreshUI(responseData);
+  // refreshUI(mockResponseData);
 });
 
 var mockResponseData = {
@@ -736,75 +779,695 @@ var mockResponseData = {
       "score": 0,
       "secode": "2010000009",
       "stockDailyInfoDTOs": [{
-        "ma10": 6.6052,
-        "ma20": 6.6052,
-        "ma5": 6.6052,
-        "tclose": 6.6052,
-        "thigh": 6.6365,
-        "tlow": 6.5551,
-        "topen": 6.6365,
-        "tradeDate": "20161216",
-        "tradeType": 2
+        "ma5": "20.1269",
+        "ma10": "20.3695",
+        "ma20": "20.7440",
+        "macdDif": "0.4297",
+        "macdDea": "0.8578",
+        "macd": "-0.8562",
+        "kdjK": "35.4911",
+        "kdjD": "41.6704",
+        "kdjJ": "23.1326",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.0805",
+        "tclose": "18.9507",
+        "thigh": "19.4100",
+        "tlow": "17.4730",
+        "vol": "17131911",
+        "turnrate": "3.2877",
+        "tradeDate": "20151130",
+        "exchange": "001003",
+        "change": "-0.2197",
+        "pchg": "-0.0115"
       }, {
-        "ma10": 6.5206,
-        "ma20": 6.5206,
-        "ma5": 6.5206,
-        "tclose": 6.436,
-        "thigh": 6.5613,
-        "tlow": 6.3608,
-        "topen": 6.5613,
-        "tradeDate": "20161217",
-        "tradeType": 0
+        "ma5": "19.6437",
+        "ma10": "20.0610",
+        "ma20": "20.7470",
+        "macdDif": "0.2184",
+        "macdDea": "0.7299",
+        "macd": "-1.0230",
+        "kdjK": "28.3031",
+        "kdjD": "37.2146",
+        "kdjJ": "10.4800",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.9607",
+        "tclose": "18.0821",
+        "thigh": "19.1305",
+        "tlow": "17.8724",
+        "vol": "19257007",
+        "turnrate": "3.6956",
+        "tradeDate": "20151201",
+        "exchange": "001003",
+        "change": "-0.8687",
+        "pchg": "-0.0458"
       }, {
-        "ma10": 6.436,
-        "ma20": 6.436,
-        "ma5": 6.436,
-        "tclose": 6.2668,
-        "thigh": 6.4485,
-        "tlow": 6.2041,
-        "topen": 6.4234,
-        "tradeDate": "20161218",
-        "tradeType": 0
+        "ma5": "19.0046",
+        "ma10": "19.9003",
+        "ma20": "20.6436",
+        "macdDif": "0.0249",
+        "macdDea": "0.5889",
+        "macd": "-1.1280",
+        "kdjK": "25.0980",
+        "kdjD": "33.1757",
+        "kdjJ": "8.9425",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.1120",
+        "tclose": "17.7626",
+        "thigh": "18.2119",
+        "tlow": "16.8240",
+        "vol": "13648265",
+        "turnrate": "2.6192",
+        "tradeDate": "20151202",
+        "exchange": "001003",
+        "change": "-0.3195",
+        "pchg": "-0.0177"
       }, {
-        "ma10": 6.4062,
-        "ma20": 6.4062,
-        "ma5": 6.4062,
-        "tclose": 6.3169,
-        "thigh": 6.367,
-        "tlow": 6.2542,
-        "topen": 6.2542,
-        "tradeDate": "20161219",
-        "tradeType": 0
+        "ma5": "18.4515",
+        "ma10": "19.6916",
+        "ma20": "20.5438",
+        "macdDif": "-0.0848",
+        "macdDea": "0.4542",
+        "macd": "-1.0779",
+        "kdjK": "26.4736",
+        "kdjD": "30.9417",
+        "kdjJ": "17.5373",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.9423",
+        "tclose": "18.2918",
+        "thigh": "18.3517",
+        "tlow": "17.7027",
+        "vol": "12379735",
+        "turnrate": "2.3758",
+        "tradeDate": "20151203",
+        "exchange": "001003",
+        "change": "0.5292",
+        "pchg": "0.0298"
       }, {
-        "ma10": 6.3808,
-        "ma20": 6.3808,
-        "ma5": 6.3808,
-        "tclose": 6.2793,
-        "thigh": 6.3984,
-        "tlow": 6.2668,
-        "topen": 6.3294,
-        "tradeDate": "20161220",
-        "tradeType": 0
+        "ma5": "18.1919",
+        "ma10": "19.3681",
+        "ma20": "20.3690",
+        "macdDif": "-0.2032",
+        "macdDea": "0.3227",
+        "macd": "-1.0518",
+        "kdjK": "24.6073",
+        "kdjD": "28.8302",
+        "kdjJ": "16.1614",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.4016",
+        "tclose": "17.8724",
+        "thigh": "18.4914",
+        "tlow": "17.6328",
+        "vol": "14292008",
+        "turnrate": "2.7427",
+        "tradeDate": "20151204",
+        "exchange": "001003",
+        "change": "-0.4194",
+        "pchg": "-0.0229"
       }, {
-        "ma10": 6.3556,
-        "ma20": 6.3556,
-        "ma5": 6.3056,
-        "tclose": 6.2292,
-        "thigh": 6.3232,
-        "tlow": 6.154,
-        "topen": 6.2793,
-        "tradeDate": "20161221",
-        "tradeType": 0
+        "ma5": "18.0761",
+        "ma10": "19.1015",
+        "ma20": "20.1988",
+        "macdDif": "-0.2539",
+        "macdDea": "0.2074",
+        "macd": "-0.9225",
+        "kdjK": "26.6766",
+        "kdjD": "28.1123",
+        "kdjJ": "23.8050",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.8724",
+        "tclose": "18.3716",
+        "thigh": "18.5114",
+        "tlow": "17.4431",
+        "vol": "16253514",
+        "turnrate": "3.1192",
+        "tradeDate": "20151207",
+        "exchange": "001003",
+        "change": "0.4992",
+        "pchg": "0.0279"
       }, {
-        "ma10": 6.3187,
-        "ma20": 6.3187,
-        "ma5": 6.238,
-        "tclose": 6.0976,
-        "thigh": 6.2354,
-        "tlow": 6.0537,
-        "topen": 6.179,
-        "tradeDate": "20161222",
-        "tradeType": 0
+        "ma5": "18.0341",
+        "ma10": "18.8389",
+        "ma20": "19.9796",
+        "macdDif": "-0.3305",
+        "macdDea": "0.0998",
+        "macd": "-0.8605",
+        "kdjK": "24.7426",
+        "kdjD": "26.9891",
+        "kdjJ": "20.2497",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.2718",
+        "tclose": "17.8724",
+        "thigh": "18.2718",
+        "tlow": "17.7726",
+        "vol": "9813832",
+        "turnrate": "1.8833",
+        "tradeDate": "20151208",
+        "exchange": "001003",
+        "change": "-0.4992",
+        "pchg": "-0.0272"
+      }, {
+        "ma5": "18.3956",
+        "ma10": "18.7001",
+        "ma20": "19.8424",
+        "macdDif": "-0.2513",
+        "macdDea": "0.0296",
+        "macd": "-0.5618",
+        "kdjK": "38.7443",
+        "kdjD": "30.9075",
+        "kdjJ": "54.4178",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.6927",
+        "tclose": "19.5698",
+        "thigh": "19.6596",
+        "tlow": "17.6927",
+        "vol": "40713924",
+        "turnrate": "7.8133",
+        "tradeDate": "20151209",
+        "exchange": "001003",
+        "change": "1.6974",
+        "pchg": "0.0950"
+      }, {
+        "ma5": "18.4835",
+        "ma10": "18.4675",
+        "ma20": "19.6821",
+        "macdDif": "-0.2533",
+        "macdDea": "-0.0270",
+        "macd": "-0.4527",
+        "kdjK": "48.2474",
+        "kdjD": "36.6874",
+        "kdjJ": "71.3672",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.1105",
+        "tclose": "18.7311",
+        "thigh": "19.1904",
+        "tlow": "18.5813",
+        "vol": "25383670",
+        "turnrate": "4.8713",
+        "tradeDate": "20151210",
+        "exchange": "001003",
+        "change": "-0.8387",
+        "pchg": "-0.0429"
+      }, {
+        "ma5": "18.5793",
+        "ma10": "18.3856",
+        "ma20": "19.5253",
+        "macdDif": "-0.2823",
+        "macdDea": "-0.0781",
+        "macd": "-0.4085",
+        "kdjK": "50.1227",
+        "kdjD": "41.1658",
+        "kdjJ": "68.0363",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.3716",
+        "tclose": "18.3517",
+        "thigh": "18.7211",
+        "tlow": "18.0521",
+        "vol": "11013352",
+        "turnrate": "2.1135",
+        "tradeDate": "20151211",
+        "exchange": "001003",
+        "change": "-0.3794",
+        "pchg": "-0.0203"
+      }, {
+        "ma5": "18.6831",
+        "ma10": "18.3796",
+        "ma20": "19.3746",
+        "macdDif": "-0.2588",
+        "macdDea": "-0.1142",
+        "macd": "-0.2891",
+        "kdjK": "57.7109",
+        "kdjD": "46.6809",
+        "kdjJ": "79.7709",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.9722",
+        "tclose": "18.8908",
+        "thigh": "19.1205",
+        "tlow": "17.8724",
+        "vol": "12600371",
+        "turnrate": "2.4181",
+        "tradeDate": "20151214",
+        "exchange": "001003",
+        "change": "0.5392",
+        "pchg": "0.0294"
+      }, {
+        "ma5": "18.9028",
+        "ma10": "18.4685",
+        "ma20": "19.2647",
+        "macdDif": "-0.2310",
+        "macdDea": "-0.1376",
+        "macd": "-0.1869",
+        "kdjK": "61.4469",
+        "kdjD": "51.6029",
+        "kdjJ": "81.1349",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.9607",
+        "tclose": "18.9707",
+        "thigh": "19.4300",
+        "tlow": "18.9008",
+        "vol": "11402634",
+        "turnrate": "2.1882",
+        "tradeDate": "20151215",
+        "exchange": "001003",
+        "change": "0.0799",
+        "pchg": "0.0042"
+      }, {
+        "ma5": "18.8189",
+        "ma10": "18.6073",
+        "ma20": "19.2538",
+        "macdDif": "-0.1923",
+        "macdDea": "-0.1485",
+        "macd": "-0.0876",
+        "kdjK": "66.6403",
+        "kdjD": "56.6153",
+        "kdjJ": "86.6901",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.9707",
+        "tclose": "19.1504",
+        "thigh": "19.5698",
+        "tlow": "18.9707",
+        "vol": "13400904",
+        "turnrate": "2.5717",
+        "tradeDate": "20151216",
+        "exchange": "001003",
+        "change": "0.1797",
+        "pchg": "0.0095"
+      }, {
+        "ma5": "19.0066",
+        "ma10": "18.7451",
+        "ma20": "19.2183",
+        "macdDif": "-0.1184",
+        "macdDea": "-0.1425",
+        "macd": "0.0482",
+        "kdjK": "75.2706",
+        "kdjD": "62.8337",
+        "kdjJ": "100.1442",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.2203",
+        "tclose": "19.6696",
+        "thigh": "19.8493",
+        "tlow": "19.1904",
+        "vol": "16884774",
+        "turnrate": "3.2403",
+        "tradeDate": "20151217",
+        "exchange": "001003",
+        "change": "0.5192",
+        "pchg": "0.0271"
+      }, {
+        "ma5": "19.1864",
+        "ma10": "18.8828",
+        "ma20": "19.1255",
+        "macdDif": "-0.0925",
+        "macdDea": "-0.1325",
+        "macd": "0.0799",
+        "kdjK": "74.2544",
+        "kdjD": "66.6406",
+        "kdjJ": "89.4820",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.6097",
+        "tclose": "19.2503",
+        "thigh": "19.6297",
+        "tlow": "19.0206",
+        "vol": "11562015",
+        "turnrate": "2.2188",
+        "tradeDate": "20151218",
+        "exchange": "001003",
+        "change": "-0.4194",
+        "pchg": "-0.0213"
+      }, {
+        "ma5": "19.2383",
+        "ma10": "18.9607",
+        "ma20": "19.0311",
+        "macdDif": "-0.0792",
+        "macdDea": "-0.1218",
+        "macd": "0.0853",
+        "kdjK": "72.0338",
+        "kdjD": "68.4384",
+        "kdjJ": "79.2247",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.2503",
+        "tclose": "19.1504",
+        "thigh": "19.8094",
+        "tlow": "19.1205",
+        "vol": "12135156",
+        "turnrate": "2.3288",
+        "tradeDate": "20151221",
+        "exchange": "001003",
+        "change": "-0.0998",
+        "pchg": "-0.0052"
+      }, {
+        "ma5": "19.2982",
+        "ma10": "19.1005",
+        "ma20": "18.9697",
+        "macdDif": "-0.0583",
+        "macdDea": "-0.1091",
+        "macd": "0.1016",
+        "kdjK": "71.5916",
+        "kdjD": "69.4894",
+        "kdjJ": "75.7958",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.2303",
+        "tclose": "19.2702",
+        "thigh": "19.4699",
+        "tlow": "18.7710",
+        "vol": "11169239",
+        "turnrate": "2.1435",
+        "tradeDate": "20151222",
+        "exchange": "001003",
+        "change": "0.1198",
+        "pchg": "0.0063"
+      }, {
+        "ma5": "19.2443",
+        "ma10": "19.0316",
+        "ma20": "18.8659",
+        "macdDif": "-0.0723",
+        "macdDea": "-0.1018",
+        "macd": "0.0589",
+        "kdjK": "64.7311",
+        "kdjD": "67.9033",
+        "kdjJ": "58.3866",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.4500",
+        "tclose": "18.8808",
+        "thigh": "19.4500",
+        "tlow": "18.7810",
+        "vol": "14395740",
+        "turnrate": "2.7626",
+        "tradeDate": "20151223",
+        "exchange": "001003",
+        "change": "-0.3894",
+        "pchg": "-0.0202"
+      }, {
+        "ma5": "18.9947",
+        "ma10": "19.0007",
+        "ma20": "18.7341",
+        "macdDif": "-0.1191",
+        "macdDea": "-0.1052",
+        "macd": "-0.0278",
+        "kdjK": "52.4133",
+        "kdjD": "62.7400",
+        "kdjJ": "31.7600",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.7111",
+        "tclose": "18.4215",
+        "thigh": "18.7810",
+        "tlow": "18.0521",
+        "vol": "10474404",
+        "turnrate": "2.0101",
+        "tradeDate": "20151224",
+        "exchange": "001003",
+        "change": "-0.4593",
+        "pchg": "-0.0243"
+      }, {
+        "ma5": "18.8449",
+        "ma10": "19.0156",
+        "ma20": "18.7006",
+        "macdDif": "-0.1481",
+        "macdDea": "-0.1138",
+        "macd": "-0.0685",
+        "kdjK": "43.2755",
+        "kdjD": "56.2518",
+        "kdjJ": "17.3230",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.4715",
+        "tclose": "18.5014",
+        "thigh": "18.8509",
+        "tlow": "18.1520",
+        "vol": "13069486",
+        "turnrate": "2.5081",
+        "tradeDate": "20151225",
+        "exchange": "001003",
+        "change": "0.0799",
+        "pchg": "0.0043"
+      }, {
+        "ma5": "18.7530",
+        "ma10": "18.9957",
+        "ma20": "18.6876",
+        "macdDif": "-0.1539",
+        "macdDea": "-0.1218",
+        "macd": "-0.0642",
+        "kdjK": "40.7022",
+        "kdjD": "51.0686",
+        "kdjJ": "19.9694",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.5813",
+        "tclose": "18.6911",
+        "thigh": "19.1904",
+        "tlow": "18.5813",
+        "vol": "15532605",
+        "turnrate": "2.9808",
+        "tradeDate": "20151228",
+        "exchange": "001003",
+        "change": "0.1897",
+        "pchg": "0.0103"
+      }, {
+        "ma5": "18.7850",
+        "ma10": "19.0416",
+        "ma20": "18.7550",
+        "macdDif": "-0.0978",
+        "macdDea": "-0.1170",
+        "macd": "0.0384",
+        "kdjK": "52.6904",
+        "kdjD": "51.6092",
+        "kdjJ": "54.8527",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.5913",
+        "tclose": "19.4300",
+        "thigh": "19.6097",
+        "tlow": "18.2418",
+        "vol": "16631324",
+        "turnrate": "3.1917",
+        "tradeDate": "20151229",
+        "exchange": "001003",
+        "change": "0.7389",
+        "pchg": "0.0395"
+      }, {
+        "ma5": "19.2842",
+        "ma10": "19.2642",
+        "ma20": "18.9358",
+        "macdDif": "0.1026",
+        "macdDea": "-0.0731",
+        "macd": "0.3514",
+        "kdjK": "68.4602",
+        "kdjD": "57.2262",
+        "kdjJ": "90.9283",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.6596",
+        "tclose": "21.3770",
+        "thigh": "21.3770",
+        "tlow": "19.6596",
+        "vol": "41605184",
+        "turnrate": "7.9843",
+        "tradeDate": "20151230",
+        "exchange": "001003",
+        "change": "1.9470",
+        "pchg": "0.1002"
+      }, {
+        "ma5": "19.6696",
+        "ma10": "19.3321",
+        "ma20": "19.0386",
+        "macdDif": "0.1764",
+        "macdDea": "-0.0232",
+        "macd": "0.3992",
+        "kdjK": "68.6632",
+        "kdjD": "61.0385",
+        "kdjJ": "83.9125",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "21.1573",
+        "tclose": "20.3486",
+        "thigh": "21.2672",
+        "tlow": "20.3486",
+        "vol": "26637889",
+        "turnrate": "5.1120",
+        "tradeDate": "20151231",
+        "exchange": "001003",
+        "change": "-1.0284",
+        "pchg": "-0.0481"
+      }, {
+        "ma5": "19.6556",
+        "ma10": "19.2503",
+        "ma20": "19.0666",
+        "macdDif": "0.0793",
+        "macdDea": "-0.0027",
+        "macd": "0.1639",
+        "kdjK": "49.5793",
+        "kdjD": "57.2188",
+        "kdjJ": "34.3002",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "20.3586",
+        "tclose": "18.4315",
+        "thigh": "20.9177",
+        "tlow": "18.3317",
+        "vol": "16667422",
+        "turnrate": "3.1986",
+        "tradeDate": "20160104",
+        "exchange": "001003",
+        "change": "-1.9170",
+        "pchg": "-0.0942"
+      }, {
+        "ma5": "19.7375",
+        "ma10": "19.2453",
+        "ma20": "19.1030",
+        "macdDif": "0.0556",
+        "macdDea": "0.0090",
+        "macd": "0.0933",
+        "kdjK": "46.9488",
+        "kdjD": "53.7955",
+        "kdjJ": "33.2556",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.5229",
+        "tclose": "19.1005",
+        "thigh": "19.1305",
+        "tlow": "17.4730",
+        "vol": "19914934",
+        "turnrate": "3.8218",
+        "tradeDate": "20160105",
+        "exchange": "001003",
+        "change": "0.6690",
+        "pchg": "0.0363"
+      }, {
+        "ma5": "19.7116",
+        "ma10": "19.2483",
+        "ma20": "19.1744",
+        "macdDif": "0.0524",
+        "macdDea": "0.0176",
+        "macd": "0.0695",
+        "kdjK": "46.9002",
+        "kdjD": "51.4971",
+        "kdjJ": "37.7066",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "19.0705",
+        "tclose": "19.3002",
+        "thigh": "19.6996",
+        "tlow": "18.3916",
+        "vol": "16598434",
+        "turnrate": "3.1854",
+        "tradeDate": "20160106",
+        "exchange": "001003",
+        "change": "0.1997",
+        "pchg": "0.0105"
+      }, {
+        "ma5": "18.9108",
+        "ma10": "19.0975",
+        "ma20": "19.0646",
+        "macdDif": "-0.1044",
+        "macdDea": "-0.0068",
+        "macd": "-0.1953",
+        "kdjK": "31.2668",
+        "kdjD": "44.7536",
+        "kdjJ": "4.2932",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "18.9208",
+        "tclose": "17.3732",
+        "thigh": "18.9208",
+        "tlow": "17.3732",
+        "vol": "4044432",
+        "turnrate": "0.7762",
+        "tradeDate": "20160107",
+        "exchange": "001003",
+        "change": "-1.9270",
+        "pchg": "-0.0998"
+      }, {
+        "ma5": "18.4116",
+        "ma10": "19.0406",
+        "ma20": "19.0206",
+        "macdDif": "-0.1879",
+        "macdDea": "-0.0430",
+        "macd": "-0.2898",
+        "kdjK": "32.1016",
+        "kdjD": "40.5363",
+        "kdjJ": "15.2322",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.9722",
+        "tclose": "17.8524",
+        "thigh": "18.1620",
+        "tlow": "16.0552",
+        "vol": "22339068",
+        "turnrate": "4.2870",
+        "tradeDate": "20160108",
+        "exchange": "001003",
+        "change": "0.4793",
+        "pchg": "0.0276"
+      }, {
+        "ma5": "17.9383",
+        "ma10": "18.7970",
+        "ma20": "18.9063",
+        "macdDif": "-0.3937",
+        "macdDea": "-0.1131",
+        "macd": "-0.5611",
+        "kdjK": "21.4636",
+        "kdjD": "34.1787",
+        "kdjJ": "-3.9667",
+        "stockCode": "002389",
+        "secode": "2010003597",
+        "sename": "南洋科技",
+        "topen": "17.3632",
+        "tclose": "16.0652",
+        "thigh": "17.4730",
+        "tlow": "16.0652",
+        "vol": "13780120",
+        "turnrate": "2.6445",
+        "tradeDate": "20160111",
+        "exchange": "001003",
+        "change": "-1.7872",
+        "pchg": "-0.1001"
       }]
     },
     "similarStockDTOs": [{
@@ -894,6 +1557,7 @@ var mockResponseData = {
   "msg": "OK",
   "t": 1481866824124
 }
+
 
 var stockData = [{
   "likes": 0,
