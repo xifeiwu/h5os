@@ -1,6 +1,10 @@
+html {
+  height: 100%;
+}
 body {
   margin: 0px;
   padding: 0px;
+  min-height: 100%;
 }
 
 .content {
@@ -8,6 +12,8 @@ body {
   max-width: 700px;
   margin: 0px auto;
   border: 1px solid red;
+  height: 100%;
+  min-height: 100%;
 }
 
 .origin {
@@ -123,12 +129,47 @@ body {
   white-space: nowrap;
 }
 .choose-similar-stock .show-similar-stock .item {
+  position: relative;
   display: inline-block;
   width: 45px;
   height: 45px;
-  background-color: blue;
+  border-radius: 5px;
+  /*background-color: blue;*/
+  background: url('imgs/similar_stock_status.png');
+  background-size: 180px 45px;
+  background-repeat: no-repeat;
   margin-right: 20px;
   flex-shrink: 0;
+}
+.choose-similar-stock .show-similar-stock .item {
+  background-position: -45px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus {
+  background-position: 0px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.unlock {
+  background-position: -135px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.unlock.focus {
+  background-position: -90px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .triangle {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-color: #fc0 transparent transparent #fc0;
+  border-style: solid;
+  border-top-left-radius: 5px;
+}
+.choose-similar-stock .show-similar-stock .item .rank {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  color: white;
+  font-size: 4px;
 }
 .choose-similar-stock .scroll-arrow {
   position: absolute;

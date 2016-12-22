@@ -315,6 +315,7 @@ DrawStock = function(container, exchangeData) {
   Object.setPrototypeOf(DrawStock.prototype, SVGRenderer.prototype);
   this.container = container;
   this.options = {};
+  this.options.daysSpan = 60;
 
   var containerW = container.clientWidth;
   var containerH = containerW * 1 / 2;
@@ -471,6 +472,7 @@ DrawStock.prototype = {
   drawCandle: function(exchangeData, options, gWidth, gHeight) {
     var candleGrid = this.g('candle');
 
+    var daysSpan = options['daysSpan'];
     var minGridY = this.options['minGridValueY'];
     var maxGridY = this.options['maxGridValueY'];
     var getPosY = function (value) {
@@ -481,7 +483,7 @@ DrawStock.prototype = {
     var ma10 = exchangeData['ma10'];
     var ma20 = exchangeData['ma20'];
     var dateCnt = ohlc.length;
-    var unitW = gWidth / 60;
+    var unitW = gWidth / daysSpan;
     var candleW = unitW - 2;
     var dateGrid, candle, candleStyle;
     var dateX, x, y, w, h, topenY, tcloseY, thighY, tlowY;
@@ -620,7 +622,8 @@ function formatStockExinfo(stockInfo) {
   }
 }
 
-function formatData(responseData) {
+function formatResponseData(responseData) {
+  console.log('formatResponseData');
   console.log(responseData);
   if (responseData['code'] != 1 || responseData['msg'] != 'OK') {
     return false
@@ -640,9 +643,9 @@ function formatData(responseData) {
     similarStockList = content['similarStockDTOs'];
   }
   // TODO: delete later
-  if (originStock) {
-    originStock['stockDailyInfoDTOs'] = stockData[0]['stockDailyInfoDTOs'];
-  }
+  // if (originStock) {
+  //   originStock['stockDailyInfoDTOs'] = stockData[0]['stockDailyInfoDTOs'];
+  // }
 
   if (originStock) {
     originStock['formatedExInfo'] = formatStockExinfo(originStock, 'origin');
@@ -658,9 +661,9 @@ function formatData(responseData) {
 }
 
 
-function getData() {
+function getData(cb) {
   // var ajaxURL = 'http://172.16.36.140:8081/api/v1/sense/top';
-  var ajaxURL = 'http://mtest.iqianjin.com/benew-server/api/v1/similar/stock/kline/2010001032';
+  var ajaxURL = 'http://mtest.iqianjin.com/benew-server/api/v1/similar/stock/kline/2010003597';
   var accessToken = '9877151C8E791FE4B00F2230D38FFF4730FC8DD8DBF9E637FDEE4684E41B94D1D8DEACE130C657A75ABDD56CF250FC846FC118E5E04EB62BC628CC1059C59962966A0A26F8421078DA507C5401CABB3058B67BA28F0DA4E298BE7F2175BE8BC9F9AF3FCE97C18B3EF1FA317F9F8C1EDCA7A08BF9F5DD1DDAF8C47B52ECE4893A';
   $.ajax({
       url: ajaxURL,
@@ -671,18 +674,21 @@ function getData() {
        request.setRequestHeader('console', accessToken);
       },
       success: function (data) {
-        console.log('data');
-        console.log(data);
+        // console.log('ajax data');
+        // console.log(data);
+        cb(null, data);
       },
       error: function(err) {
         console.log(err);
+        cb(err);
       }
   });
 }
 
-window.addEventListener('load', function() {
-  getData();
-  var similarStockTrainingInfo = formatData(responseData);
+function refreshUI(responseData) {
+  var similarStockTrainingInfo = formatResponseData(responseData);
+  console.log('similarStockTrainingInfo');
+  console.log(similarStockTrainingInfo);
   var originStock = similarStockTrainingInfo['originStock'];
   var similarStock = similarStockTrainingInfo['similarStock'];
   var similarStockList = similarStockTrainingInfo['similarStockList'];
@@ -699,19 +705,29 @@ window.addEventListener('load', function() {
 
   similarArea.querySelector('.title').textContent = '历史股票相似的度' + similarLevel.toFixed(2) + '%';
   var similarStockDraw = similarArea.querySelector('.similar .stock-charts');
-  new DrawStock(similarStockDraw, originStock['formatedExInfo']);
+  new DrawStock(similarStockDraw, similarStock['formatedExInfo']);
 
   var chooseSimilarStock= document.querySelector('.choose-similar-stock');
   var showSimilarStock = chooseSimilarStock.querySelector('.show-similar-stock');
   
   for (var i = 0; i < 9; i++) {
     var item = document.createElement('div');
+    item.innerHTML = '<div class="triangle"></div><div class="rank">' + (i + 1) + '</div>';
+    // item.textContent = i + 1;
     item.classList.add('item');
     showSimilarStock.appendChild(item);
   }
+}
+window.addEventListener('load', function() {
+  getData(function(err, data) {
+    if (!err) {
+      refreshUI(data);
+    }
+  });
+  // refreshUI(responseData);
 });
 
-var responseData = {
+var mockResponseData = {
   "code": 1,
   "content": {
     "originalStockTrainBaseDTO": {
