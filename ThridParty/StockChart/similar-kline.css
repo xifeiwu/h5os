@@ -37,7 +37,12 @@ body {
   display: inline-block;
   font-size: 15px;
   line-height: 20px;
+}
+.origin .title .custom-stock.add {
   color: #487deb;
+}
+.origin .title .custom-stock.remove {
+  color: #909090;
 }
 .origin .title .custom-stock::before {
   display: inline-block;
@@ -99,12 +104,12 @@ body {
   fill: #ff5871;
 }
 .stock-charts .point-down {
-  fill: green;
-  stroke: green;
+  fill: #5fb33b;
+  stroke: #5fb33b;
 }
 .stock-charts .point-up {
-  fill: red;
-  stroke: red;
+  fill: #ff5871;
+  stroke: #ff5871;
 }
 .stock-charts .group-series .ma5 {
   stroke: #457aee;
@@ -153,25 +158,70 @@ body {
 .choose-similar-stock .show-similar-stock .item.unlock.focus {
   background-position: -90px 0px;
 }
-.choose-similar-stock .show-similar-stock .item .triangle {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 0;
-  height: 0;
-  border-width: 10px;
-  border-color: #fc0 transparent transparent #fc0;
-  border-style: solid;
-  border-top-left-radius: 5px;
-}
 .choose-similar-stock .show-similar-stock .item .rank {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  color: white;
-  font-size: 6px;
-  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  background: url('imgs/similar_rank.png');
+  background-size: 360px 20px;
 }
+
+.choose-similar-stock .show-similar-stock .item .rank.rank0 {
+  background-position: -180px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank1 {
+  background-position: -200px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank2 {
+  background-position: -220px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank3 {
+  background-position: -240px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank4 {
+  background-position: -260px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank5 {
+  background-position: -280px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank6 {
+  background-position: -300px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank7 {
+  background-position: -320px 0px;
+}
+.choose-similar-stock .show-similar-stock .item .rank.rank8 {
+  background-position: -340px 0px;
+}
+
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank0 {
+  background-position: 0px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank1 {
+  background-position: -20px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank2 {
+  background-position: -40px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank3 {
+  background-position: -60px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank4 {
+  background-position: -80px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank5 {
+  background-position: -100px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank6 {
+  background-position: -120px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank7 {
+  background-position: -140px 0px;
+}
+.choose-similar-stock .show-similar-stock .item.focus .rank.rank8 {
+  background-position: -160px 0px;
+}
+
 .choose-similar-stock .scroll-arrow {
   position: absolute;
   top: 0px;

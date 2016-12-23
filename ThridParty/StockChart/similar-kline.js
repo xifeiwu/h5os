@@ -412,6 +412,8 @@ DrawStock.prototype = {
   drawGrid: function(exchangeData, options) {
     var seriesGroupWidth = options['seriesGroupWidth'];
     var seriesGroupHeight = options['seriesGroupHeight'];
+    var daysSpan = options['daysSpan'];
+    var unitW = seriesGroupWidth / daysSpan;
     var tickPositions = options['tickPositions'];
     // add xAxis grid
     var gGrid = this.g('grid');
@@ -459,7 +461,7 @@ DrawStock.prototype = {
       }
     }
 
-    // add date in bottom
+    // add first date in bottom
     var dateCnt = exchangeData['ohlc'].length;
     var firstDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][0]['date'], 'yyyy-MM-dd'), {
       x: '0%',
@@ -469,6 +471,7 @@ DrawStock.prototype = {
       fill: '#666',
     });
     gGrid.appendChild(firstDay);
+    // add the 30 date in bottom
     var curDay = this.text(this.toLocaleFormat(exchangeData['ohlc'][29]['date'], 'yyyy-MM-dd'), {
       x: seriesGroupWidth / 2,
       y: seriesGroupHeight + 12,
@@ -477,7 +480,7 @@ DrawStock.prototype = {
       fill: '#666',
     });
     gGrid.appendChild(curDay);
-    xLine = this.path(this.symbols.line(seriesGroupWidth / 2, 0, seriesGroupWidth / 2, seriesGroupHeight));
+    xLine = this.path(this.symbols.line(unitW * 30 - unitW / 2, 0, unitW * 30 - unitW / 2, seriesGroupHeight));
     this.attr(xLine, {
       stroke: '#ddd',
       fill: 'none',
@@ -487,7 +490,9 @@ DrawStock.prototype = {
     return gGrid;
   },
 
-  drawCandle: function(exchangeData, options, gWidth, gHeight) {
+  drawCandle: function(exchangeData, options) {
+    var gWidth = options['seriesGroupWidth'];
+    var gHeight = options['seriesGroupHeight'];
     var candleGrid = this.g('candle');
 
     var daysSpan = options['daysSpan'];
@@ -518,7 +523,7 @@ DrawStock.prototype = {
       tcloseY = getPosY(tohlc['tclose']);
       thighY = getPosY(tohlc['thigh']);
       tlowY = getPosY(tohlc['tlow']);
-      x = dateX - candleW / 2;
+      x = dateX;// - candleW / 2
       if (topenY > tcloseY) {
         y = tcloseY;
         candleStyle = 'point-up';
@@ -593,37 +598,37 @@ DrawStock.prototype = {
       tma10 = stockDailyInfos[29]['ma10'];
       tma20 = stockDailyInfos[29]['ma20'];
     }
+    var pHigh, pLow, pMA5, pMA10, pMA20, pMAX, pMIN;
     for (i = 0; i < recordCnt; i += 1) {
       tradeDateStr = stockDailyInfos[i]['tradeDate'].toString();
       tradeDate = new Date(tradeDateStr.slice(0, 4), parseInt(tradeDateStr.slice(4, 6)) - 1, tradeDateStr.slice(6, 8));
       milliSeconds = tradeDate.getTime();
 
-      if (maxValue < parseFloat(stockDailyInfos[i]['thigh'])) {
-        maxValue = parseFloat(stockDailyInfos[i]['thigh']);
+      pHigh = parseFloat(stockDailyInfos[i]['thigh']);
+      pLow = parseFloat(stockDailyInfos[i]['tlow']);
+      pMA5 = parseFloat(stockDailyInfos[i]['ma5']);
+      pMA10 = parseFloat(stockDailyInfos[i]['ma10']);
+      pMA20 = parseFloat(stockDailyInfos[i]['ma20']);
+
+      pMAX = Math.max(pHigh, pLow, pMA5, pMA10, pMA20);
+      pMIN = Math.min(pHigh, pLow, pMA5, pMA10, pMA20);
+      if (maxValue < pMAX) {
+        maxValue = pMAX;
       }
-      if (minValue > parseFloat(stockDailyInfos[i]['tlow'])) {
-        minValue = parseFloat(stockDailyInfos[i]['tlow']);
+      if (minValue > pMIN) {
+        minValue = pMIN;
       }
 
       ohlc.push({
         'date': tradeDate, // the date
         'topen': parseFloat(stockDailyInfos[i]['topen']), // open
-        'thigh': parseFloat(stockDailyInfos[i]['thigh']), // high
-        'tlow': parseFloat(stockDailyInfos[i]['tlow']), // low
-        'tclose': parseFloat(stockDailyInfos[i]['tclose']) // close
+        'tclose': parseFloat(stockDailyInfos[i]['tclose']), // close
+        'thigh': pHigh, // high
+        'tlow': pLow, // low
       });
-      ma5.push([
-        tradeDate,
-        parseFloat(stockDailyInfos[i]['ma5'])
-      ]);
-      ma10.push([
-        tradeDate,
-        parseFloat(stockDailyInfos[i]['ma10'])
-      ]);
-      ma20.push([
-        tradeDate,
-        parseFloat(stockDailyInfos[i]['ma20'])
-      ]);
+      ma5.push([tradeDate, pMA5]);
+      ma10.push([tradeDate, pMA10]);
+      ma20.push([tradeDate, pMA20]);
     }
     return {
       'ohlc': ohlc,
@@ -719,7 +724,7 @@ function refreshUI(responseData) {
   // similarStocks.style.width = (similarStockCnt * 65 - 20) + 'px';
   for (var i = 0; i < similarStockCnt; i++) {
     var item = document.createElement('div');
-    item.innerHTML = '<div class="triangle"></div><div class="rank">' + (i + 1) + '</div>';
+    item.innerHTML = '<div class="rank rank' + i + '"></div>';
     item.classList.add('item');
     similarStocks.appendChild(item);
   }
